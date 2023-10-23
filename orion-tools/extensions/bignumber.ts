@@ -1,5 +1,8 @@
 // import { BigNumber } from 'ethers'
 
+import { BigNumberish } from "ethers";
+import { ERC20 } from "../../typechain";
+
 // declare module 'ethers' {
 //   interface BigNumber {
 //     formatString(decimals?: number, precision?: number): string
@@ -38,3 +41,18 @@
 //   const str = this.formatString(decimals, precision)
 //   return Number(str)
 // }
+
+export async function convert<T extends ERC20>(amount: BigNumberish, token: T, delimiter=".") {
+  amount = amount.toString();
+  const decimals = Number(await token.decimals())
+
+  const parts = amount.split(delimiter)
+  if (parts.length > 2) {
+    throw(`Incorrect amount ${amount}`)
+  }
+  let [intPart, fracPart] = parts
+  if (fracPart === undefined) fracPart = ''
+
+  const finalAmount = intPart + fracPart.padEnd(decimals, '0').slice(0, decimals)
+  return BigInt(finalAmount);
+}

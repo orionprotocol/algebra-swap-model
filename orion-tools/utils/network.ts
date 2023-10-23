@@ -31,13 +31,13 @@ export function node_url(networkName: string): string {
 
 
 export function accounts() {
-	let unnamedSigners = process.env.ACCOUNTS.split(" ");
+	let unnamedSigners = process.env.ACCOUNTS?.split(" ");
 	const additionalKeys = [
-		env.DEPLOYER_TESTING,
-		env.DEPLOYER_STAGING,
-		env.DEPLOYER_PRODUCTION,
+		env.DEPLOYER_TESTING ?? '',
+		env.DEPLOYER_STAGING ?? '',
+		env.DEPLOYER_PRODUCTION ?? '',
 	]
-	unnamedSigners = unnamedSigners.concat(additionalKeys)
+	unnamedSigners = unnamedSigners?.concat(additionalKeys)
 	unnamedSigners = [...new Set(unnamedSigners)].filter((value: string) => value != '' && value != undefined)
 	return unnamedSigners 
 }

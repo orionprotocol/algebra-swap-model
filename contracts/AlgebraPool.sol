@@ -29,6 +29,8 @@ import './interfaces/callback/IAlgebraMintCallback.sol';
 import './interfaces/callback/IAlgebraSwapCallback.sol';
 import './interfaces/callback/IAlgebraFlashCallback.sol';
 
+import 'hardhat/console.sol';
+
 contract AlgebraPool is PoolState, PoolImmutables, IAlgebraPool {
   using LowGasSafeMath for uint256;
   using LowGasSafeMath for int256;
@@ -705,7 +707,7 @@ contract AlgebraPool is PoolState, PoolImmutables, IAlgebraPool {
     int256 amountRequired,
     uint160 limitSqrtPrice
   )
-    private
+    public
     returns (
       int256 amount0,
       int256 amount1,
@@ -767,12 +769,16 @@ contract AlgebraPool is PoolState, PoolImmutables, IAlgebraPool {
         currentLiquidity,
         cache.volumePerLiquidityInBlock
       );
+      console.log("newTimepointIndex");
+      console.log(newTimepointIndex);
 
       // new timepoint appears only for first swap in block
       if (newTimepointIndex != cache.timepointIndex) {
         cache.timepointIndex = newTimepointIndex;
         cache.volumePerLiquidityInBlock = 0;
         cache.fee = _getNewFee(blockTimestamp, currentTick, newTimepointIndex, currentLiquidity);
+        console.log("cache.fee");
+        console.log(cache.fee);
       }
     }
 
@@ -782,8 +788,12 @@ contract AlgebraPool is PoolState, PoolImmutables, IAlgebraPool {
       step.stepSqrtPrice = currentPrice;
 
       (step.nextTick, step.initialized) = tickTable.nextTickInTheSameRow(currentTick, zeroToOne);
+      console.log("step.nextTick");
+      console.logInt(step.nextTick);
 
       step.nextTickPrice = TickMath.getSqrtRatioAtTick(step.nextTick);
+      console.log("step.nextTickPice");
+      console.logInt(step.nextTickPrice);
 
       // calculate the amounts needed to move the price to the next target if it is possible or as much as possible
       (currentPrice, step.input, step.output, step.feeAmount) = PriceMovementMath.movePriceTowardsTarget(
@@ -796,6 +806,11 @@ contract AlgebraPool is PoolState, PoolImmutables, IAlgebraPool {
         amountRequired,
         cache.fee
       );
+      console.log("movePriceTowardsTarget");
+      console.log(currentPrice);
+      console.log(step.input);
+      console.log(step.output);
+      console.log(step.feeAmount);
 
       if (cache.exactInput) {
         amountRequired -= (step.input + step.feeAmount).toInt256(); // decrease remaining input amount

@@ -7,7 +7,9 @@ import '@typechain/hardhat';
 import 'hardhat-deploy-ethers';
 import 'hardhat-gas-reporter';
 import 'hardhat-deploy-tenderly';
+import 'hardhat-tracer';
 import 'solidity-coverage';
+import 'hardhat-contract-sizer'
 import { task } from 'hardhat/config';
 
 import { addForkConfiguration } from './orion-tools/utils/network';
@@ -28,7 +30,7 @@ const config: HardhatUserConfig = {
 				settings: {
 					optimizer: {
 						enabled: true,
-						runs: 200
+						runs: 1
 					}
 				}
 			},
@@ -45,20 +47,34 @@ const config: HardhatUserConfig = {
 	},
 	typechain: {
 		outDir: 'typechain',
+		// externalArtifacts: [
+		// 	"./node_modules/@cryptoalgebra/v1-core/artifacts/**/*.json",
+		// 	"./node_modules/@cryptoalgebra/v1-periphery/artifacts/**/*.json"
+		// ]
 	},
 	mocha: {
 		timeout: 0,
 	},
-	external: process.env.HARDHAT_FORK
-		? {
-			deployments: {
-				// process.env.HARDHAT_FORK will specify the network that the fork is made from.
-				// these lines allow it to fetch the deployments from the network being forked from both for node and deploy task
-				hardhat: ['deployments/' + process.env.HARDHAT_FORK],
-				localhost: ['deployments/' + process.env.HARDHAT_FORK],
-			},
-		}
-		: undefined,
+	tracer: {
+		tasks: ["deploy"],
+		enableAllOpcodes: false
+	},
+	external: {
+		contracts: [
+			// {
+			// 	artifacts: "./node_modules/@cryptoalgebra/v1-core/artifacts",
+			// },
+			// {
+			// 	artifacts: "./node_modules/@cryptoalgebra/v1-periphery/artifacts",
+			// }
+		],
+		deployments: process.env.HARDHAT_FORK ? {
+			// process.env.HARDHAT_FORK will specify the network that the fork is made from.
+			// these lines allow it to fetch the deployments from the network being forked from both for node and deploy task
+			hardhat: ['deployments/' + process.env.HARDHAT_FORK],
+			localhost: ['deployments/' + process.env.HARDHAT_FORK],
+		} : undefined
+	},
 
 	tenderly: {
 		project: 'orion-referral',

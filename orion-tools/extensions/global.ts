@@ -2,13 +2,13 @@
 
 // declare global {
 //   interface String {
-//     toBigNumber(decimals?: number, delimiter?: string): BigNumber;
+//     // toBigNumber(decimals?: number, delimiter?: string): BigNumber;
 //     cutZeros(): string;
 //   }
-//   function toBigNumber(num: string | number, decimals?: number, delimiter?: string): BigNumber;
+//   // function toBigNumber(num: string | number, decimals?: number, delimiter?: string): BigNumber;
 //   function pick<T extends {}, K extends keyof T>(obj: T, ...keys: K[]): Pick<T, K>;
-//   function convertToDecimal(num: string | number, token: Contract): Promise<BigNumber>;
-//   function convert(num: string | number, decimals: number): BigNumber;
+//   // function convertToDecimal(num: string | number, token: Contract): Promise<BigNumber>;
+//   // function convert(num: string | number, decimals: number): BigNumber;
 // }
 
 // global.toBigNumber = function toBigNumber(num: string | number, decimals = 18, delimiter = '.'): BigNumber {
@@ -37,10 +37,10 @@
 //   return String(this).replace(/\.?0+$/, '');
 // };
 
-// global.pick = function <T extends {}, K extends keyof T>(obj: T, ...keys: K[]): Pick<T, K> {
-//   return Object.fromEntries(
-//     keys
-//       .filter(key => key in obj)
-//       .map(key => [key, obj[key]])
-//   ) as Pick<T, K>
-// }
+export function pick<T extends {}, K extends keyof T>(obj: T, ...keys: K[]): Pick<T, K> {
+  return Object.fromEntries(
+    keys
+      .filter(key => key in obj)
+      .map(key => [key, obj[key]])
+  ) as Pick<T, K>
+}

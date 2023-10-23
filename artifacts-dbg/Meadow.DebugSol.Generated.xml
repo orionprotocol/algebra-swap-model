@@ -1,0 +1,1510 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Meadow.DebugSol.Generated</name>
+    </assembly>
+    <members>
+        <member name="T:Meadow.DebugSol.Generated.AlgebraFactory">
+            <summary>From file contracts/AlgebraFactory.sol<para/> <para/>Algebra factory <para/>Notice: Is used to deploy pools and its dataStorages</summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraFactory.Deploy(Meadow.Core.EthTypes.Address,Meadow.Core.EthTypes.Address,Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Algebra factory <para/>Notice: Is used to deploy pools and its dataStorages <para/>
+            </summary>
+            <param name="_poolDeployer"><c>address</c></param>
+            <param name="_vaultAddress"><c>address</c></param>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraFactory.New(Meadow.Core.EthTypes.Address,Meadow.Core.EthTypes.Address,Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Algebra factory <para/>Notice: Is used to deploy pools and its dataStorages <para/>
+            </summary>
+            <param name="_poolDeployer"><c>address</c></param>
+            <param name="_vaultAddress"><c>address</c></param>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraFactory.baseFeeConfiguration">
+            <summary> <para/>Returns <c>uint16,uint16,uint32,uint32,uint16,uint16,uint32,uint16,uint16</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraFactory.createPool(Meadow.Core.EthTypes.Address,Meadow.Core.EthTypes.Address)">
+            <summary>tokenA and tokenB may be passed in either order: token0/token1 or token1/token0. tickSpacing is retrieved  from the fee. The call will revert if the pool already exists, the fee is invalid, or the token arguments  are invalid. <para/>Notice: Creates a pool for the given two tokens and fee <para/>Returns <c>address</c></summary>
+            <param name="tokenA"><c>address</c>: One of the two tokens in the desired pool</param>
+            <param name="tokenB"><c>address</c>: The other of the two tokens in the desired pool</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraFactory.farmingAddress">
+            <summary> <para/>Returns <c>address</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraFactory.owner">
+            <summary> <para/>Notice: Returns the current owner of the factory <para/>Returns <c>address</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraFactory.poolByPair(Meadow.Core.EthTypes.Address,Meadow.Core.EthTypes.Address)">
+            <summary> <para/>Notice: Returns the pool address for a given pair of tokens and a fee, or address 0 if it does not exist <para/>Returns <c>address</c></summary>
+            <param name="unamed0"><c>address</c></param>
+            <param name="unamed1"><c>address</c></param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraFactory.poolDeployer">
+            <summary> <para/>Notice: Returns the current poolDeployerAddress <para/>Returns <c>address</c></summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Meadow.DebugSol.Generated.AlgebraFactory.setBaseFeeConfiguration(System.UInt16,System.UInt16,System.UInt32,System.UInt32,System.UInt16,System.UInt16,System.UInt32,System.UInt16,System.UInt16)" -->
+        <member name="M:Meadow.DebugSol.Generated.AlgebraFactory.setFarmingAddress(Meadow.Core.EthTypes.Address)">
+            <summary>updates tokenomics address on the factory</summary>
+            <param name="_farmingAddress"><c>address</c>: The new tokenomics contract address</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraFactory.setOwner(Meadow.Core.EthTypes.Address)">
+            <summary>Must be called by the current owner <para/>Notice: Updates the owner of the factory</summary>
+            <param name="_owner"><c>address</c>: The new owner of the factory</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraFactory.setVaultAddress(Meadow.Core.EthTypes.Address)">
+            <summary>updates vault address on the factory</summary>
+            <param name="_vaultAddress"><c>address</c>: The new vault contract address</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraFactory.vaultAddress">
+            <summary> <para/>Returns <c>address</c></summary>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.AlgebraFactory.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.AlgebraPool">
+            <summary>From file contracts/AlgebraPool.sol<para/></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool._calculateSwapAndLock(System.Boolean,System.Numerics.BigInteger,Meadow.Core.EthTypes.UInt256)">
+            <summary> <para/>Notice: For gas optimization, locks 'globalState.unlocked' and does not release. <para/>Returns <c>int256,int256,uint160,int24,uint128,uint256</c></summary>
+            <param name="zeroToOne"><c>bool</c></param>
+            <param name="amountRequired"><c>int256</c></param>
+            <param name="limitSqrtPrice"><c>uint160</c></param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.activeIncentive">
+            <summary> <para/>Notice: Returns the information about active incentive <para/>Returns <c>address</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.burn(System.Int32,System.Int32,Meadow.Core.EthTypes.UInt256)">
+            <summary>Can be used to trigger a recalculation of fees owed to a position by calling with an amount of 0Fees must be collected separately via a call to #collect <para/>Notice: Burn liquidity from the sender and account tokens owed for the liquidity to the position <para/>Returns <c>uint256,uint256</c></summary>
+            <param name="bottomTick"><c>int24</c>: The lower tick of the position for which to burn liquidity</param>
+            <param name="topTick"><c>int24</c>: The upper tick of the position for which to burn liquidity</param>
+            <param name="amount"><c>uint128</c>: How much liquidity to burn</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.collect(Meadow.Core.EthTypes.Address,System.Int32,System.Int32,Meadow.Core.EthTypes.UInt256,Meadow.Core.EthTypes.UInt256)">
+            <summary>Does not recompute fees earned, which must be done either via mint or burn of any amount of liquidity. Collect must be called by the position owner. To withdraw only token0 or only token1, amount0Requested or amount1Requested may be set to zero. To withdraw all tokens owed, caller may pass any value greater than the actual tokens owed, e.g. type(uint128).max. Tokens owed may be from accumulated swap fees or burned liquidity. <para/>Notice: Collects tokens owed to a position <para/>Returns <c>uint128,uint128</c></summary>
+            <param name="recipient"><c>address</c>: The address which should receive the fees collected</param>
+            <param name="bottomTick"><c>int24</c>: The lower tick of the position for which to collect fees</param>
+            <param name="topTick"><c>int24</c>: The upper tick of the position for which to collect fees</param>
+            <param name="amount0Requested"><c>uint128</c>: How much token0 should be withdrawn from the fees owed</param>
+            <param name="amount1Requested"><c>uint128</c>: How much token1 should be withdrawn from the fees owed</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.dataStorageOperator">
+            <summary> <para/>Notice: The contract that stores all the timepoints and can perform actions with them <para/>Returns <c>address</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.factory">
+            <summary> <para/>Notice: The contract that deployed the pool, which must adhere to the IAlgebraFactory interface <para/>Returns <c>address</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.flash(Meadow.Core.EthTypes.Address,Meadow.Core.EthTypes.UInt256,Meadow.Core.EthTypes.UInt256,System.Collections.Generic.IEnumerable{System.Byte})">
+            <summary>The caller of this method receives a callback in the form of IAlgebraFlashCallback# AlgebraFlashCallbackAll excess tokens paid in the callback are distributed to liquidity providers as an additional fee. So this method can be used to donate underlying tokens to currently in-range liquidity providers by calling with 0 amount{0,1} and sending the donation amount(s) from the callback <para/>Notice: Receive token0 and/or token1 and pay it back, plus a fee, in the callback</summary>
+            <param name="recipient"><c>address</c>: The address which will receive the token0 and token1 amounts</param>
+            <param name="amount0"><c>uint256</c>: The amount of token0 to send</param>
+            <param name="amount1"><c>uint256</c>: The amount of token1 to send</param>
+            <param name="data"><c>bytes</c>: Any data to be passed through to the callback</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.getInnerCumulatives(System.Int32,System.Int32)">
+            <summary>Snapshots must only be compared to other snapshots, taken over a period for which a position existed. I.e., snapshots cannot be compared if a position is not held for the entire period between when the first snapshot is taken and the second snapshot is taken. <para/>Notice: Returns a snapshot of the tick cumulative, seconds per liquidity and seconds inside a tick range <para/>Returns <c>int56,uint160,uint32</c></summary>
+            <param name="bottomTick"><c>int24</c>: The lower tick of the range</param>
+            <param name="topTick"><c>int24</c>: The upper tick of the range</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.getTimepoints(System.Collections.Generic.IEnumerable{System.UInt32})">
+            <summary>To get a time weighted average tick or liquidity-in-range, you must call this with two values, one representing the beginning of the period and another for the end of the period. E.g., to get the last hour time-weighted average tick, you must call it with secondsAgos = [3600, 0].The time weighted average tick represents the geometric time weighted average price of the pool, in log base sqrt(1.0001) of token1 / token0. The TickMath library can be used to go from a tick value to a ratio. <para/>Notice: Returns the cumulative tick and liquidity as of each timestamp `secondsAgo` from the current block timestamp <para/>Returns <c>int56[],uint160[],uint112[],uint256[]</c></summary>
+            <param name="secondsAgos"><c>uint32[]</c>: From how long ago each cumulative tick and liquidity value should be returned</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.globalState">
+            <summary> <para/>Notice: The globalState structure in the pool stores many values but requires only one slot and is exposed as a single method to save gas when accessed externally. <para/>Returns <c>uint160,int24,uint16,uint16,uint8,uint8,bool</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.initialize(Meadow.Core.EthTypes.UInt256)">
+            <summary>Price is represented as a sqrt(amountToken1/amountToken0) Q64.96 value <para/>Notice: Sets the initial price for the pool</summary>
+            <param name="initialPrice"><c>uint160</c></param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.liquidity">
+            <summary> <para/>Notice: The currently in range liquidity available to the pool <para/>Returns <c>uint128</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.liquidityCooldown">
+            <summary> <para/>Notice: Returns the lock time for added liquidity <para/>Returns <c>uint32</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.maxLiquidityPerTick">
+            <summary>This parameter is enforced per tick to prevent liquidity from overflowing a uint128 at any point, and also prevents out-of-range liquidity from being used to prevent adding in-range liquidity to a pool <para/>Notice: The maximum amount of position liquidity that can use any tick in the range <para/>Returns <c>uint128</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.mint(Meadow.Core.EthTypes.Address,Meadow.Core.EthTypes.Address,System.Int32,System.Int32,Meadow.Core.EthTypes.UInt256,System.Collections.Generic.IEnumerable{System.Byte})">
+            <summary>The caller of this method receives a callback in the form of IAlgebraMintCallback# AlgebraMintCallback in which they must pay any token0 or token1 owed for the liquidity. The amount of token0/token1 due depends on bottomTick, topTick, the amount of liquidity, and the current price. <para/>Notice: Adds liquidity for the given recipient/bottomTick/topTick position <para/>Returns <c>uint256,uint256,uint128</c></summary>
+            <param name="sender"><c>address</c>: The address which will receive potential surplus of paid tokens</param>
+            <param name="recipient"><c>address</c>: The address for which the liquidity will be created</param>
+            <param name="bottomTick"><c>int24</c>: The lower tick of the position in which to add liquidity</param>
+            <param name="topTick"><c>int24</c>: The upper tick of the position in which to add liquidity</param>
+            <param name="liquidityDesired"><c>uint128</c></param>
+            <param name="data"><c>bytes</c>: Any data that should be passed through to the callback</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.positions(System.Collections.Generic.IEnumerable{System.Byte})">
+            <summary> <para/>Notice: Returns the information about a position by the position's key <para/>Returns <c>uint128,uint32,uint256,uint256,uint128,uint128</c></summary>
+            <param name="unamed0"><c>bytes32</c></param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.setCommunityFee(System.Byte,System.Byte)">
+            <summary> <para/>Notice: Set the community's % share of the fees. Cannot exceed 25% (250)</summary>
+            <param name="communityFee0"><c>uint8</c>: new community fee percent for token0 of the pool in thousandths (1e-3)</param>
+            <param name="communityFee1"><c>uint8</c>: new community fee percent for token1 of the pool in thousandths (1e-3)</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.setIncentive(Meadow.Core.EthTypes.Address)">
+            <summary> <para/>Notice: Sets an active incentive</summary>
+            <param name="virtualPoolAddress"><c>address</c>: The address of a virtual pool associated with the incentive</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.setLiquidityCooldown(System.UInt32)">
+            <summary> <para/>Notice: Sets new lock time for added liquidity</summary>
+            <param name="newLiquidityCooldown"><c>uint32</c>: The time in seconds</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.swap(Meadow.Core.EthTypes.Address,System.Boolean,System.Numerics.BigInteger,Meadow.Core.EthTypes.UInt256,System.Collections.Generic.IEnumerable{System.Byte})">
+            <summary>The caller of this method receives a callback in the form of IAlgebraSwapCallback# AlgebraSwapCallback <para/>Notice: Swap token0 for token1, or token1 for token0 <para/>Returns <c>int256,int256</c></summary>
+            <param name="recipient"><c>address</c>: The address to receive the output of the swap</param>
+            <param name="zeroToOne"><c>bool</c>: The direction of the swap, true for token0 to token1, false for token1 to token0</param>
+            <param name="amountRequired"><c>int256</c></param>
+            <param name="limitSqrtPrice"><c>uint160</c>: The Q64.96 sqrt price limit. If zero for one, the price cannot be less than this value after the swap. If one for zero, the price cannot be greater than this value after the swap</param>
+            <param name="data"><c>bytes</c>: Any data to be passed through to the callback. If using the Router it should contain SwapRouter#SwapCallbackData</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.swapSupportingFeeOnInputTokens(Meadow.Core.EthTypes.Address,Meadow.Core.EthTypes.Address,System.Boolean,System.Numerics.BigInteger,Meadow.Core.EthTypes.UInt256,System.Collections.Generic.IEnumerable{System.Byte})">
+            <summary>The caller of this method receives a callback in the form of I AlgebraSwapCallback# AlgebraSwapCallback <para/>Notice: Swap token0 for token1, or token1 for token0 (tokens that have fee on transfer) <para/>Returns <c>int256,int256</c></summary>
+            <param name="sender"><c>address</c>: The address called this function (Comes from the Router)</param>
+            <param name="recipient"><c>address</c>: The address to receive the output of the swap</param>
+            <param name="zeroToOne"><c>bool</c>: The direction of the swap, true for token0 to token1, false for token1 to token0</param>
+            <param name="amountRequired"><c>int256</c></param>
+            <param name="limitSqrtPrice"><c>uint160</c>: The Q64.96 sqrt price limit. If zero for one, the price cannot be less than this value after the swap. If one for zero, the price cannot be greater than this value after the swap</param>
+            <param name="data"><c>bytes</c>: Any data to be passed through to the callback. If using the Router it should contain SwapRouter#SwapCallbackData</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.tickSpacing">
+            <summary>Ticks can only be used at multiples of this value e.g.: a tickSpacing of 60 means ticks can be initialized every 60th tick, i.e., ..., -120, -60, 0, 60, 120, ... This value is an int24 to avoid casting even though it is always positive. <para/>Notice: The pool tick spacing <para/>Returns <c>int24</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.tickTable(System.Int16)">
+            <summary> <para/>Notice: Returns 256 packed tick initialized boolean values. See TickTable for more information <para/>Returns <c>uint256</c></summary>
+            <param name="unamed0"><c>int16</c></param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.ticks(System.Int32)">
+            <summary> <para/>Notice: Look up information about a specific tick in the pool <para/>Returns <c>uint128,int128,uint256,uint256,int56,uint160,uint32,bool</c></summary>
+            <param name="unamed0"><c>int24</c></param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.timepoints(Meadow.Core.EthTypes.UInt256)">
+            <summary>You most likely want to use #getTimepoints() instead of this method to get an timepoint as of some amount of time ago, rather than at a specific index in the array. This is a public mapping of structures, so the `return` natspec tags are omitted. <para/>Notice: Returns data about a specific timepoint index <para/>Returns <c>bool,uint32,int56,uint160,uint88,int24,uint144</c></summary>
+            <param name="index"><c>uint256</c>: The element of the timepoints array to fetch</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.token0">
+            <summary> <para/>Notice: The first of the two tokens of the pool, sorted by address <para/>Returns <c>address</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.token1">
+            <summary> <para/>Notice: The second of the two tokens of the pool, sorted by address <para/>Returns <c>address</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.totalFeeGrowth0Token">
+            <summary> <para/>Notice: The fee growth as a Q128.128 fees of token0 collected per unit of liquidity for the entire life of the pool <para/>Returns <c>uint256</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.totalFeeGrowth1Token">
+            <summary> <para/>Notice: The fee growth as a Q128.128 fees of token1 collected per unit of liquidity for the entire life of the pool <para/>Returns <c>uint256</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AlgebraPool.volumePerLiquidityInBlock">
+            <summary> <para/>Returns <c>uint128</c></summary>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.AlgebraPool.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.PoolImmutables">
+            <summary>From file contracts/base/PoolImmutables.sol<para/></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.PoolImmutables.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.PoolImmutables.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.PoolImmutables.dataStorageOperator">
+            <summary> <para/>Notice: The contract that stores all the timepoints and can perform actions with them <para/>Returns <c>address</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.PoolImmutables.factory">
+            <summary> <para/>Notice: The contract that deployed the pool, which must adhere to the IAlgebraFactory interface <para/>Returns <c>address</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.PoolImmutables.maxLiquidityPerTick">
+            <summary>This parameter is enforced per tick to prevent liquidity from overflowing a uint128 at any point, and also prevents out-of-range liquidity from being used to prevent adding in-range liquidity to a pool <para/>Notice: The maximum amount of position liquidity that can use any tick in the range <para/>Returns <c>uint128</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.PoolImmutables.tickSpacing">
+            <summary>Ticks can only be used at multiples of this value e.g.: a tickSpacing of 60 means ticks can be initialized every 60th tick, i.e., ..., -120, -60, 0, 60, 120, ... This value is an int24 to avoid casting even though it is always positive. <para/>Notice: The pool tick spacing <para/>Returns <c>int24</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.PoolImmutables.token0">
+            <summary> <para/>Notice: The first of the two tokens of the pool, sorted by address <para/>Returns <c>address</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.PoolImmutables.token1">
+            <summary> <para/>Notice: The second of the two tokens of the pool, sorted by address <para/>Returns <c>address</c></summary>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.PoolImmutables.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.PoolState">
+            <summary>From file contracts/base/PoolState.sol<para/></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.PoolState.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.PoolState.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.PoolState.activeIncentive">
+            <summary> <para/>Notice: Returns the information about active incentive <para/>Returns <c>address</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.PoolState.globalState">
+            <summary> <para/>Notice: The globalState structure in the pool stores many values but requires only one slot and is exposed as a single method to save gas when accessed externally. <para/>Returns <c>uint160,int24,uint16,uint16,uint8,uint8,bool</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.PoolState.liquidity">
+            <summary> <para/>Notice: The currently in range liquidity available to the pool <para/>Returns <c>uint128</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.PoolState.liquidityCooldown">
+            <summary> <para/>Notice: Returns the lock time for added liquidity <para/>Returns <c>uint32</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.PoolState.positions(System.Collections.Generic.IEnumerable{System.Byte})">
+            <summary>This is a public mapping of structures, so the `return` natspec tags are omitted. <para/>Notice: Returns the information about a position by the position's key <para/>Returns <c>uint128,uint32,uint256,uint256,uint128,uint128</c></summary>
+            <param name="key"><c>bytes32</c>: The position's key is a hash of a preimage composed by the owner, bottomTick and topTick</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.PoolState.tickTable(System.Int16)">
+            <summary> <para/>Notice: Returns 256 packed tick initialized boolean values. See TickTable for more information <para/>Returns <c>uint256</c></summary>
+            <param name="unamed0"><c>int16</c></param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.PoolState.ticks(System.Int32)">
+            <summary> <para/>Notice: Look up information about a specific tick in the pool <para/>Returns <c>uint128,int128,uint256,uint256,int56,uint160,uint32,bool</c></summary>
+            <param name="unamed0"><c>int24</c></param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.PoolState.timepoints(Meadow.Core.EthTypes.UInt256)">
+            <summary>You most likely want to use #getTimepoints() instead of this method to get an timepoint as of some amount of time ago, rather than at a specific index in the array. This is a public mapping of structures, so the `return` natspec tags are omitted. <para/>Notice: Returns data about a specific timepoint index <para/>Returns <c>bool,uint32,int56,uint160,uint88,int24,uint144</c></summary>
+            <param name="index"><c>uint256</c>: The element of the timepoints array to fetch</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.PoolState.totalFeeGrowth0Token">
+            <summary> <para/>Notice: The fee growth as a Q128.128 fees of token0 collected per unit of liquidity for the entire life of the pool <para/>Returns <c>uint256</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.PoolState.totalFeeGrowth1Token">
+            <summary> <para/>Notice: The fee growth as a Q128.128 fees of token1 collected per unit of liquidity for the entire life of the pool <para/>Returns <c>uint256</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.PoolState.volumePerLiquidityInBlock">
+            <summary> <para/>Returns <c>uint128</c></summary>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.PoolState.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.DataStorageOperator">
+            <summary>From file contracts/DataStorageOperator.sol<para/></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.DataStorageOperator.Deploy(Meadow.Core.EthTypes.Address,Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>
+            </summary>
+            <param name="_pool"><c>address</c></param>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.DataStorageOperator.New(Meadow.Core.EthTypes.Address,Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>
+            </summary>
+            <param name="_pool"><c>address</c></param>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.DataStorageOperator.calculateVolumePerLiquidity(Meadow.Core.EthTypes.UInt256,System.Numerics.BigInteger,System.Numerics.BigInteger)">
+            <summary> <para/>Notice: Calculates gmean(volume/liquidity) for block <para/>Returns <c>uint128</c></summary>
+            <param name="liquidity"><c>uint128</c>: The current in-range pool liquidity</param>
+            <param name="amount0"><c>int256</c>: Total amount of swapped token0</param>
+            <param name="amount1"><c>int256</c>: Total amount of swapped token1</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.DataStorageOperator.changeFeeConfiguration(Meadow.Core.EthTypes.Address)">
+            <summary></summary>
+            <param name="_feeConfig"><c>address</c></param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.DataStorageOperator.feeConfig">
+            <summary> <para/>Returns <c>uint16,uint16,uint32,uint32,uint16,uint16,uint32,uint16,uint16</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.DataStorageOperator.getAverages(System.UInt32,System.Int32,System.UInt16,Meadow.Core.EthTypes.UInt256)">
+            <summary> <para/>Notice: Returns average volatility in the range from time-WINDOW to time <para/>Returns <c>uint112,uint256</c></summary>
+            <param name="time"><c>uint32</c>: The current block.timestamp</param>
+            <param name="tick"><c>int24</c>: The current tick</param>
+            <param name="index"><c>uint16</c>: The index of the timepoint that was most recently written to the timepoints array</param>
+            <param name="liquidity"><c>uint128</c>: The current in-range pool liquidity</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.DataStorageOperator.getFee(System.UInt32,System.Int32,System.UInt16,Meadow.Core.EthTypes.UInt256)">
+            <summary> <para/>Notice: Calculates fee based on combination of sigmoids <para/>Returns <c>uint16</c></summary>
+            <param name="_time"><c>uint32</c></param>
+            <param name="_tick"><c>int24</c></param>
+            <param name="_index"><c>uint16</c></param>
+            <param name="_liquidity"><c>uint128</c></param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.DataStorageOperator.getSingleTimepoint(System.UInt32,System.UInt32,System.Int32,System.UInt16,Meadow.Core.EthTypes.UInt256)">
+            <summary>Reverts if an timepoint at or before the desired timepoint timestamp does not exist. 0 may be passed as `secondsAgo' to return the current cumulative values. If called with a timestamp falling between two timepoints, returns the counterfactual accumulator values at exactly the timestamp between the two timepoints. <para/>Returns <c>int56,uint160,uint112,uint256</c></summary>
+            <param name="time"><c>uint32</c>: The current block timestamp</param>
+            <param name="secondsAgo"><c>uint32</c>: The amount of time to look back, in seconds, at which point to return an timepoint</param>
+            <param name="tick"><c>int24</c>: The current tick</param>
+            <param name="index"><c>uint16</c>: The index of the timepoint that was most recently written to the timepoints array</param>
+            <param name="liquidity"><c>uint128</c>: The current in-range pool liquidity</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.DataStorageOperator.getTimepoints(System.UInt32,System.Collections.Generic.IEnumerable{System.UInt32},System.Int32,System.UInt16,Meadow.Core.EthTypes.UInt256)">
+            <summary>Reverts if `secondsAgos` > oldest timepoint <para/>Notice: Returns the accumulator values as of each time seconds ago from the given time in the array of `secondsAgos` <para/>Returns <c>int56[],uint160[],uint112[],uint256[]</c></summary>
+            <param name="time"><c>uint32</c>: The current block.timestamp</param>
+            <param name="secondsAgos"><c>uint32[]</c>: Each amount of time to look back, in seconds, at which point to return an timepoint</param>
+            <param name="tick"><c>int24</c>: The current tick</param>
+            <param name="index"><c>uint16</c>: The index of the timepoint that was most recently written to the timepoints array</param>
+            <param name="liquidity"><c>uint128</c>: The current in-range pool liquidity</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.DataStorageOperator.initialize(System.UInt32,System.Int32)">
+            <summary> <para/>Notice: Initialize the dataStorage array by writing the first slot. Called once for the lifecycle of the timepoints array</summary>
+            <param name="time"><c>uint32</c>: The time of the dataStorage initialization, via block.timestamp truncated to uint32</param>
+            <param name="tick"><c>int24</c>: Initial tick</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.DataStorageOperator.timepoints(Meadow.Core.EthTypes.UInt256)">
+            <summary> <para/>Notice: Returns data belonging to a certain timepoint <para/>Returns <c>bool,uint32,int56,uint160,uint88,int24,uint144</c></summary>
+            <param name="unamed0"><c>uint256</c></param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.DataStorageOperator.window">
+            <summary> <para/>Returns <c>uint32</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.DataStorageOperator.write(System.UInt16,System.UInt32,System.Int32,Meadow.Core.EthTypes.UInt256,Meadow.Core.EthTypes.UInt256)">
+            <summary>Writable at most once per block. Index represents the most recently written element. index must be tracked externally. <para/>Notice: Writes an dataStorage timepoint to the array <para/>Returns <c>uint16</c></summary>
+            <param name="index"><c>uint16</c>: The index of the timepoint that was most recently written to the timepoints array</param>
+            <param name="blockTimestamp"><c>uint32</c>: The timestamp of the new timepoint</param>
+            <param name="tick"><c>int24</c>: The active tick at the time of the new timepoint</param>
+            <param name="liquidity"><c>uint128</c>: The total in-range liquidity at the time of the new timepoint</param>
+            <param name="volumePerLiquidity"><c>uint128</c>: The gmean(volumes)/liquidity at the time of the new timepoint</param>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.DataStorageOperator.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.IAlgebraFlashCallback">
+            <summary>From file contracts/interfaces/callback/IAlgebraFlashCallback.sol<para/> <para/>Callback for IAlgebraPoolActions#flash <para/>Credit to Uniswap Labs under GPL-2.0-or-later license:  https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>Notice: Any contract that calls IAlgebraPoolActions#flash must implement this interface</summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraFlashCallback.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Callback for IAlgebraPoolActions#flash <para/>Credit to Uniswap Labs under GPL-2.0-or-later license:  https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>Notice: Any contract that calls IAlgebraPoolActions#flash must implement this interface <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraFlashCallback.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Callback for IAlgebraPoolActions#flash <para/>Credit to Uniswap Labs under GPL-2.0-or-later license:  https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>Notice: Any contract that calls IAlgebraPoolActions#flash must implement this interface <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraFlashCallback.algebraFlashCallback(Meadow.Core.EthTypes.UInt256,Meadow.Core.EthTypes.UInt256,System.Collections.Generic.IEnumerable{System.Byte})">
+            <summary>In the implementation you must repay the pool the tokens sent by flash plus the computed fee amounts.  The caller of this method must be checked to be a AlgebraPool deployed by the canonical AlgebraFactory. <para/>Notice: Called to `msg.sender` after transferring to the recipient from IAlgebraPool#flash.</summary>
+            <param name="fee0"><c>uint256</c>: The fee amount in token0 due to the pool by the end of the flash</param>
+            <param name="fee1"><c>uint256</c>: The fee amount in token1 due to the pool by the end of the flash</param>
+            <param name="data"><c>bytes</c>: Any data passed through by the caller via the IAlgebraPoolActions#flash call</param>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.IAlgebraFlashCallback.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.IAlgebraMintCallback">
+            <summary>From file contracts/interfaces/callback/IAlgebraMintCallback.sol<para/> <para/>Callback for IAlgebraPoolActions#mint <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>Notice: Any contract that calls IAlgebraPoolActions#mint must implement this interface</summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraMintCallback.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Callback for IAlgebraPoolActions#mint <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>Notice: Any contract that calls IAlgebraPoolActions#mint must implement this interface <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraMintCallback.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Callback for IAlgebraPoolActions#mint <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>Notice: Any contract that calls IAlgebraPoolActions#mint must implement this interface <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraMintCallback.algebraMintCallback(Meadow.Core.EthTypes.UInt256,Meadow.Core.EthTypes.UInt256,System.Collections.Generic.IEnumerable{System.Byte})">
+            <summary>In the implementation you must pay the pool tokens owed for the minted liquidity. The caller of this method must be checked to be a AlgebraPool deployed by the canonical AlgebraFactory. <para/>Notice: Called to `msg.sender` after minting liquidity to a position from IAlgebraPool#mint.</summary>
+            <param name="amount0Owed"><c>uint256</c>: The amount of token0 due to the pool for the minted liquidity</param>
+            <param name="amount1Owed"><c>uint256</c>: The amount of token1 due to the pool for the minted liquidity</param>
+            <param name="data"><c>bytes</c>: Any data passed through by the caller via the IAlgebraPoolActions#mint call</param>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.IAlgebraMintCallback.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.IAlgebraSwapCallback">
+            <summary>From file contracts/interfaces/callback/IAlgebraSwapCallback.sol<para/> <para/>Callback for IAlgebraPoolActions#swap <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>Notice: Any contract that calls IAlgebraPoolActions#swap must implement this interface</summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraSwapCallback.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Callback for IAlgebraPoolActions#swap <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>Notice: Any contract that calls IAlgebraPoolActions#swap must implement this interface <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraSwapCallback.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Callback for IAlgebraPoolActions#swap <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>Notice: Any contract that calls IAlgebraPoolActions#swap must implement this interface <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraSwapCallback.algebraSwapCallback(System.Numerics.BigInteger,System.Numerics.BigInteger,System.Collections.Generic.IEnumerable{System.Byte})">
+            <summary>In the implementation you must pay the pool tokens owed for the swap. The caller of this method must be checked to be a AlgebraPool deployed by the canonical AlgebraFactory. amount0Delta and amount1Delta can both be 0 if no tokens were swapped. <para/>Notice: Called to `msg.sender` after executing a swap via IAlgebraPool#swap.</summary>
+            <param name="amount0Delta"><c>int256</c>: The amount of token0 that was sent (negative) or must be received (positive) by the pool by the end of the swap. If positive, the callback must send that amount of token0 to the pool.</param>
+            <param name="amount1Delta"><c>int256</c>: The amount of token1 that was sent (negative) or must be received (positive) by the pool by the end of the swap. If positive, the callback must send that amount of token1 to the pool.</param>
+            <param name="data"><c>bytes</c>: Any data passed through by the caller via the IAlgebraPoolActions#swap call</param>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.IAlgebraSwapCallback.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.IAlgebraFactory">
+            <summary>From file contracts/interfaces/IAlgebraFactory.sol<para/> <para/>The interface for the Algebra Factory <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces</summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraFactory.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>The interface for the Algebra Factory <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraFactory.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>The interface for the Algebra Factory <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraFactory.createPool(Meadow.Core.EthTypes.Address,Meadow.Core.EthTypes.Address)">
+            <summary>tokenA and tokenB may be passed in either order: token0/token1 or token1/token0. tickSpacing is retrieved  from the fee. The call will revert if the pool already exists, the fee is invalid, or the token arguments  are invalid. <para/>Notice: Creates a pool for the given two tokens and fee <para/>Returns <c>address</c></summary>
+            <param name="tokenA"><c>address</c>: One of the two tokens in the desired pool</param>
+            <param name="tokenB"><c>address</c>: The other of the two tokens in the desired pool</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraFactory.farmingAddress">
+            <summary>Is retrieved from the pools to restrict calling certain functions not by a tokenomics contract <para/>Returns <c>address</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraFactory.owner">
+            <summary>Can be changed by the current owner via setOwner <para/>Notice: Returns the current owner of the factory <para/>Returns <c>address</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraFactory.poolByPair(Meadow.Core.EthTypes.Address,Meadow.Core.EthTypes.Address)">
+            <summary>tokenA and tokenB may be passed in either token0/token1 or token1/token0 order <para/>Notice: Returns the pool address for a given pair of tokens and a fee, or address 0 if it does not exist <para/>Returns <c>address</c></summary>
+            <param name="tokenA"><c>address</c>: The contract address of either token0 or token1</param>
+            <param name="tokenB"><c>address</c>: The contract address of the other token</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraFactory.poolDeployer">
+            <summary> <para/>Notice: Returns the current poolDeployerAddress <para/>Returns <c>address</c></summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Meadow.DebugSol.Generated.IAlgebraFactory.setBaseFeeConfiguration(System.UInt16,System.UInt16,System.UInt32,System.UInt32,System.UInt16,System.UInt16,System.UInt32,System.UInt16,System.UInt16)" -->
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraFactory.setFarmingAddress(Meadow.Core.EthTypes.Address)">
+            <summary>updates tokenomics address on the factory</summary>
+            <param name="_farmingAddress"><c>address</c>: The new tokenomics contract address</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraFactory.setOwner(Meadow.Core.EthTypes.Address)">
+            <summary>Must be called by the current owner <para/>Notice: Updates the owner of the factory</summary>
+            <param name="_owner"><c>address</c>: The new owner of the factory</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraFactory.setVaultAddress(Meadow.Core.EthTypes.Address)">
+            <summary>updates vault address on the factory</summary>
+            <param name="_vaultAddress"><c>address</c>: The new vault contract address</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraFactory.vaultAddress">
+            <summary> <para/>Returns <c>address</c></summary>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.IAlgebraFactory.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.IAlgebraPool">
+            <summary>From file contracts/interfaces/IAlgebraPool.sol<para/> <para/>The interface for a Algebra Pool <para/>The pool interface is broken up into many smaller pieces. Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces</summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPool.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>The interface for a Algebra Pool <para/>The pool interface is broken up into many smaller pieces. Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPool.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>The interface for a Algebra Pool <para/>The pool interface is broken up into many smaller pieces. Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPool.activeIncentive">
+            <summary>if there is no active incentive at the moment, virtualPool,endTimestamp,startTimestamp would be equal to 0 <para/>Notice: Returns the information about active incentive <para/>Returns <c>address</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPool.burn(System.Int32,System.Int32,Meadow.Core.EthTypes.UInt256)">
+            <summary>Can be used to trigger a recalculation of fees owed to a position by calling with an amount of 0Fees must be collected separately via a call to #collect <para/>Notice: Burn liquidity from the sender and account tokens owed for the liquidity to the position <para/>Returns <c>uint256,uint256</c></summary>
+            <param name="bottomTick"><c>int24</c>: The lower tick of the position for which to burn liquidity</param>
+            <param name="topTick"><c>int24</c>: The upper tick of the position for which to burn liquidity</param>
+            <param name="amount"><c>uint128</c>: How much liquidity to burn</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPool.collect(Meadow.Core.EthTypes.Address,System.Int32,System.Int32,Meadow.Core.EthTypes.UInt256,Meadow.Core.EthTypes.UInt256)">
+            <summary>Does not recompute fees earned, which must be done either via mint or burn of any amount of liquidity. Collect must be called by the position owner. To withdraw only token0 or only token1, amount0Requested or amount1Requested may be set to zero. To withdraw all tokens owed, caller may pass any value greater than the actual tokens owed, e.g. type(uint128).max. Tokens owed may be from accumulated swap fees or burned liquidity. <para/>Notice: Collects tokens owed to a position <para/>Returns <c>uint128,uint128</c></summary>
+            <param name="recipient"><c>address</c>: The address which should receive the fees collected</param>
+            <param name="bottomTick"><c>int24</c>: The lower tick of the position for which to collect fees</param>
+            <param name="topTick"><c>int24</c>: The upper tick of the position for which to collect fees</param>
+            <param name="amount0Requested"><c>uint128</c>: How much token0 should be withdrawn from the fees owed</param>
+            <param name="amount1Requested"><c>uint128</c>: How much token1 should be withdrawn from the fees owed</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPool.dataStorageOperator">
+            <summary> <para/>Notice: The contract that stores all the timepoints and can perform actions with them <para/>Returns <c>address</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPool.factory">
+            <summary> <para/>Notice: The contract that deployed the pool, which must adhere to the IAlgebraFactory interface <para/>Returns <c>address</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPool.flash(Meadow.Core.EthTypes.Address,Meadow.Core.EthTypes.UInt256,Meadow.Core.EthTypes.UInt256,System.Collections.Generic.IEnumerable{System.Byte})">
+            <summary>The caller of this method receives a callback in the form of IAlgebraFlashCallback# AlgebraFlashCallbackAll excess tokens paid in the callback are distributed to liquidity providers as an additional fee. So this method can be used to donate underlying tokens to currently in-range liquidity providers by calling with 0 amount{0,1} and sending the donation amount(s) from the callback <para/>Notice: Receive token0 and/or token1 and pay it back, plus a fee, in the callback</summary>
+            <param name="recipient"><c>address</c>: The address which will receive the token0 and token1 amounts</param>
+            <param name="amount0"><c>uint256</c>: The amount of token0 to send</param>
+            <param name="amount1"><c>uint256</c>: The amount of token1 to send</param>
+            <param name="data"><c>bytes</c>: Any data to be passed through to the callback</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPool.getInnerCumulatives(System.Int32,System.Int32)">
+            <summary>Snapshots must only be compared to other snapshots, taken over a period for which a position existed. I.e., snapshots cannot be compared if a position is not held for the entire period between when the first snapshot is taken and the second snapshot is taken. <para/>Notice: Returns a snapshot of the tick cumulative, seconds per liquidity and seconds inside a tick range <para/>Returns <c>int56,uint160,uint32</c></summary>
+            <param name="bottomTick"><c>int24</c>: The lower tick of the range</param>
+            <param name="topTick"><c>int24</c>: The upper tick of the range</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPool.getTimepoints(System.Collections.Generic.IEnumerable{System.UInt32})">
+            <summary>To get a time weighted average tick or liquidity-in-range, you must call this with two values, one representing the beginning of the period and another for the end of the period. E.g., to get the last hour time-weighted average tick, you must call it with secondsAgos = [3600, 0].The time weighted average tick represents the geometric time weighted average price of the pool, in log base sqrt(1.0001) of token1 / token0. The TickMath library can be used to go from a tick value to a ratio. <para/>Notice: Returns the cumulative tick and liquidity as of each timestamp `secondsAgo` from the current block timestamp <para/>Returns <c>int56[],uint160[],uint112[],uint256[]</c></summary>
+            <param name="secondsAgos"><c>uint32[]</c>: From how long ago each cumulative tick and liquidity value should be returned</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPool.globalState">
+            <summary> <para/>Notice: The globalState structure in the pool stores many values but requires only one slot and is exposed as a single method to save gas when accessed externally. <para/>Returns <c>uint160,int24,uint16,uint16,uint8,uint8,bool</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPool.initialize(Meadow.Core.EthTypes.UInt256)">
+            <summary>Price is represented as a sqrt(amountToken1/amountToken0) Q64.96 value <para/>Notice: Sets the initial price for the pool</summary>
+            <param name="price"><c>uint160</c>: the initial sqrt price of the pool as a Q64.96</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPool.liquidity">
+            <summary>This value has no relationship to the total liquidity across all ticks. Returned value cannot exceed type(uint128).max <para/>Notice: The currently in range liquidity available to the pool <para/>Returns <c>uint128</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPool.liquidityCooldown">
+            <summary> <para/>Notice: Returns the lock time for added liquidity <para/>Returns <c>uint32</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPool.maxLiquidityPerTick">
+            <summary>This parameter is enforced per tick to prevent liquidity from overflowing a uint128 at any point, and also prevents out-of-range liquidity from being used to prevent adding in-range liquidity to a pool <para/>Notice: The maximum amount of position liquidity that can use any tick in the range <para/>Returns <c>uint128</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPool.mint(Meadow.Core.EthTypes.Address,Meadow.Core.EthTypes.Address,System.Int32,System.Int32,Meadow.Core.EthTypes.UInt256,System.Collections.Generic.IEnumerable{System.Byte})">
+            <summary>The caller of this method receives a callback in the form of IAlgebraMintCallback# AlgebraMintCallback in which they must pay any token0 or token1 owed for the liquidity. The amount of token0/token1 due depends on bottomTick, topTick, the amount of liquidity, and the current price. <para/>Notice: Adds liquidity for the given recipient/bottomTick/topTick position <para/>Returns <c>uint256,uint256,uint128</c></summary>
+            <param name="sender"><c>address</c>: The address which will receive potential surplus of paid tokens</param>
+            <param name="recipient"><c>address</c>: The address for which the liquidity will be created</param>
+            <param name="bottomTick"><c>int24</c>: The lower tick of the position in which to add liquidity</param>
+            <param name="topTick"><c>int24</c>: The upper tick of the position in which to add liquidity</param>
+            <param name="amount"><c>uint128</c>: The desired amount of liquidity to mint</param>
+            <param name="data"><c>bytes</c>: Any data that should be passed through to the callback</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPool.positions(System.Collections.Generic.IEnumerable{System.Byte})">
+            <summary>This is a public mapping of structures, so the `return` natspec tags are omitted. <para/>Notice: Returns the information about a position by the position's key <para/>Returns <c>uint128,uint32,uint256,uint256,uint128,uint128</c></summary>
+            <param name="key"><c>bytes32</c>: The position's key is a hash of a preimage composed by the owner, bottomTick and topTick</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPool.setCommunityFee(System.Byte,System.Byte)">
+            <summary> <para/>Notice: Set the community's % share of the fees. Cannot exceed 25% (250)</summary>
+            <param name="communityFee0"><c>uint8</c>: new community fee percent for token0 of the pool in thousandths (1e-3)</param>
+            <param name="communityFee1"><c>uint8</c>: new community fee percent for token1 of the pool in thousandths (1e-3)</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPool.setIncentive(Meadow.Core.EthTypes.Address)">
+            <summary> <para/>Notice: Sets an active incentive</summary>
+            <param name="virtualPoolAddress"><c>address</c>: The address of a virtual pool associated with the incentive</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPool.setLiquidityCooldown(System.UInt32)">
+            <summary> <para/>Notice: Sets new lock time for added liquidity</summary>
+            <param name="newLiquidityCooldown"><c>uint32</c>: The time in seconds</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPool.swap(Meadow.Core.EthTypes.Address,System.Boolean,System.Numerics.BigInteger,Meadow.Core.EthTypes.UInt256,System.Collections.Generic.IEnumerable{System.Byte})">
+            <summary>The caller of this method receives a callback in the form of IAlgebraSwapCallback# AlgebraSwapCallback <para/>Notice: Swap token0 for token1, or token1 for token0 <para/>Returns <c>int256,int256</c></summary>
+            <param name="recipient"><c>address</c>: The address to receive the output of the swap</param>
+            <param name="zeroToOne"><c>bool</c>: The direction of the swap, true for token0 to token1, false for token1 to token0</param>
+            <param name="amountSpecified"><c>int256</c>: The amount of the swap, which implicitly configures the swap as exact input (positive), or exact output (negative)</param>
+            <param name="limitSqrtPrice"><c>uint160</c>: The Q64.96 sqrt price limit. If zero for one, the price cannot be less than this value after the swap. If one for zero, the price cannot be greater than this value after the swap</param>
+            <param name="data"><c>bytes</c>: Any data to be passed through to the callback. If using the Router it should contain SwapRouter#SwapCallbackData</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPool.swapSupportingFeeOnInputTokens(Meadow.Core.EthTypes.Address,Meadow.Core.EthTypes.Address,System.Boolean,System.Numerics.BigInteger,Meadow.Core.EthTypes.UInt256,System.Collections.Generic.IEnumerable{System.Byte})">
+            <summary>The caller of this method receives a callback in the form of I AlgebraSwapCallback# AlgebraSwapCallback <para/>Notice: Swap token0 for token1, or token1 for token0 (tokens that have fee on transfer) <para/>Returns <c>int256,int256</c></summary>
+            <param name="sender"><c>address</c>: The address called this function (Comes from the Router)</param>
+            <param name="recipient"><c>address</c>: The address to receive the output of the swap</param>
+            <param name="zeroToOne"><c>bool</c>: The direction of the swap, true for token0 to token1, false for token1 to token0</param>
+            <param name="amountSpecified"><c>int256</c>: The amount of the swap, which implicitly configures the swap as exact input (positive), or exact output (negative)</param>
+            <param name="limitSqrtPrice"><c>uint160</c>: The Q64.96 sqrt price limit. If zero for one, the price cannot be less than this value after the swap. If one for zero, the price cannot be greater than this value after the swap</param>
+            <param name="data"><c>bytes</c>: Any data to be passed through to the callback. If using the Router it should contain SwapRouter#SwapCallbackData</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPool.tickSpacing">
+            <summary>Ticks can only be used at multiples of this value e.g.: a tickSpacing of 60 means ticks can be initialized every 60th tick, i.e., ..., -120, -60, 0, 60, 120, ... This value is an int24 to avoid casting even though it is always positive. <para/>Notice: The pool tick spacing <para/>Returns <c>int24</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPool.tickTable(System.Int16)">
+            <summary> <para/>Notice: Returns 256 packed tick initialized boolean values. See TickTable for more information <para/>Returns <c>uint256</c></summary>
+            <param name="wordPosition"><c>int16</c></param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPool.ticks(System.Int32)">
+            <summary>This is a public structure, so the `return` natspec tags are omitted. <para/>Notice: Look up information about a specific tick in the pool <para/>Returns <c>uint128,int128,uint256,uint256,int56,uint160,uint32,bool</c></summary>
+            <param name="tick"><c>int24</c>: The tick to look up</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPool.timepoints(Meadow.Core.EthTypes.UInt256)">
+            <summary>You most likely want to use #getTimepoints() instead of this method to get an timepoint as of some amount of time ago, rather than at a specific index in the array. This is a public mapping of structures, so the `return` natspec tags are omitted. <para/>Notice: Returns data about a specific timepoint index <para/>Returns <c>bool,uint32,int56,uint160,uint88,int24,uint144</c></summary>
+            <param name="index"><c>uint256</c>: The element of the timepoints array to fetch</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPool.token0">
+            <summary> <para/>Notice: The first of the two tokens of the pool, sorted by address <para/>Returns <c>address</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPool.token1">
+            <summary> <para/>Notice: The second of the two tokens of the pool, sorted by address <para/>Returns <c>address</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPool.totalFeeGrowth0Token">
+            <summary>This value can overflow the uint256 <para/>Notice: The fee growth as a Q128.128 fees of token0 collected per unit of liquidity for the entire life of the pool <para/>Returns <c>uint256</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPool.totalFeeGrowth1Token">
+            <summary>This value can overflow the uint256 <para/>Notice: The fee growth as a Q128.128 fees of token1 collected per unit of liquidity for the entire life of the pool <para/>Returns <c>uint256</c></summary>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.IAlgebraPool.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.IAlgebraPoolDeployer">
+            <summary>From file contracts/interfaces/IAlgebraPoolDeployer.sol<para/> <para/>An interface for a contract that is capable of deploying Algebra Pools <para/>This is used to avoid having constructor arguments in the pool contract, which results in the init code hash of the pool being constant allowing the CREATE2 address of the pool to be cheaply computed on-chain. Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>Notice: A contract that constructs a pool must implement this to pass arguments to the pool</summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolDeployer.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>An interface for a contract that is capable of deploying Algebra Pools <para/>This is used to avoid having constructor arguments in the pool contract, which results in the init code hash of the pool being constant allowing the CREATE2 address of the pool to be cheaply computed on-chain. Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>Notice: A contract that constructs a pool must implement this to pass arguments to the pool <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolDeployer.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>An interface for a contract that is capable of deploying Algebra Pools <para/>This is used to avoid having constructor arguments in the pool contract, which results in the init code hash of the pool being constant allowing the CREATE2 address of the pool to be cheaply computed on-chain. Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>Notice: A contract that constructs a pool must implement this to pass arguments to the pool <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolDeployer.deploy(Meadow.Core.EthTypes.Address,Meadow.Core.EthTypes.Address,Meadow.Core.EthTypes.Address,Meadow.Core.EthTypes.Address)">
+            <summary>Deploys a pool with the given parameters by transiently setting the parameters storage slot and then clearing it after deploying the pool. <para/>Returns <c>address</c></summary>
+            <param name="dataStorage"><c>address</c>: The pools associated dataStorage</param>
+            <param name="factory"><c>address</c>: The contract address of the Algebra factory</param>
+            <param name="token0"><c>address</c>: The first token of the pool by address sort order</param>
+            <param name="token1"><c>address</c>: The second token of the pool by address sort order</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolDeployer.parameters">
+            <summary>Called by the pool constructor to fetch the parameters of the pool Returns dataStorage The pools associated dataStorage Returns factory The factory address Returns token0 The first token of the pool by address sort order Returns token1 The second token of the pool by address sort order <para/>Notice: Get the parameters to be used in constructing the pool, set transiently during pool creation. <para/>Returns <c>address,address,address,address</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolDeployer.setFactory(Meadow.Core.EthTypes.Address)">
+            <summary>Sets the factory address to the poolDeployer for permissioned actions</summary>
+            <param name="factory"><c>address</c>: The address of the Algebra factory</param>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.IAlgebraPoolDeployer.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.IAlgebraVirtualPool">
+            <summary>From file contracts/interfaces/IAlgebraVirtualPool.sol<para/></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraVirtualPool.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraVirtualPool.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraVirtualPool.cross(System.Int32,System.Boolean)">
+            <summary>This function is called by the main pool when an initialized tick is crossed there. If the tick is also initialized in a virtual pool it should be crossed too</summary>
+            <param name="nextTick"><c>int24</c>: The crossed tick</param>
+            <param name="zeroToOne"><c>bool</c>: The direction</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraVirtualPool.increaseCumulative(System.UInt32)">
+            <summary>This function is called from the main pool before every swap To increase seconds per liquidity cumulative considering previous timestamp and liquidity. The liquidity is stored in a virtual pool <para/>Returns <c>uint8</c></summary>
+            <param name="currentTimestamp"><c>uint32</c>: The timestamp of the current swap</param>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.IAlgebraVirtualPool.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.IDataStorageOperator">
+            <summary>From file contracts/interfaces/IDataStorageOperator.sol<para/></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IDataStorageOperator.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IDataStorageOperator.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IDataStorageOperator.calculateVolumePerLiquidity(Meadow.Core.EthTypes.UInt256,System.Numerics.BigInteger,System.Numerics.BigInteger)">
+            <summary> <para/>Notice: Calculates gmean(volume/liquidity) for block <para/>Returns <c>uint128</c></summary>
+            <param name="liquidity"><c>uint128</c>: The current in-range pool liquidity</param>
+            <param name="amount0"><c>int256</c>: Total amount of swapped token0</param>
+            <param name="amount1"><c>int256</c>: Total amount of swapped token1</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IDataStorageOperator.changeFeeConfiguration(Meadow.Core.EthTypes.Address)">
+            <summary></summary>
+            <param name="feeConfig"><c>address</c></param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IDataStorageOperator.getAverages(System.UInt32,System.Int32,System.UInt16,Meadow.Core.EthTypes.UInt256)">
+            <summary> <para/>Notice: Returns average volatility in the range from time-WINDOW to time <para/>Returns <c>uint112,uint256</c></summary>
+            <param name="time"><c>uint32</c>: The current block.timestamp</param>
+            <param name="tick"><c>int24</c>: The current tick</param>
+            <param name="index"><c>uint16</c>: The index of the timepoint that was most recently written to the timepoints array</param>
+            <param name="liquidity"><c>uint128</c>: The current in-range pool liquidity</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IDataStorageOperator.getFee(System.UInt32,System.Int32,System.UInt16,Meadow.Core.EthTypes.UInt256)">
+            <summary> <para/>Notice: Calculates fee based on combination of sigmoids <para/>Returns <c>uint16</c></summary>
+            <param name="time"><c>uint32</c>: The current block.timestamp</param>
+            <param name="tick"><c>int24</c>: The current tick</param>
+            <param name="index"><c>uint16</c>: The index of the timepoint that was most recently written to the timepoints array</param>
+            <param name="liquidity"><c>uint128</c>: The current in-range pool liquidity</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IDataStorageOperator.getSingleTimepoint(System.UInt32,System.UInt32,System.Int32,System.UInt16,Meadow.Core.EthTypes.UInt256)">
+            <summary>Reverts if an timepoint at or before the desired timepoint timestamp does not exist. 0 may be passed as `secondsAgo' to return the current cumulative values. If called with a timestamp falling between two timepoints, returns the counterfactual accumulator values at exactly the timestamp between the two timepoints. <para/>Returns <c>int56,uint160,uint112,uint256</c></summary>
+            <param name="time"><c>uint32</c>: The current block timestamp</param>
+            <param name="secondsAgo"><c>uint32</c>: The amount of time to look back, in seconds, at which point to return an timepoint</param>
+            <param name="tick"><c>int24</c>: The current tick</param>
+            <param name="index"><c>uint16</c>: The index of the timepoint that was most recently written to the timepoints array</param>
+            <param name="liquidity"><c>uint128</c>: The current in-range pool liquidity</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IDataStorageOperator.getTimepoints(System.UInt32,System.Collections.Generic.IEnumerable{System.UInt32},System.Int32,System.UInt16,Meadow.Core.EthTypes.UInt256)">
+            <summary>Reverts if `secondsAgos` > oldest timepoint <para/>Notice: Returns the accumulator values as of each time seconds ago from the given time in the array of `secondsAgos` <para/>Returns <c>int56[],uint160[],uint112[],uint256[]</c></summary>
+            <param name="time"><c>uint32</c>: The current block.timestamp</param>
+            <param name="secondsAgos"><c>uint32[]</c>: Each amount of time to look back, in seconds, at which point to return an timepoint</param>
+            <param name="tick"><c>int24</c>: The current tick</param>
+            <param name="index"><c>uint16</c>: The index of the timepoint that was most recently written to the timepoints array</param>
+            <param name="liquidity"><c>uint128</c>: The current in-range pool liquidity</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IDataStorageOperator.initialize(System.UInt32,System.Int32)">
+            <summary> <para/>Notice: Initialize the dataStorage array by writing the first slot. Called once for the lifecycle of the timepoints array</summary>
+            <param name="time"><c>uint32</c>: The time of the dataStorage initialization, via block.timestamp truncated to uint32</param>
+            <param name="tick"><c>int24</c>: Initial tick</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IDataStorageOperator.timepoints(Meadow.Core.EthTypes.UInt256)">
+            <summary>There is more convenient function to fetch a timepoint: observe(). Which requires not an index but seconds <para/>Notice: Returns data belonging to a certain timepoint <para/>Returns <c>bool,uint32,int56,uint160,uint88,int24,uint144</c></summary>
+            <param name="index"><c>uint256</c>: The index of timepoint in the array</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IDataStorageOperator.window">
+            <summary> <para/>Returns <c>uint32</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IDataStorageOperator.write(System.UInt16,System.UInt32,System.Int32,Meadow.Core.EthTypes.UInt256,Meadow.Core.EthTypes.UInt256)">
+            <summary>Writable at most once per block. Index represents the most recently written element. index must be tracked externally. <para/>Notice: Writes an dataStorage timepoint to the array <para/>Returns <c>uint16</c></summary>
+            <param name="index"><c>uint16</c>: The index of the timepoint that was most recently written to the timepoints array</param>
+            <param name="blockTimestamp"><c>uint32</c>: The timestamp of the new timepoint</param>
+            <param name="tick"><c>int24</c>: The active tick at the time of the new timepoint</param>
+            <param name="liquidity"><c>uint128</c>: The total in-range liquidity at the time of the new timepoint</param>
+            <param name="volumePerLiquidity"><c>uint128</c>: The gmean(volumes)/liquidity at the time of the new timepoint</param>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.IDataStorageOperator.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.IERC20Minimal">
+            <summary>From file contracts/interfaces/IERC20Minimal.sol<para/> <para/>Minimal ERC20 interface for Algebra <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>Notice: Contains a subset of the full ERC20 interface that is used in Algebra</summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IERC20Minimal.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Minimal ERC20 interface for Algebra <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>Notice: Contains a subset of the full ERC20 interface that is used in Algebra <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IERC20Minimal.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Minimal ERC20 interface for Algebra <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>Notice: Contains a subset of the full ERC20 interface that is used in Algebra <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IERC20Minimal.allowance(Meadow.Core.EthTypes.Address,Meadow.Core.EthTypes.Address)">
+            <summary> <para/>Notice: Returns the current allowance given to a spender by an owner <para/>Returns <c>uint256</c></summary>
+            <param name="owner"><c>address</c>: The account of the token owner</param>
+            <param name="spender"><c>address</c>: The account of the token spender</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IERC20Minimal.approve(Meadow.Core.EthTypes.Address,Meadow.Core.EthTypes.UInt256)">
+            <summary> <para/>Notice: Sets the allowance of a spender from the `msg.sender` to the value `amount` <para/>Returns <c>bool</c></summary>
+            <param name="spender"><c>address</c>: The account which will be allowed to spend a given amount of the owners tokens</param>
+            <param name="amount"><c>uint256</c>: The amount of tokens allowed to be used by `spender`</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IERC20Minimal.balanceOf(Meadow.Core.EthTypes.Address)">
+            <summary> <para/>Notice: Returns the balance of a token <para/>Returns <c>uint256</c></summary>
+            <param name="account"><c>address</c>: The account for which to look up the number of tokens it has, i.e. its balance</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IERC20Minimal.transfer(Meadow.Core.EthTypes.Address,Meadow.Core.EthTypes.UInt256)">
+            <summary> <para/>Notice: Transfers the amount of token from the `msg.sender` to the recipient <para/>Returns <c>bool</c></summary>
+            <param name="recipient"><c>address</c>: The account that will receive the amount transferred</param>
+            <param name="amount"><c>uint256</c>: The number of tokens to send from the sender to the recipient</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IERC20Minimal.transferFrom(Meadow.Core.EthTypes.Address,Meadow.Core.EthTypes.Address,Meadow.Core.EthTypes.UInt256)">
+            <summary> <para/>Notice: Transfers `amount` tokens from `sender` to `recipient` up to the allowance given to the `msg.sender` <para/>Returns <c>bool</c></summary>
+            <param name="sender"><c>address</c>: The account from which the transfer will be initiated</param>
+            <param name="recipient"><c>address</c>: The recipient of the transfer</param>
+            <param name="amount"><c>uint256</c>: The amount of the transfer</param>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.IERC20Minimal.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.IAlgebraPoolActions">
+            <summary>From file contracts/interfaces/pool/IAlgebraPoolActions.sol<para/> <para/>Permissionless pool actions <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces</summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolActions.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Permissionless pool actions <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolActions.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Permissionless pool actions <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolActions.burn(System.Int32,System.Int32,Meadow.Core.EthTypes.UInt256)">
+            <summary>Can be used to trigger a recalculation of fees owed to a position by calling with an amount of 0Fees must be collected separately via a call to #collect <para/>Notice: Burn liquidity from the sender and account tokens owed for the liquidity to the position <para/>Returns <c>uint256,uint256</c></summary>
+            <param name="bottomTick"><c>int24</c>: The lower tick of the position for which to burn liquidity</param>
+            <param name="topTick"><c>int24</c>: The upper tick of the position for which to burn liquidity</param>
+            <param name="amount"><c>uint128</c>: How much liquidity to burn</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolActions.collect(Meadow.Core.EthTypes.Address,System.Int32,System.Int32,Meadow.Core.EthTypes.UInt256,Meadow.Core.EthTypes.UInt256)">
+            <summary>Does not recompute fees earned, which must be done either via mint or burn of any amount of liquidity. Collect must be called by the position owner. To withdraw only token0 or only token1, amount0Requested or amount1Requested may be set to zero. To withdraw all tokens owed, caller may pass any value greater than the actual tokens owed, e.g. type(uint128).max. Tokens owed may be from accumulated swap fees or burned liquidity. <para/>Notice: Collects tokens owed to a position <para/>Returns <c>uint128,uint128</c></summary>
+            <param name="recipient"><c>address</c>: The address which should receive the fees collected</param>
+            <param name="bottomTick"><c>int24</c>: The lower tick of the position for which to collect fees</param>
+            <param name="topTick"><c>int24</c>: The upper tick of the position for which to collect fees</param>
+            <param name="amount0Requested"><c>uint128</c>: How much token0 should be withdrawn from the fees owed</param>
+            <param name="amount1Requested"><c>uint128</c>: How much token1 should be withdrawn from the fees owed</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolActions.flash(Meadow.Core.EthTypes.Address,Meadow.Core.EthTypes.UInt256,Meadow.Core.EthTypes.UInt256,System.Collections.Generic.IEnumerable{System.Byte})">
+            <summary>The caller of this method receives a callback in the form of IAlgebraFlashCallback# AlgebraFlashCallbackAll excess tokens paid in the callback are distributed to liquidity providers as an additional fee. So this method can be used to donate underlying tokens to currently in-range liquidity providers by calling with 0 amount{0,1} and sending the donation amount(s) from the callback <para/>Notice: Receive token0 and/or token1 and pay it back, plus a fee, in the callback</summary>
+            <param name="recipient"><c>address</c>: The address which will receive the token0 and token1 amounts</param>
+            <param name="amount0"><c>uint256</c>: The amount of token0 to send</param>
+            <param name="amount1"><c>uint256</c>: The amount of token1 to send</param>
+            <param name="data"><c>bytes</c>: Any data to be passed through to the callback</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolActions.initialize(Meadow.Core.EthTypes.UInt256)">
+            <summary>Price is represented as a sqrt(amountToken1/amountToken0) Q64.96 value <para/>Notice: Sets the initial price for the pool</summary>
+            <param name="price"><c>uint160</c>: the initial sqrt price of the pool as a Q64.96</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolActions.mint(Meadow.Core.EthTypes.Address,Meadow.Core.EthTypes.Address,System.Int32,System.Int32,Meadow.Core.EthTypes.UInt256,System.Collections.Generic.IEnumerable{System.Byte})">
+            <summary>The caller of this method receives a callback in the form of IAlgebraMintCallback# AlgebraMintCallback in which they must pay any token0 or token1 owed for the liquidity. The amount of token0/token1 due depends on bottomTick, topTick, the amount of liquidity, and the current price. <para/>Notice: Adds liquidity for the given recipient/bottomTick/topTick position <para/>Returns <c>uint256,uint256,uint128</c></summary>
+            <param name="sender"><c>address</c>: The address which will receive potential surplus of paid tokens</param>
+            <param name="recipient"><c>address</c>: The address for which the liquidity will be created</param>
+            <param name="bottomTick"><c>int24</c>: The lower tick of the position in which to add liquidity</param>
+            <param name="topTick"><c>int24</c>: The upper tick of the position in which to add liquidity</param>
+            <param name="amount"><c>uint128</c>: The desired amount of liquidity to mint</param>
+            <param name="data"><c>bytes</c>: Any data that should be passed through to the callback</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolActions.swap(Meadow.Core.EthTypes.Address,System.Boolean,System.Numerics.BigInteger,Meadow.Core.EthTypes.UInt256,System.Collections.Generic.IEnumerable{System.Byte})">
+            <summary>The caller of this method receives a callback in the form of IAlgebraSwapCallback# AlgebraSwapCallback <para/>Notice: Swap token0 for token1, or token1 for token0 <para/>Returns <c>int256,int256</c></summary>
+            <param name="recipient"><c>address</c>: The address to receive the output of the swap</param>
+            <param name="zeroToOne"><c>bool</c>: The direction of the swap, true for token0 to token1, false for token1 to token0</param>
+            <param name="amountSpecified"><c>int256</c>: The amount of the swap, which implicitly configures the swap as exact input (positive), or exact output (negative)</param>
+            <param name="limitSqrtPrice"><c>uint160</c>: The Q64.96 sqrt price limit. If zero for one, the price cannot be less than this value after the swap. If one for zero, the price cannot be greater than this value after the swap</param>
+            <param name="data"><c>bytes</c>: Any data to be passed through to the callback. If using the Router it should contain SwapRouter#SwapCallbackData</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolActions.swapSupportingFeeOnInputTokens(Meadow.Core.EthTypes.Address,Meadow.Core.EthTypes.Address,System.Boolean,System.Numerics.BigInteger,Meadow.Core.EthTypes.UInt256,System.Collections.Generic.IEnumerable{System.Byte})">
+            <summary>The caller of this method receives a callback in the form of I AlgebraSwapCallback# AlgebraSwapCallback <para/>Notice: Swap token0 for token1, or token1 for token0 (tokens that have fee on transfer) <para/>Returns <c>int256,int256</c></summary>
+            <param name="sender"><c>address</c>: The address called this function (Comes from the Router)</param>
+            <param name="recipient"><c>address</c>: The address to receive the output of the swap</param>
+            <param name="zeroToOne"><c>bool</c>: The direction of the swap, true for token0 to token1, false for token1 to token0</param>
+            <param name="amountSpecified"><c>int256</c>: The amount of the swap, which implicitly configures the swap as exact input (positive), or exact output (negative)</param>
+            <param name="limitSqrtPrice"><c>uint160</c>: The Q64.96 sqrt price limit. If zero for one, the price cannot be less than this value after the swap. If one for zero, the price cannot be greater than this value after the swap</param>
+            <param name="data"><c>bytes</c>: Any data to be passed through to the callback. If using the Router it should contain SwapRouter#SwapCallbackData</param>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.IAlgebraPoolActions.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.IAlgebraPoolDerivedState">
+            <summary>From file contracts/interfaces/pool/IAlgebraPoolDerivedState.sol<para/> <para/>Pool state that is not stored <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>Notice: Contains view functions to provide information about the pool that is computed rather than stored on the blockchain. The functions here may have variable gas costs.</summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolDerivedState.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Pool state that is not stored <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>Notice: Contains view functions to provide information about the pool that is computed rather than stored on the blockchain. The functions here may have variable gas costs. <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolDerivedState.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Pool state that is not stored <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>Notice: Contains view functions to provide information about the pool that is computed rather than stored on the blockchain. The functions here may have variable gas costs. <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolDerivedState.getInnerCumulatives(System.Int32,System.Int32)">
+            <summary>Snapshots must only be compared to other snapshots, taken over a period for which a position existed. I.e., snapshots cannot be compared if a position is not held for the entire period between when the first snapshot is taken and the second snapshot is taken. <para/>Notice: Returns a snapshot of the tick cumulative, seconds per liquidity and seconds inside a tick range <para/>Returns <c>int56,uint160,uint32</c></summary>
+            <param name="bottomTick"><c>int24</c>: The lower tick of the range</param>
+            <param name="topTick"><c>int24</c>: The upper tick of the range</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolDerivedState.getTimepoints(System.Collections.Generic.IEnumerable{System.UInt32})">
+            <summary>To get a time weighted average tick or liquidity-in-range, you must call this with two values, one representing the beginning of the period and another for the end of the period. E.g., to get the last hour time-weighted average tick, you must call it with secondsAgos = [3600, 0].The time weighted average tick represents the geometric time weighted average price of the pool, in log base sqrt(1.0001) of token1 / token0. The TickMath library can be used to go from a tick value to a ratio. <para/>Notice: Returns the cumulative tick and liquidity as of each timestamp `secondsAgo` from the current block timestamp <para/>Returns <c>int56[],uint160[],uint112[],uint256[]</c></summary>
+            <param name="secondsAgos"><c>uint32[]</c>: From how long ago each cumulative tick and liquidity value should be returned</param>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.IAlgebraPoolDerivedState.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.IAlgebraPoolEvents">
+            <summary>From file contracts/interfaces/pool/IAlgebraPoolEvents.sol<para/> <para/>Events emitted by a pool <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces</summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolEvents.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Events emitted by a pool <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolEvents.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Events emitted by a pool <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.IAlgebraPoolEvents.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.IAlgebraPoolImmutables">
+            <summary>From file contracts/interfaces/pool/IAlgebraPoolImmutables.sol<para/> <para/>Pool state that never changes <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces</summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolImmutables.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Pool state that never changes <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolImmutables.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Pool state that never changes <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolImmutables.dataStorageOperator">
+            <summary> <para/>Notice: The contract that stores all the timepoints and can perform actions with them <para/>Returns <c>address</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolImmutables.factory">
+            <summary> <para/>Notice: The contract that deployed the pool, which must adhere to the IAlgebraFactory interface <para/>Returns <c>address</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolImmutables.maxLiquidityPerTick">
+            <summary>This parameter is enforced per tick to prevent liquidity from overflowing a uint128 at any point, and also prevents out-of-range liquidity from being used to prevent adding in-range liquidity to a pool <para/>Notice: The maximum amount of position liquidity that can use any tick in the range <para/>Returns <c>uint128</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolImmutables.tickSpacing">
+            <summary>Ticks can only be used at multiples of this value e.g.: a tickSpacing of 60 means ticks can be initialized every 60th tick, i.e., ..., -120, -60, 0, 60, 120, ... This value is an int24 to avoid casting even though it is always positive. <para/>Notice: The pool tick spacing <para/>Returns <c>int24</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolImmutables.token0">
+            <summary> <para/>Notice: The first of the two tokens of the pool, sorted by address <para/>Returns <c>address</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolImmutables.token1">
+            <summary> <para/>Notice: The second of the two tokens of the pool, sorted by address <para/>Returns <c>address</c></summary>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.IAlgebraPoolImmutables.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.IAlgebraPoolPermissionedActions">
+            <summary>From file contracts/interfaces/pool/IAlgebraPoolPermissionedActions.sol<para/> <para/>Permissioned pool actions <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>Notice: Contains pool methods that may only be called by the factory owner or tokenomics</summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolPermissionedActions.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Permissioned pool actions <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>Notice: Contains pool methods that may only be called by the factory owner or tokenomics <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolPermissionedActions.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Permissioned pool actions <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>Notice: Contains pool methods that may only be called by the factory owner or tokenomics <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolPermissionedActions.setCommunityFee(System.Byte,System.Byte)">
+            <summary> <para/>Notice: Set the community's % share of the fees. Cannot exceed 25% (250)</summary>
+            <param name="communityFee0"><c>uint8</c>: new community fee percent for token0 of the pool in thousandths (1e-3)</param>
+            <param name="communityFee1"><c>uint8</c>: new community fee percent for token1 of the pool in thousandths (1e-3)</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolPermissionedActions.setIncentive(Meadow.Core.EthTypes.Address)">
+            <summary> <para/>Notice: Sets an active incentive</summary>
+            <param name="virtualPoolAddress"><c>address</c>: The address of a virtual pool associated with the incentive</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolPermissionedActions.setLiquidityCooldown(System.UInt32)">
+            <summary> <para/>Notice: Sets new lock time for added liquidity</summary>
+            <param name="newLiquidityCooldown"><c>uint32</c>: The time in seconds</param>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.IAlgebraPoolPermissionedActions.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.IAlgebraPoolState">
+            <summary>From file contracts/interfaces/pool/IAlgebraPoolState.sol<para/> <para/>Pool state that can change <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces</summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolState.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Pool state that can change <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolState.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Pool state that can change <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/tree/main/contracts/interfaces <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolState.activeIncentive">
+            <summary>if there is no active incentive at the moment, virtualPool,endTimestamp,startTimestamp would be equal to 0 <para/>Notice: Returns the information about active incentive <para/>Returns <c>address</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolState.globalState">
+            <summary> <para/>Notice: The globalState structure in the pool stores many values but requires only one slot and is exposed as a single method to save gas when accessed externally. <para/>Returns <c>uint160,int24,uint16,uint16,uint8,uint8,bool</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolState.liquidity">
+            <summary>This value has no relationship to the total liquidity across all ticks. Returned value cannot exceed type(uint128).max <para/>Notice: The currently in range liquidity available to the pool <para/>Returns <c>uint128</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolState.liquidityCooldown">
+            <summary> <para/>Notice: Returns the lock time for added liquidity <para/>Returns <c>uint32</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolState.positions(System.Collections.Generic.IEnumerable{System.Byte})">
+            <summary>This is a public mapping of structures, so the `return` natspec tags are omitted. <para/>Notice: Returns the information about a position by the position's key <para/>Returns <c>uint128,uint32,uint256,uint256,uint128,uint128</c></summary>
+            <param name="key"><c>bytes32</c>: The position's key is a hash of a preimage composed by the owner, bottomTick and topTick</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolState.tickTable(System.Int16)">
+            <summary> <para/>Notice: Returns 256 packed tick initialized boolean values. See TickTable for more information <para/>Returns <c>uint256</c></summary>
+            <param name="wordPosition"><c>int16</c></param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolState.ticks(System.Int32)">
+            <summary>This is a public structure, so the `return` natspec tags are omitted. <para/>Notice: Look up information about a specific tick in the pool <para/>Returns <c>uint128,int128,uint256,uint256,int56,uint160,uint32,bool</c></summary>
+            <param name="tick"><c>int24</c>: The tick to look up</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolState.timepoints(Meadow.Core.EthTypes.UInt256)">
+            <summary>You most likely want to use #getTimepoints() instead of this method to get an timepoint as of some amount of time ago, rather than at a specific index in the array. This is a public mapping of structures, so the `return` natspec tags are omitted. <para/>Notice: Returns data about a specific timepoint index <para/>Returns <c>bool,uint32,int56,uint160,uint88,int24,uint144</c></summary>
+            <param name="index"><c>uint256</c>: The element of the timepoints array to fetch</param>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolState.totalFeeGrowth0Token">
+            <summary>This value can overflow the uint256 <para/>Notice: The fee growth as a Q128.128 fees of token0 collected per unit of liquidity for the entire life of the pool <para/>Returns <c>uint256</c></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.IAlgebraPoolState.totalFeeGrowth1Token">
+            <summary>This value can overflow the uint256 <para/>Notice: The fee growth as a Q128.128 fees of token1 collected per unit of liquidity for the entire life of the pool <para/>Returns <c>uint256</c></summary>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.IAlgebraPoolState.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.AdaptiveFee">
+            <summary>From file contracts/libraries/AdaptiveFee.sol<para/> <para/>AdaptiveFee <para/>Notice: Calculates fee based on combination of sigmoids</summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AdaptiveFee.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>AdaptiveFee <para/>Notice: Calculates fee based on combination of sigmoids <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.AdaptiveFee.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>AdaptiveFee <para/>Notice: Calculates fee based on combination of sigmoids <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.AdaptiveFee.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.Constants">
+            <summary>From file contracts/libraries/Constants.sol<para/></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.Constants.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.Constants.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.Constants.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.DataStorage">
+            <summary>From file contracts/libraries/DataStorage.sol<para/></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.DataStorage.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.DataStorage.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.DataStorage.WINDOW">
+            <summary> <para/>Returns <c>uint32</c></summary>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.DataStorage.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.FullMath">
+            <summary>From file contracts/libraries/FullMath.sol<para/> <para/>Contains 512-bit math functions <para/>Handles "phantom overflow" i.e., allows multiplication and division where an intermediate value overflows 256 bits <para/>Notice: Facilitates multiplication and division that can have overflow of an intermediate value without any loss of precision</summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.FullMath.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Contains 512-bit math functions <para/>Handles "phantom overflow" i.e., allows multiplication and division where an intermediate value overflows 256 bits <para/>Notice: Facilitates multiplication and division that can have overflow of an intermediate value without any loss of precision <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.FullMath.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Contains 512-bit math functions <para/>Handles "phantom overflow" i.e., allows multiplication and division where an intermediate value overflows 256 bits <para/>Notice: Facilitates multiplication and division that can have overflow of an intermediate value without any loss of precision <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.FullMath.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.LiquidityMath">
+            <summary>From file contracts/libraries/LiquidityMath.sol<para/> <para/>Math library for liquidity <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/blob/main/contracts/libraries</summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.LiquidityMath.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Math library for liquidity <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/blob/main/contracts/libraries <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.LiquidityMath.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Math library for liquidity <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/blob/main/contracts/libraries <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.LiquidityMath.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.LowGasSafeMath">
+            <summary>From file contracts/libraries/LowGasSafeMath.sol<para/> <para/>Optimized overflow and underflow safe math operations <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/blob/main/contracts/libraries <para/>Notice: Contains methods for doing math operations that revert on overflow or underflow for minimal gas cost</summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.LowGasSafeMath.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Optimized overflow and underflow safe math operations <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/blob/main/contracts/libraries <para/>Notice: Contains methods for doing math operations that revert on overflow or underflow for minimal gas cost <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.LowGasSafeMath.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Optimized overflow and underflow safe math operations <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/blob/main/contracts/libraries <para/>Notice: Contains methods for doing math operations that revert on overflow or underflow for minimal gas cost <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.LowGasSafeMath.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.PriceMovementMath">
+            <summary>From file contracts/libraries/PriceMovementMath.sol<para/> <para/>Computes the result of price movement <para/>Notice: Contains methods for computing the result of price movement within a single tick price range.</summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.PriceMovementMath.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Computes the result of price movement <para/>Notice: Contains methods for computing the result of price movement within a single tick price range. <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.PriceMovementMath.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Computes the result of price movement <para/>Notice: Contains methods for computing the result of price movement within a single tick price range. <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.PriceMovementMath.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.SafeCast">
+            <summary>From file contracts/libraries/SafeCast.sol<para/> <para/>Safe casting methods <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/blob/main/contracts/libraries <para/>Notice: Contains methods for safely casting between types</summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.SafeCast.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Safe casting methods <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/blob/main/contracts/libraries <para/>Notice: Contains methods for safely casting between types <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.SafeCast.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Safe casting methods <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/blob/main/contracts/libraries <para/>Notice: Contains methods for safely casting between types <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.SafeCast.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.Sqrt">
+            <summary>From file contracts/libraries/Sqrt.sol<para/></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.Sqrt.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.Sqrt.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.Sqrt.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.TickManager">
+            <summary>From file contracts/libraries/TickManager.sol<para/> <para/>TickManager <para/>Notice: Contains functions for managing tick processes and relevant calculations</summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.TickManager.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>TickManager <para/>Notice: Contains functions for managing tick processes and relevant calculations <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.TickManager.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>TickManager <para/>Notice: Contains functions for managing tick processes and relevant calculations <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.TickManager.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.TickMath">
+            <summary>From file contracts/libraries/TickMath.sol<para/> <para/>Math library for computing sqrt prices from ticks and vice versa <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/blob/main/contracts/libraries <para/>Notice: Computes sqrt price for ticks of size 1.0001, i.e. sqrt(1.0001^tick) as fixed point Q64.96 numbers. Supports prices between 2**-128 and 2**128</summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.TickMath.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Math library for computing sqrt prices from ticks and vice versa <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/blob/main/contracts/libraries <para/>Notice: Computes sqrt price for ticks of size 1.0001, i.e. sqrt(1.0001^tick) as fixed point Q64.96 numbers. Supports prices between 2**-128 and 2**128 <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.TickMath.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Math library for computing sqrt prices from ticks and vice versa <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/blob/main/contracts/libraries <para/>Notice: Computes sqrt price for ticks of size 1.0001, i.e. sqrt(1.0001^tick) as fixed point Q64.96 numbers. Supports prices between 2**-128 and 2**128 <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.TickMath.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.TickTable">
+            <summary>From file contracts/libraries/TickTable.sol<para/> <para/>Packed tick initialized state library <para/>The mapping uses int16 for keys since ticks are represented as int24 and there are 256 (2^8) values per word. <para/>Notice: Stores a packed mapping of tick index to its initialized state</summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.TickTable.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Packed tick initialized state library <para/>The mapping uses int16 for keys since ticks are represented as int24 and there are 256 (2^8) values per word. <para/>Notice: Stores a packed mapping of tick index to its initialized state <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.TickTable.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Packed tick initialized state library <para/>The mapping uses int16 for keys since ticks are represented as int24 and there are 256 (2^8) values per word. <para/>Notice: Stores a packed mapping of tick index to its initialized state <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.TickTable.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.TokenDeltaMath">
+            <summary>From file contracts/libraries/TokenDeltaMath.sol<para/> <para/>Functions based on Q64.96 sqrt price and liquidity <para/>Notice: Contains the math that uses square root of price as a Q64.96 and liquidity to compute deltas</summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.TokenDeltaMath.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Functions based on Q64.96 sqrt price and liquidity <para/>Notice: Contains the math that uses square root of price as a Q64.96 and liquidity to compute deltas <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.TokenDeltaMath.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>Functions based on Q64.96 sqrt price and liquidity <para/>Notice: Contains the math that uses square root of price as a Q64.96 and liquidity to compute deltas <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.TokenDeltaMath.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.TransferHelper">
+            <summary>From file contracts/libraries/TransferHelper.sol<para/> <para/>TransferHelper <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/blob/main/contracts/libraries <para/>Notice: Contains helper methods for interacting with ERC20 tokens that do not consistently return true/false</summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.TransferHelper.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>TransferHelper <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/blob/main/contracts/libraries <para/>Notice: Contains helper methods for interacting with ERC20 tokens that do not consistently return true/false <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.TransferHelper.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>TransferHelper <para/>Credit to Uniswap Labs under GPL-2.0-or-later license: https://github.com/Uniswap/v3-core/blob/main/contracts/libraries <para/>Notice: Contains helper methods for interacting with ERC20 tokens that do not consistently return true/false <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.TransferHelper.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.console">
+            <summary>From file hardhat/console.sol<para/></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.console.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.console.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.console.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+        <member name="T:Meadow.DebugSol.Generated.DbgEntry">
+            <summary>From file Test1.t.sol<para/></summary>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.DbgEntry.Deploy(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="M:Meadow.DebugSol.Generated.DbgEntry.New(Meadow.JsonRpc.Client.IJsonRpcClient,Meadow.JsonRpc.Types.TransactionParams,System.Nullable{Meadow.Core.EthTypes.Address})">
+            <summary>
+            Deploys the contract.  <para/>
+            </summary>
+            <param name="rpcClient">The RPC client to be used for this contract instance.</param>
+            <param name="defaultFromAccount">If null then the first account returned by eth_accounts will be used.</param>
+            <returns>An contract instance pointed at the deployed contract address.</returns>
+        </member>
+        <member name="P:Meadow.DebugSol.Generated.DbgEntry.FallbackFunction">
+            <summary>The contract fallback function. <para/></summary>
+        </member>
+    </members>
+</doc>
