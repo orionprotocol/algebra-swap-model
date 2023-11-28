@@ -16,15 +16,37 @@ interface Timepoint {
 	volumePerLiquidityCumulative: bigint; // the gmean(volumes)/liquidity accumulator
 }
 
+interface FeeConfig {
+	alpha1: bigint;
+	alpha2: bigint;
+	beta1: bigint;
+	beta2: bigint;
+	gamma1: bigint;
+	gamma2: bigint;
+	volumeBeta: bigint;
+	volumeGamma: bigint;
+	baseFee: bigint;
+}
+
 export class DataStorageOperator {
 	timepoints: Timepoint[];
 	feeConfig: Configuration;
 	poolAddress: string;
 
 	constructor(poolAddress: string) {
-		this.timepoints = [];
+		this.timepoints = new Array<Timepoint>(Number(UINT16_MODULO));
 		this.feeConfig = {} as Configuration;
 		this.poolAddress = poolAddress;
+	}
+
+	/// @notice Initialize the dataStorage array by writing the first slot. Called once for the lifecycle of the timepoints array
+	/// @param self The stored dataStorage array
+	/// @param time The time of the dataStorage initialization, via block.timestamp truncated to uint32
+	/// @param tick Initial tick
+	initialize(time: bigint, tick: bigint) {
+		this.timepoints[0].initialized = true;
+		this.timepoints[0].blockTimestamp = time;
+		this.timepoints[0].averageTick = tick;
 	}
 
 	async getFeeConfig() {
@@ -32,7 +54,7 @@ export class DataStorageOperator {
 		const dataStorageContract = <DataStorageOperatorContract>(
 			await ethers.getContractAt('DataStorageOperator', await pool.dataStorageOperator())
 		);
-		return (await dataStorageContract.feeConfig()).toObject();
+		return ((await dataStorageContract.feeConfig()) as any).toObject() as FeeConfig;
 	}
 
 	async getTimepoint(index: BigNumberish) {
@@ -40,7 +62,7 @@ export class DataStorageOperator {
 		const pool = <AlgebraPool>await ethers.getContractAt('AlgebraPool', this.poolAddress);
 		let timepoint = this.timepoints[Number(index)];
 		if (timepoint == undefined) {
-			timepoint = (await pool.timepoints(index)).toObject();
+			timepoint = ((await pool.timepoints(index)) as any).toObject() as Timepoint;
 		}
 		// console.log("DataStorageOperator::getTimepoint ", index)
 		return timepoint;
@@ -55,7 +77,7 @@ export class DataStorageOperator {
 	): Promise<bigint> {
 		let _last = await this.getTimepoint(index);
 		// early return if we've already written an timepoint this block
-		console.log(blockTimestamp);
+		console.log('_last');
 		console.log(_last);
 		if (_last.blockTimestamp == blockTimestamp) {
 			return index;
@@ -88,7 +110,7 @@ export class DataStorageOperator {
 				(last.tickCumulative - _prevLastTickCumulative) / (last.blockTimestamp - _prevLastBlockTimestamp);
 		}
 
-		this[Number(indexUpdated)] = DataStorageOperator.createNewTimepoint(
+		this.timepoints[Number(indexUpdated)] = DataStorageOperator.createNewTimepoint(
 			last,
 			blockTimestamp,
 			tick,
@@ -97,6 +119,16 @@ export class DataStorageOperator {
 			avgTick,
 			volumePerLiquidity
 		);
+		console.log('NewTimepointCreated');
+		console.log('{');
+		console.log(this.timepoints[Number(indexUpdated)].initialized);
+		console.log(this.timepoints[Number(indexUpdated)].blockTimestamp);
+		console.log(this.timepoints[Number(indexUpdated)].tickCumulative);
+		console.log(this.timepoints[Number(indexUpdated)].secondsPerLiquidityCumulative);
+		console.log(this.timepoints[Number(indexUpdated)].volatilityCumulative);
+		console.log(this.timepoints[Number(indexUpdated)].averageTick);
+		console.log(this.timepoints[Number(indexUpdated)].volumePerLiquidityCumulative);
+		console.log('}');
 
 		return indexUpdated;
 	}
@@ -186,6 +218,8 @@ export class DataStorageOperator {
 			DataStorageOperator.lteConsideringOverflow((await this.getTimepoint(index)).blockTimestamp, target, time)
 		) {
 			const last = await this.getTimepoint(index);
+			console.log('last timpoint');
+			console.log(last);
 			if (last.blockTimestamp == target) {
 				return last;
 			} else {

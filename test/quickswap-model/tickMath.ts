@@ -8,12 +8,10 @@ export const MAX_SQRT_RATIO = 1461446703485210103287273052203988822378723970342n
 export class TickMath {
 	static getSqrtRatioAtTick(tick: bigint) {
 		// get abs value
-		console.log('tick');
-		console.log(tick);
+
 		const mask = tick >> (24n - 1n);
 		const absTick = (tick ^ mask) - mask;
-		console.log('absTick');
-		console.log(absTick);
+
 		if (absTick > MAX_TICK) {
 			throw 'T';
 		}
@@ -65,15 +63,15 @@ export class TickMath {
 		msb = msb | f;
 		r = r >> f;
 
-		f = r > 0xffffffffffffffff ? 1n << 6n : 0n;
+		f = r > 0xffffffffffffffffn ? 1n << 6n : 0n;
 		msb = msb | f;
 		r = r >> f;
 
-		f = r > 0xffffffff ? 1n << 5n : 0n;
+		f = r > 0xffffffffn ? 1n << 5n : 0n;
 		msb = msb | f;
 		r = r >> f;
 
-		f = r > 0xffff ? 1n << 4n : 0n;
+		f = r > 0xffffn ? 1n << 4n : 0n;
 		msb = msb | f;
 		r = r >> f;
 
@@ -97,72 +95,72 @@ export class TickMath {
 
 		let log_2 = (msb - 128n) << 64n;
 
-		r = (r * r) << 127n;
+		r = (r * r) >> 127n;
 		f = r >> 128n;
 		log_2 = log_2 | (f << 63n);
 		r = r >> f;
 
-		r = (r * r) << 127n;
+		r = (r * r) >> 127n;
 		f = r >> 128n;
 		log_2 = log_2 | (f << 62n);
 		r = r >> f;
 
-		r = (r * r) << 127n;
+		r = (r * r) >> 127n;
 		f = r >> 128n;
 		log_2 = log_2 | (f << 61n);
 		r = r >> f;
 
-		r = (r * r) << 127n;
+		r = (r * r) >> 127n;
 		f = r >> 128n;
 		log_2 = log_2 | (f << 60n);
 		r = r >> f;
 
-		r = (r * r) << 127n;
+		r = (r * r) >> 127n;
 		f = r >> 128n;
 		log_2 = log_2 | (f << 59n);
 		r = r >> f;
 
-		r = (r * r) << 127n;
+		r = (r * r) >> 127n;
 		f = r >> 128n;
 		log_2 = log_2 | (f << 58n);
 		r = r >> f;
 
-		r = (r * r) << 127n;
+		r = (r * r) >> 127n;
 		f = r >> 128n;
 		log_2 = log_2 | (f << 57n);
 		r = r >> f;
 
-		r = (r * r) << 127n;
+		r = (r * r) >> 127n;
 		f = r >> 128n;
 		log_2 = log_2 | (f << 56n);
 		r = r >> f;
 
-		r = (r * r) << 127n;
+		r = (r * r) >> 127n;
 		f = r >> 128n;
 		log_2 = log_2 | (f << 55n);
 		r = r >> f;
 
-		r = (r * r) << 127n;
+		r = (r * r) >> 127n;
 		f = r >> 128n;
 		log_2 = log_2 | (f << 54n);
 		r = r >> f;
 
-		r = (r * r) << 127n;
+		r = (r * r) >> 127n;
 		f = r >> 128n;
 		log_2 = log_2 | (f << 53n);
 		r = r >> f;
 
-		r = (r * r) << 127n;
+		r = (r * r) >> 127n;
 		f = r >> 128n;
 		log_2 = log_2 | (f << 52n);
 		r = r >> f;
 
-		r = (r * r) << 127n;
+		r = (r * r) >> 127n;
 		f = r >> 128n;
 		log_2 = log_2 | (f << 51n);
 		r = r >> f;
 
-		r = (r * r) << 127n;
+		r = (r * r) >> 127n;
 		f = r >> 128n;
 		log_2 = log_2 | (f << 50n);
 

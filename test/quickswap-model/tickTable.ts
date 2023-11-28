@@ -29,6 +29,18 @@ export class TickTable {
 		return tick;
 	}
 
+	toggleTick(tick: bigint) {
+		if (tick % Constants.TICK_SPACING == 0n) {
+			// ensure that the tick is spaced
+			throw 'tick is not spaced';
+		}
+		tick /= Constants.TICK_SPACING; // compress tick
+		let rowNumber = tick & 0xffn;
+		let bitNumber = tick >> 8n;
+
+		this.tickTable[Number(rowNumber)] ^= 1n << bitNumber;
+	}
+
 	private static getMostSignificantBit(word: bigint) {
 		word = word | (word << 1n);
 		word = word | (word << 2n);

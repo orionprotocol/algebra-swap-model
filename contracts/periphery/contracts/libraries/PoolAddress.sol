@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
+import { AlgebraPool } from "../../../AlgebraPool.sol";
 pragma solidity >=0.5.0;
 
 /// @title Provides functions for deriving a pool address from the factory, tokens, and the fee
 /// @dev Credit to Uniswap Labs under GPL-2.0-or-later license:
 /// https://github.com/Uniswap/v3-periphery
 library PoolAddress {
-    bytes32 internal constant POOL_INIT_CODE_HASH = 0x7484c8f6749d40fb481752b50024c1df4a1d1fd4bedb9a93172b5d2272376e65;
+    bytes32 internal constant POOL_INIT_CODE_HASH = keccak256(abi.encodePacked(type(AlgebraPool).creationCode));
 
     /// @notice The identifying key of the pool
     struct PoolKey {

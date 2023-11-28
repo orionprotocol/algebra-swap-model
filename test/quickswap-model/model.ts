@@ -1,15 +1,14 @@
 import {ethers, time} from 'hardhat';
-import {AlgebraPool, PoolState} from '../../typechain';
+import {AlgebraPool} from '../../typechain';
 import {TickTable} from './tickTable';
-import {MIN_SQRT_RATIO, TickMath} from './tickMath';
+import {TickMath} from './tickMath';
 import {PriceMovementMath} from './priceMovementMath';
 import {Constants} from './constants';
 import {FullMath} from './FullMath';
 import {TickManager} from './tickManager';
-import {AddressLike, ZeroAddress} from 'ethers';
 import {LiquidityMath} from './liquidityMath';
 import {DataStorageOperator} from './dataStorageOperator';
-import {nextTick} from 'process';
+import {BurnEvent, InitializeEvent, MintEvent} from '../../typechain/contracts/AlgebraPool';
 
 interface GlobalState {
 	price: bigint;
@@ -60,16 +59,34 @@ export class Pool {
 	dataStorageOperator: DataStorageOperator;
 	poolAddress: string;
 
+	// pool storage
+	globalState: GlobalState;
+	liquidity: bigint;
+	volumePerLiquidityInBlock: bigint;
+	totalFeeGrowth0Token: bigint;
+	totalFeeGrowth1Token: bigint;
+	timestamp: bigint;
+
 	constructor(poolAddress: string) {
 		this.tickTable = new TickTable(poolAddress);
 		this.ticks = new TickManager(poolAddress);
 		this.dataStorageOperator = new DataStorageOperator(poolAddress);
 		this.poolAddress = poolAddress;
+		this.timestamp;
+	}
+
+	async getTimestamp() {
+		return time.getTime();
+	}
+
+	async getLiquidity() {
+		const pool = <AlgebraPool>await ethers.getContractAt('AlgebraPool', this.poolAddress);
+		return pool.liquidity();
 	}
 
 	async getGlobalState() {
 		const pool = <AlgebraPool>await ethers.getContractAt('AlgebraPool', this.poolAddress);
-		return await pool.globalState();
+		return ((await pool.globalState()) as any).toObject() as GlobalState;
 	}
 
 	async getCurrentLiquidity() {
@@ -108,13 +125,6 @@ export class Pool {
 			communityFeeAmount: 0n,
 		};
 		const globalState = await this.getGlobalState();
-		console.log('globalState');
-		console.log(globalState);
-		// globalState['0'] = 1n;
-		console.log(globalState['']);
-		console.log(globalState['0']);
-		console.log(Object.keys(globalState));
-		globalState.price = 1n;
 		let cache: SwapCalculationCache = {
 			communityFee: 0n, // The community fee of the selling token, to : minimize casts
 			volumePerLiquidityInBlock: 0n,
@@ -146,9 +156,9 @@ export class Pool {
 			cache.totalFeeGrowth = await this.getTotalFeeGrowth1Token();
 			cache.communityFee = globalState.communityFeeToken1;
 		}
-		let currentPrice = globalState.price;
-		let currentTick = globalState.tick;
-		cache.startTick = currentTick;
+		result.currentPrice = globalState.price;
+		result.currentTick = globalState.tick;
+		cache.startTick = result.currentTick;
 
 		//TODO add blockTimestamp if needed
 		const blockTimestamp = await time.getTime();
@@ -165,6 +175,18 @@ export class Pool {
 		//   }
 		// }
 
+		console.log('dataStorageOperator.write params');
+		console.log('cache.timepointIndex');
+		console.log(cache.timepointIndex);
+		console.log('BigInt(blockTimestamp)');
+		console.log(BigInt(blockTimestamp));
+		console.log('cache.startTick');
+		console.log(cache.startTick);
+		console.log('result.currentLiquidity');
+		console.log(result.currentLiquidity);
+		console.log('cache.volumePerLiquidityInBlock');
+		console.log(cache.volumePerLiquidityInBlock);
+
 		const newTimepointIndex = await this.dataStorageOperator.write(
 			cache.timepointIndex,
 			BigInt(blockTimestamp),
@@ -180,22 +202,47 @@ export class Pool {
 			cache.volumePerLiquidityInBlock = 0n;
 			cache.fee = await this.dataStorageOperator.getFee(
 				BigInt(blockTimestamp),
-				currentTick,
+				result.currentTick,
 				newTimepointIndex,
 				result.currentLiquidity
 			);
+			// cache.fee = 100n
 			console.log('cache.fee');
 			console.log(cache.fee);
 		}
 		let step = {} as PriceMovementCache;
 		while (true) {
+			console.log('WHILE ITERATION');
 			step.stepSqrtPrice = globalState.price;
-			[step.nextTick, step.initialized] = await this.tickTable.nextTickInTheSameRow(currentTick, zeroToOne);
+			[step.nextTick, step.initialized] = await this.tickTable.nextTickInTheSameRow(
+				result.currentTick,
+				zeroToOne
+			);
+			step.nextTickPrice = TickMath.getSqrtRatioAtTick(step.nextTick);
 			console.log('step.nextTick');
 			console.log(step.nextTick);
-			step.nextTickPrice = TickMath.getSqrtRatioAtTick(step.nextTick);
+			console.log('step.nextTickPrice');
+			console.log(step.nextTickPrice);
+
+			console.log('movePriceTowardsTarget params');
+			console.log('zeroToOne');
+			console.log(zeroToOne);
+			console.log('currentPrice');
+			console.log(result.currentPrice);
+			console.log('nextTickPrice');
+			console.log(
+				zeroToOne == step.nextTickPrice < limitSqrtPrice // move the price to the target or to the limit
+					? limitSqrtPrice
+					: step.nextTickPrice
+			);
+			console.log('currentLiquidity');
+			console.log(result.currentLiquidity);
+			console.log('amountRequired');
+			console.log(amountRequired);
+			console.log('cache.fee');
+			console.log(cache.fee);
 			({
-				resultPrice: currentPrice,
+				resultPrice: result.currentPrice,
 				input: step.input,
 				output: step.output,
 				feeAmount: step.feeAmount,
@@ -209,7 +256,16 @@ export class Pool {
 				amountRequired,
 				cache.fee
 			));
-			// console.log(currentPrice, step.input, step.output, step.feeAmount)
+			console.log('movePriceTowardsTarget result');
+			console.log('result.currentPrice');
+			console.log(result.currentPrice);
+			console.log('step.input');
+			console.log(step.input);
+			console.log('step.output');
+			console.log(step.output);
+			console.log('step.feeAmount');
+			console.log(step.feeAmount);
+			// console.log(result.currentPrice, step.input, step.output, step.feeAmount)
 			if (cache.exactInput) {
 				amountRequired -= step.input + step.feeAmount; // decrease remaining input amount
 				cache.amountCalculated -= step.output; // decrease calculated output amount
@@ -226,69 +282,89 @@ export class Pool {
 			console.log('step.feeAmount');
 			console.log(step.feeAmount);
 			if (cache.communityFee > 0) {
-        const delta = (step.feeAmount * cache.communityFee) / Constants.COMMUNITY_FEE_DENOMINATOR;
-        step.feeAmount -= delta;
-        result.communityFeeAmount += delta;
-      }
+				const delta = (step.feeAmount * cache.communityFee) / Constants.COMMUNITY_FEE_DENOMINATOR;
+				step.feeAmount -= delta;
+				result.communityFeeAmount += delta;
+			}
+			console.log('step.feeAmount');
+			console.log(step.feeAmount);
+			console.log('result.communityFeeAmount');
+			console.log(result.communityFeeAmount);
 
-      if (result.currentLiquidity > 0) cache.totalFeeGrowth += FullMath.mulDiv(step.feeAmount, Constants.Q128, result.currentLiquidity);
+			if (result.currentLiquidity > 0)
+				cache.totalFeeGrowth += FullMath.mulDiv(step.feeAmount, Constants.Q128, result.currentLiquidity);
 
-      if (currentPrice == step.nextTickPrice) {
-        // if the reached tick is initialized then we need to cross it
-        if (step.initialized) {
-          // once at a swap we have to get the last timepoint of the observation
-          if (!cache.computedLatestTimepoint) {
-            (cache.tickCumulative, cache.secondsPerLiquidityCumulative, , ) = this.dataStorageOperator.getSingleTimepoint(
-              BigInt(blockTimestamp),
-              0n,
-              cache.startTick,
-              cache.timepointIndex,
-              result.currentLiquidity // currentLiquidity can be changed only after computedLatestTimepoint
-            );
-            cache.computedLatestTimepoint = true;
-            cache.totalFeeGrowthB = zeroToOne ? await this.getTotalFeeGrowth1Token() : await this.getTotalFeeGrowth0Token();
-          }
-          // every tick cross is needed to be duplicated in a virtual pool
-          // if (cache.incentiveStatus != 0) {
-          //   IAlgebraVirtualPool(activeIncentive).cross(step.nextTick, zeroToOne);
-          // }
+			console.log('result.currentLiquidity');
+			console.log(result.currentLiquidity);
+			console.log('result.currentPrice');
+			console.log(result.currentPrice);
+			console.log('step.nextTickPrice');
+			console.log(step.nextTickPrice);
 
-          let liquidityDelta;
-          if (zeroToOne) {
-            liquidityDelta = -this.ticks.cross(
-              step.nextTick,
-              cache.totalFeeGrowth, // A == 0
-              cache.totalFeeGrowthB, // B == 1
-              cache.secondsPerLiquidityCumulative,
-              cache.tickCumulative,
-              BigInt(blockTimestamp)
-            );
-          } else {
-            liquidityDelta = this.ticks.cross(
-              step.nextTick,
-              cache.totalFeeGrowthB, // B == 0
-              cache.totalFeeGrowth, // A == 1
-              cache.secondsPerLiquidityCumulative,
-              cache.tickCumulative,
-              BigInt(blockTimestamp)
-            );
-          }
+			if (result.currentPrice == step.nextTickPrice) {
+				console.log('inside if result.currentPrice == step.nextTickPrice');
+				// if the reached tick is initialized then we need to cross it
+				if (step.initialized) {
+					console.log('inside step.initialized');
+					// once at a swap we have to get the last timepoint of the observation
+					if (!cache.computedLatestTimepoint) {
+						console.log('inside !cache.computedLatestTimepoint');
+						({
+							tickCumulative: cache.tickCumulative,
+							secondsPerLiquidityCumulative: cache.secondsPerLiquidityCumulative,
+						} = await this.dataStorageOperator.getSingleTimepoint(
+							BigInt(blockTimestamp),
+							0n,
+							cache.startTick,
+							cache.timepointIndex,
+							result.currentLiquidity // currentLiquidity can be changed only after computedLatestTimepoint
+						));
+						cache.computedLatestTimepoint = true;
+						cache.totalFeeGrowthB = zeroToOne
+							? await this.getTotalFeeGrowth1Token()
+							: await this.getTotalFeeGrowth0Token();
+					}
+					// every tick cross is needed to be duplicated in a virtual pool
+					// if (cache.incentiveStatus != 0) {
+					//   IAlgebraVirtualPool(activeIncentive).cross(step.nextTick, zeroToOne);
+					// }
 
-          result.currentLiquidity = LiquidityMath.addDelta(result.currentLiquidity, liquidityDelta);
-        }
+					let liquidityDelta;
+					if (zeroToOne) {
+						liquidityDelta = -this.ticks.cross(
+							step.nextTick,
+							cache.totalFeeGrowth, // A == 0
+							cache.totalFeeGrowthB, // B == 1
+							cache.secondsPerLiquidityCumulative,
+							cache.tickCumulative,
+							BigInt(blockTimestamp)
+						);
+					} else {
+						liquidityDelta = this.ticks.cross(
+							step.nextTick,
+							cache.totalFeeGrowthB, // B == 0
+							cache.totalFeeGrowth, // A == 1
+							cache.secondsPerLiquidityCumulative,
+							cache.tickCumulative,
+							BigInt(blockTimestamp)
+						);
+					}
 
-        currentTick = zeroToOne ? step.nextTick - 1n : step.nextTick;
-      } else if (currentPrice != step.stepSqrtPrice) {
-        // if the price has changed but hasn't reached the target
-        currentTick = TickMath.getTickAtSqrtRatio(currentPrice);
-        break; // since the price hasn't reached the target, amountRequired should be 0
-      }
+					result.currentLiquidity = LiquidityMath.addDelta(result.currentLiquidity, liquidityDelta);
+				}
 
-      // check stop condition
-      if (amountRequired == 0n || currentPrice == limitSqrtPrice) {
-        break;
-      }
-    }
+				result.currentTick = zeroToOne ? step.nextTick - 1n : step.nextTick;
+			} else if (result.currentPrice != step.stepSqrtPrice) {
+				// if the price has changed but hasn't reached the target
+				result.currentTick = TickMath.getTickAtSqrtRatio(result.currentPrice);
+				break; // since the price hasn't reached the target, amountRequired should be 0
+			}
+
+			// check stop condition
+			if (amountRequired == 0n || result.currentPrice == limitSqrtPrice) {
+				break;
+			}
+		}
 
 		[result.amount0, result.amount1] =
 			zeroToOne == cache.exactInput // the amount to provide could be less then initially specified (e.g. reached limit)
@@ -296,8 +372,8 @@ export class Pool {
 				: [cache.amountCalculated, cache.amountRequiredInitial - amountRequired];
 
 		[globalState.price, globalState.tick, globalState.fee, globalState.timepointIndex] = [
-			currentPrice,
-			currentTick,
+			result.currentPrice,
+			result.currentTick,
 			cache.fee,
 			cache.timepointIndex,
 		];
@@ -316,21 +392,139 @@ export class Pool {
 		//   totalFeeGrowth1Token = cache.totalFeeGrowth;
 		// }
 	}
+
+	async updatePositionTicksAndFees(owner: string, bottomTick: bigint, topTick: bigint, liquidityDelta: bigint) {
+		const globalState = await this.getGlobalState();
+		const cache = {
+			price: globalState.price,
+			tick: globalState.tick,
+			timepointIndex: globalState.timepointIndex,
+		};
+
+		// position = getOrCreatePosition(owner, bottomTick, topTick);
+
+		const _totalFeeGrowth0Token = await this.getTotalFeeGrowth0Token();
+		const _totalFeeGrowth1Token = await this.getTotalFeeGrowth1Token();
+
+		let toggledBottom: boolean;
+		let toggledTop: boolean;
+		const liquidity = await this.getLiquidity();
+		if (liquidityDelta != 0n) {
+			const time = await this.getTimestamp();
+			const {tickCumulative, secondsPerLiquidityCumulative} = await this.dataStorageOperator.getSingleTimepoint(
+				BigInt(time),
+				0n,
+				cache.tick,
+				cache.timepointIndex,
+				liquidity
+			);
+
+			if (
+				this.ticks.update(
+					bottomTick,
+					cache.tick,
+					liquidityDelta,
+					_totalFeeGrowth0Token,
+					_totalFeeGrowth1Token,
+					secondsPerLiquidityCumulative,
+					tickCumulative,
+					BigInt(time),
+					false // isTopTick
+				)
+			) {
+				toggledBottom = true;
+				this.tickTable.toggleTick(bottomTick);
+			}
+
+			if (
+				this.ticks.update(
+					topTick,
+					cache.tick,
+					liquidityDelta,
+					_totalFeeGrowth0Token,
+					_totalFeeGrowth1Token,
+					secondsPerLiquidityCumulative,
+					tickCumulative,
+					BigInt(time),
+					true // isTopTick
+				)
+			) {
+				toggledTop = true;
+				this.tickTable.toggleTick(topTick);
+			}
+		}
+
+		const [feeGrowthInside0X128, feeGrowthInside1X128] = this.ticks.getInnerFeeGrowth(
+			bottomTick,
+			topTick,
+			cache.tick,
+			_totalFeeGrowth0Token,
+			_totalFeeGrowth1Token
+		);
+
+		// _recalculatePosition(position, liquidityDelta, feeGrowthInside0X128, feeGrowthInside1X128);
+
+		if (liquidityDelta != 0n) {
+			// if liquidityDelta is negative and the tick was toggled, it means that it should not be initialized anymore, so we delete it
+			if (liquidityDelta < 0) {
+				if (toggledBottom) delete this.ticks.ticks[Number(bottomTick)];
+				if (toggledTop) delete this.ticks.ticks[Number(topTick)];
+			}
+
+			let globalLiquidityDelta;
+			// (amount0, amount1, globalLiquidityDelta) = _getAmountsForLiquidity(
+			// 	bottomTick,
+			// 	topTick,
+			// 	liquidityDelta,
+			// 	cache.tick,
+			// 	cache.price
+			// );
+			if (globalLiquidityDelta != 0) {
+				const liquidityBefore = liquidity;
+				const newTimepointIndex = await this.dataStorageOperator.write(
+					cache.timepointIndex,
+					BigInt(await this.getTimestamp()),
+					cache.tick,
+					liquidityBefore,
+					await this.getVolumePerLiquidityInBlock()
+				);
+				if (cache.timepointIndex != newTimepointIndex) {
+					globalState.fee = await this.dataStorageOperator.getFee(
+						BigInt(await this.getTimestamp()),
+						cache.tick,
+						newTimepointIndex,
+						liquidityBefore
+					);
+					globalState.timepointIndex = newTimepointIndex;
+					this.volumePerLiquidityInBlock = 0n;
+				}
+				this.liquidity = LiquidityMath.addDelta(liquidityBefore, liquidityDelta);
+			}
+		}
+	}
+	async Initialize(timestamp: number, eventParams: InitializeEvent.OutputObject) {
+		this.globalState.price = eventParams.price;
+		this.globalState.tick = eventParams.tick;
+		this.globalState.unlocked = true;
+
+		this.token0 = this.dataStorageOperator.initialize(BigInt(timestamp), eventParams.tick);
+	}
+
+	async Burn(timestamp: number, eventParams: BurnEvent.OutputObject) {
+		this.updatePositionTicksAndFees(
+			eventParams.owner,
+			eventParams.bottomTick,
+			eventParams.topTick,
+			-eventParams.liquidityAmount
+		);
+	}
+
+	async Mint(timestamp: number, eventParams: MintEvent.OutputObject) {
+		this.updatePositionTicksAndFees(
+			eventParams.owner,
+			eventParams.bottomTick,
+			eventParams.topTick,
+			eventParams.liquidityAmount
+		);
+	}
 }
-
-// async function main() {
-//   const model = new Pool()
-
-//   await model.calculateSwap(true, 500n, MIN_SQRT_RATIO).then(() => process.exit(0))
-//   .catch((error) => {
-//       console.error(error)
-//       process.exit(1)
-//   })
-// }
-
-// main()
-//   .then(() => process.exit(0))
-//   .catch((error) => {
-//       console.error(error)
-//       process.exit(1)
-//   })

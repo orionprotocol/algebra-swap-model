@@ -41,27 +41,42 @@ const setup = deployments.createFixture(async () => {
 });
 
 describe('AlgebraPool', async () => {
-	it('Model', async () => {
+	// it('Model', async () => {
+	// 	const {owner, usdt, orn, factory} = await setup();
+	// 	const poolAddress = await factory.poolByPair(orn, usdt);
+	// 	const amountRequired = await convert(100, orn);
+	// 	await time.mine();
+	// 	await time.mine();
+	// 	await time.mine();
+	// 	const model = new Pool(poolAddress);
+	// 	// hre.tracer.enabled = true;
+	// 	console.log('START OF calculateSwap_______________________________________');
+	// 	const result = await model.calculateSwap(false, amountRequired, MAX_SQRT_RATIO - 1n);
+	// 	console.log('MODEL RESULT');
+	// 	console.log(result);
+	// 	// hre.tracer.enabled = false;
+	// });
+	it('Transaction', async () => {
 		const {owner, usdt, orn, factory} = await setup();
 		const poolAddress = await factory.poolByPair(orn, usdt);
-		const amountRequired = await convert(100, orn);
 		await time.mine();
+		await time.mine();
+		await time.mine();
+		const pool = <AlgebraPool>await ethers.getContractAt('AlgebraPool', poolAddress);
+		console.log(await pool.token0());
+		console.log(await orn.getAddress());
+		const amountRequired = await convert(1234.125123, orn);
+		hre.tracer.enabled = true;
+		console.log('START OF transaction swap______________________________________________');
+		const res = await pool._calculateSwapAndLock.staticCall(false, amountRequired, MAX_SQRT_RATIO - 1n);
+		hre.tracer.enabled = false;
+		console.log('START OF model swap______________________________________________');
 		const model = new Pool(poolAddress);
-		// hre.tracer.enabled = true;
-		await model.calculateSwap(false, amountRequired, MAX_SQRT_RATIO - 1n);
-		// hre.tracer.enabled = false;
+		const modelRes = await model.calculateSwap(false, amountRequired, MAX_SQRT_RATIO - 1n);
+		console.log('MODEL RESULT');
+		console.log(modelRes);
+
+		console.log('CONTRACT RESULT');
+		console.log(res);
 	});
-	// it("Transaction", async () => {
-	//   const { owner, usdt, orn, factory } = await setup()
-	//   const poolAddress = await factory.poolByPair(orn, usdt)
-
-	//   const pool = <AlgebraPool>await ethers.getContractAt("AlgebraPool", poolAddress)
-	//   console.log(await pool.token0())
-	//   console.log(await orn.getAddress())
-	//   const amountRequired = await convert(100, orn)
-	//   hre.tracer.enabled = true;
-	//   const res = await (await pool._calculateSwapAndLock(false, amountRequired, MAX_SQRT_RATIO - 1n)).wait()
-	//   hre.tracer.enabled = false;
-
-	// })
 });
