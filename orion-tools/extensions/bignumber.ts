@@ -22,25 +22,23 @@ import { ERC20 } from "../../typechain";
 //   return (res.lt(eps));
 // }
 
-// BigNumber.prototype.formatString = function (
-//   decimals = 18,
-//   precision = decimals,
-//   delimiter = '.'
-// ) {
-//   let str = this.toString()
-//   str = str.padStart(decimals + 1, '0')
+export function formatString(
+	number: BigNumberish,
+  decimals: BigNumberish = 18,
+  precision = decimals,
+  delimiter = '.'
+) {
+  let str = number.toString()
+	decimals = Number(decimals)
+	precision = Number(decimals)
+  str = str.padStart(decimals + 1, '0')
 
-//   const intPart = str.slice(0, -decimals).replace(/^0+/, '')
-//   const fracPart = str.slice(-decimals).padEnd(precision, '0').slice(0, precision)
+  const intPart = str.slice(0, -decimals).replace(/^0+/, '')
+  const fracPart = str.slice(-decimals).padEnd(precision, '0').slice(0, precision)
 
-//   if (precision === 0) return intPart
-//   return (intPart ? intPart : '0') + (fracPart.length > 0 ? delimiter + fracPart : '')
-// }
-
-// BigNumber.prototype.formatNumber = function (decimals = 18, precision = decimals) {
-//   const str = this.formatString(decimals, precision)
-//   return Number(str)
-// }
+  if (precision === 0) return intPart
+  return (intPart ? intPart : '0') + (fracPart.length > 0 ? delimiter + fracPart : '')
+}
 
 export async function convert<T extends ERC20>(amount: BigNumberish, token: T, delimiter=".") {
   amount = amount.toString();

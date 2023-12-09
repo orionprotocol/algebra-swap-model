@@ -165,24 +165,24 @@ contract DataStorageOperator is IDataStorageOperator {
 		uint16 _index,
 		uint128 _liquidity
 	) external view override onlyPool returns (uint16 fee) {
-		console.log("_time");
-		console.log(_time);
-		console.log("_tick");
-		console.logInt(_tick);
-		console.log("_index");
-		console.log(_index);
-		console.log("_liquidity");
-		console.log(_liquidity);
+		//console.log("_time");
+		//console.log(_time);
+		//console.log("_tick");
+		//console.logInt(_tick);
+		//console.log("_index");
+		//console.log(_index);
+		//console.log("_liquidity");
+		//console.log(_liquidity);
 		(uint88 volatilityAverage, uint256 volumePerLiqAverage) = timepoints.getAverages(
 			_time,
 			_tick,
 			_index,
 			_liquidity
 		);
-		console.log("volatilityAverage");
-		console.log(volatilityAverage);
-		console.log("volumePerLiqAverage");
-		console.log(volumePerLiqAverage);
+		//console.log("volatilityAverage");
+		//console.log(volatilityAverage);
+		//console.log("volumePerLiqAverage");
+		//console.log(volumePerLiqAverage);
 		return AdaptiveFee.getFee(volatilityAverage / 15, volumePerLiqAverage, feeConfig);
 	}
 }

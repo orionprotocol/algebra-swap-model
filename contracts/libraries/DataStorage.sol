@@ -83,20 +83,20 @@ library DataStorage {
 		last.volatilityCumulative += uint88(_volatilityOnRange(delta, prevTick, tick, last.averageTick, averageTick)); // always fits 88 bits
 		last.averageTick = averageTick;
 		last.volumePerLiquidityCumulative += volumePerLiquidity;
-		console.log("last.initialized");
-		console.log(last.initialized);
-		console.log("last.blockTimestamp");
-		console.log(last.blockTimestamp);
-		console.log("last.tickCumulative");
-		console.logInt(last.tickCumulative);
-		console.log("last.secondsPerLiquidityCumulative");
-		console.log(last.secondsPerLiquidityCumulative);
-		console.log("last.volatilityCumulative");
-		console.log(last.volatilityCumulative);
-		console.log("last.averageTick");
-		console.logInt(last.averageTick);
-		console.log("last.volumePerLiquidityCumulative");
-		console.log(last.volumePerLiquidityCumulative);
+		//console.log("last.initialized");
+		//console.log(last.initialized);
+		//console.log("last.blockTimestamp");
+		//console.log(last.blockTimestamp);
+		//console.log("last.tickCumulative");
+		//console.logInt(last.tickCumulative);
+		//console.log("last.secondsPerLiquidityCumulative");
+		//console.log(last.secondsPerLiquidityCumulative);
+		//console.log("last.volatilityCumulative");
+		//console.log(last.volatilityCumulative);
+		//console.log("last.averageTick");
+		//console.logInt(last.averageTick);
+		//console.log("last.volumePerLiquidityCumulative");
+		//console.log(last.volumePerLiquidityCumulative);
 		return last;
 	}
 
@@ -125,19 +125,19 @@ library DataStorage {
 		uint32 oldestTimestamp = self[oldestIndex].blockTimestamp;
 		int56 oldestTickCumulative = self[oldestIndex].tickCumulative;
 
-		console.log("_getAverageTick");
-		console.log("time");
-		console.log(time);
-		console.log("tick");
-		console.logInt(tick);
-		console.log("index");
-		console.log(index);
-		console.log("oldestIndex");
-		console.log(oldestIndex);
-		console.log("lastTimestamp");
-		console.log(lastTimestamp);
-		console.log("lastTickCumulative");
-		console.logInt(lastTickCumulative);
+		//console.log("_getAverageTick");
+		//console.log("time");
+		//console.log(time);
+		//console.log("tick");
+		//console.logInt(tick);
+		//console.log("index");
+		//console.log(index);
+		//console.log("oldestIndex");
+		//console.log(oldestIndex);
+		//console.log("lastTimestamp");
+		//console.log(lastTimestamp);
+		//console.log("lastTickCumulative");
+		//console.logInt(lastTickCumulative);
 		if (lteConsideringOverflow(oldestTimestamp, time - WINDOW, time)) {
 			if (lteConsideringOverflow(lastTimestamp, time - WINDOW, time)) {
 				index -= 1; // considering underflow
@@ -240,18 +240,18 @@ library DataStorage {
 	) internal view returns (Timepoint memory targetTimepoint) {
 		uint32 target = time - secondsAgo;
 
-		console.log("getSingleTimepoint func");
+		//console.log("getSingleTimepoint func");
 		// if target is newer than last timepoint
 		if (secondsAgo == 0 || lteConsideringOverflow(self[index].blockTimestamp, target, time)) {
 			Timepoint memory last = self[index];
-			console.log("last timepoint");
-			console.log(last.initialized);
-			console.log(last.blockTimestamp);
-			console.logInt(last.tickCumulative);
-			console.log(last.secondsPerLiquidityCumulative);
-			console.log(last.volatilityCumulative);
-			console.logInt(last.averageTick);
-			console.log(last.volumePerLiquidityCumulative);
+			//console.log("last timepoint");
+			//console.log(last.initialized);
+			//console.log(last.blockTimestamp);
+			//console.logInt(last.tickCumulative);
+			//console.log(last.secondsPerLiquidityCumulative);
+			//console.log(last.volatilityCumulative);
+			//console.logInt(last.averageTick);
+			//console.log(last.volumePerLiquidityCumulative);
 			if (last.blockTimestamp == target) {
 				return last;
 			} else {
@@ -397,14 +397,14 @@ library DataStorage {
 		}
 
 		Timepoint memory endOfWindow = getSingleTimepoint(self, time, 0, tick, index, oldestIndex, liquidity);
-		console.log("endOfWindow");
-		console.log(endOfWindow.initialized);
-		console.log(endOfWindow.blockTimestamp);
-		console.logInt(endOfWindow.tickCumulative);
-		console.log(endOfWindow.secondsPerLiquidityCumulative);
-		console.log(endOfWindow.volatilityCumulative);
-		console.logInt(endOfWindow.averageTick);
-		console.log(endOfWindow.volumePerLiquidityCumulative);
+		//console.log("endOfWindow");
+		//console.log(endOfWindow.initialized);
+		//console.log(endOfWindow.blockTimestamp);
+		//console.logInt(endOfWindow.tickCumulative);
+		//console.log(endOfWindow.secondsPerLiquidityCumulative);
+		//console.log(endOfWindow.volatilityCumulative);
+		//console.logInt(endOfWindow.averageTick);
+		//console.log(endOfWindow.volumePerLiquidityCumulative);
 		uint32 oldestTimestamp = oldest.blockTimestamp;
 		if (lteConsideringOverflow(oldestTimestamp, time - WINDOW, time)) {
 			Timepoint memory startOfWindow = getSingleTimepoint(
@@ -416,14 +416,14 @@ library DataStorage {
 				oldestIndex,
 				liquidity
 			);
-			console.log("startOfWindow");
-			console.log(startOfWindow.initialized);
-			console.log(startOfWindow.blockTimestamp);
-			console.logInt(startOfWindow.tickCumulative);
-			console.log(startOfWindow.secondsPerLiquidityCumulative);
-			console.log(startOfWindow.volatilityCumulative);
-			console.logInt(startOfWindow.averageTick);
-			console.log(startOfWindow.volumePerLiquidityCumulative);
+			//console.log("startOfWindow");
+			//console.log(startOfWindow.initialized);
+			//console.log(startOfWindow.blockTimestamp);
+			//console.logInt(startOfWindow.tickCumulative);
+			//console.log(startOfWindow.secondsPerLiquidityCumulative);
+			//console.log(startOfWindow.volatilityCumulative);
+			//console.logInt(startOfWindow.averageTick);
+			//console.log(startOfWindow.volumePerLiquidityCumulative);
 			return (
 				(endOfWindow.volatilityCumulative - startOfWindow.volatilityCumulative) / WINDOW,
 				uint256(endOfWindow.volumePerLiquidityCumulative - startOfWindow.volumePerLiquidityCumulative) >> 57
@@ -471,16 +471,16 @@ library DataStorage {
 		if (_last.blockTimestamp == blockTimestamp) {
 			return index;
 		}
-		console.log("_last");
-		console.log("{");
-		console.log(_last.initialized);
-		console.log(_last.blockTimestamp);
-		console.logInt(_last.tickCumulative);
-		console.log(_last.secondsPerLiquidityCumulative);
-		console.log(_last.volatilityCumulative);
-		console.logInt(_last.averageTick);
-		console.log(_last.volumePerLiquidityCumulative);
-		console.log("}");
+		//console.log("_last");
+		//console.log("{");
+		//console.log(_last.initialized);
+		//console.log(_last.blockTimestamp);
+		//console.logInt(_last.tickCumulative);
+		//console.log(_last.secondsPerLiquidityCumulative);
+		//console.log(_last.volatilityCumulative);
+		//console.logInt(_last.averageTick);
+		//console.log(_last.volumePerLiquidityCumulative);
+		//console.log("}");
 
 		Timepoint memory last = _last;
 
@@ -515,15 +515,15 @@ library DataStorage {
 			avgTick,
 			volumePerLiquidity
 		);
-		console.log("NewTimepointCreated");
-		console.log("{");
-		console.log(self[indexUpdated].initialized);
-		console.log(self[indexUpdated].blockTimestamp);
-		console.logInt(self[indexUpdated].tickCumulative);
-		console.log(self[indexUpdated].secondsPerLiquidityCumulative);
-		console.log(self[indexUpdated].volatilityCumulative);
-		console.logInt(self[indexUpdated].averageTick);
-		console.log(self[indexUpdated].volumePerLiquidityCumulative);
-		console.log("}");
+		//console.log("NewTimepointCreated");
+		//console.log("{");
+		//console.log(self[indexUpdated].initialized);
+		//console.log(self[indexUpdated].blockTimestamp);
+		//console.logInt(self[indexUpdated].tickCumulative);
+		//console.log(self[indexUpdated].secondsPerLiquidityCumulative);
+		//console.log(self[indexUpdated].volatilityCumulative);
+		//console.logInt(self[indexUpdated].averageTick);
+		//console.log(self[indexUpdated].volumePerLiquidityCumulative);
+		//console.log("}");
 	}
 }

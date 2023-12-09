@@ -132,7 +132,7 @@ library PriceMovementMath {
 		int256 amountAvailable,
 		uint16 fee
 	) internal pure returns (uint160 resultPrice, uint256 input, uint256 output, uint256 feeAmount) {
-		console.log('Inside movePriceTowardsTarget');
+		//console.log('Inside movePriceTowardsTarget');
 		function(uint160, uint160, uint128) pure returns (uint256) getAmountA = zeroToOne
 			? getTokenADelta01
 			: getTokenADelta10;
@@ -141,8 +141,8 @@ library PriceMovementMath {
 			// exactIn or not
 			uint256 amountAvailableAfterFee = FullMath.mulDiv(uint256(amountAvailable), 1e6 - fee, 1e6);
 			input = getAmountA(targetPrice, currentPrice, liquidity);
-			console.log("input");
-			console.log(input);
+			//console.log("input");
+			//console.log(input);
 			if (amountAvailableAfterFee >= input) {
 				resultPrice = targetPrice;
 				feeAmount = FullMath.mulDivRoundingUp(input, fee, 1e6 - fee);

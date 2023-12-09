@@ -5,10 +5,12 @@ import { env } from "process";
 const defaultNamedAccounts = {
   deployer: {
     hardhat: 0,
+		localhost: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
     default: '0x857851EE6E398651Cb7C72462cc7Ce2A94d8f1C6',
   },
   owner: {
     hardhat: 1,
+		localhost: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
     default: '0x857851EE6E398651Cb7C72462cc7Ce2A94d8f1C6',
   },
   verifier: {

@@ -8,5 +8,6 @@ export const Constants = {
   MAX_LIQUIDITY_COOLDOWN: 60n * 60n * 24n,
   MAX_COMMUNITY_FEE: 250n,
   COMMUNITY_FEE_DENOMINATOR: 1000n,
-  MAX_UINT_160: (2n ** 160n) - 1n
+  MAX_UINT_160: (2n ** 160n) - 1n,
+	UINT16_MODULO: 65536n
 }

@@ -811,17 +811,17 @@ contract AlgebraPool is PoolState, PoolImmutables, IAlgebraPool {
 					cache.incentiveStatus = IAlgebraVirtualPool.Status.NOT_STARTED;
 				}
 			}
-			console.log("dataStorageOperator.write params");
-			console.log("cache.timepointIndex");
-			console.log(cache.timepointIndex);
-			console.log("BigInt(blockTimestamp)");
-			console.log(block.timestamp);
-			console.log("cache.startTick");
-			console.logInt(cache.startTick);
-			console.log("result.currentLiquidity");
-			console.log(currentLiquidity);
-			console.log("cache.volumePerLiquidityInBlock");
-			console.log(cache.volumePerLiquidityInBlock);
+			//console.log("dataStorageOperator.write params");
+			//console.log("cache.timepointIndex");
+			//console.log(cache.timepointIndex);
+			//console.log("BigInt(blockTimestamp)");
+			//console.log(block.timestamp);
+			//console.log("cache.startTick");
+			//console.logInt(cache.startTick);
+			//console.log("result.currentLiquidity");
+			//console.log(currentLiquidity);
+			//console.log("cache.volumePerLiquidityInBlock");
+			//console.log(cache.volumePerLiquidityInBlock);
 			uint16 newTimepointIndex = _writeTimepoint(
 				cache.timepointIndex,
 				blockTimestamp,
@@ -829,50 +829,46 @@ contract AlgebraPool is PoolState, PoolImmutables, IAlgebraPool {
 				currentLiquidity,
 				cache.volumePerLiquidityInBlock
 			);
-			console.log("newTimepointIndex");
-			console.log(newTimepointIndex);
+			//console.log("newTimepointIndex");
+			//console.log(newTimepointIndex);
 
 			// new timepoint appears only for first swap in block
 			if (newTimepointIndex != cache.timepointIndex) {
 				cache.timepointIndex = newTimepointIndex;
 				cache.volumePerLiquidityInBlock = 0;
 				cache.fee = _getNewFee(blockTimestamp, currentTick, newTimepointIndex, currentLiquidity);
-				console.log("cache.fee");
-				console.log(cache.fee);
+				//console.log("cache.fee");
+				//console.log(cache.fee);
 			}
 		}
 
 		PriceMovementCache memory step;
 		// swap until there is remaining input or output tokens or we reach the price limit
 		while (true) {
-			console.log("WHILE ITERATION");
+			//console.log("WHILE ITERATION");
 			step.stepSqrtPrice = currentPrice;
 
 			(step.nextTick, step.initialized) = tickTable.nextTickInTheSameRow(currentTick, zeroToOne);
-			console.log("step.nextTick");
-			console.logInt(step.nextTick);
+			//console.log("step.nextTick");
+			//console.logInt(step.nextTick);
 
 			step.nextTickPrice = TickMath.getSqrtRatioAtTick(step.nextTick);
-			console.log("step.nextTickPice");
-			console.logInt(step.nextTickPrice);
+			//console.log("step.nextTickPice");
+			//console.logInt(step.nextTickPrice);
 
-			console.log("movePriceTowardsTarget params");
-			console.log("zeroToOne");
-			console.log(zeroToOne);
-			console.log("currentPrice");
-			console.log(currentPrice);
-			console.log("nextTickPrice");
-			console.log(
-				(zeroToOne == (step.nextTickPrice < limitSqrtPrice)) // move the price to the target or to the limit
-					? limitSqrtPrice
-					: step.nextTickPrice
-			);
-			console.log("currentLiquidity");
-			console.log(currentLiquidity);
-			console.log("amountRequired");
-			console.logInt(amountRequired);
-			console.log("cache.fee");
-			console.log(cache.fee);
+			//console.log("movePriceTowardsTarget params");
+			//console.log("zeroToOne");
+			//console.log(zeroToOne);
+			//console.log("currentPrice");
+			//console.log(currentPrice);
+			//console.log("nextTickPrice");
+			// //console.log((zeroToOne == (step.nextTickPrice < limitSqrtPrice)) ? limitSqrtPrice : step.nextTickPrice);
+			//console.log("currentLiquidity");
+			//console.log(currentLiquidity);
+			//console.log("amountRequired");
+			// //console.logInt(amountRequired);
+			//console.log("cache.fee");
+			//console.log(cache.fee);
 			// calculate the amounts needed to move the price to the next target if it is possible or as much as possible
 			(currentPrice, step.input, step.output, step.feeAmount) = PriceMovementMath.movePriceTowardsTarget(
 				zeroToOne,
@@ -884,15 +880,15 @@ contract AlgebraPool is PoolState, PoolImmutables, IAlgebraPool {
 				amountRequired,
 				cache.fee
 			);
-			console.log("movePriceTowardsTarget result");
-			console.log("currentPrice");
-			console.log(currentPrice);
-			console.log("step.input");
-			console.log(step.input);
-			console.log("step.output");
-			console.log(step.output);
-			console.log("step.feeAmount");
-			console.log(step.feeAmount);
+			//console.log("movePriceTowardsTarget result");
+			//console.log("currentPrice");
+			//console.log(currentPrice);
+			//console.log("step.input");
+			//console.log(step.input);
+			//console.log("step.output");
+			//console.log(step.output);
+			//console.log("step.feeAmount");
+			//console.log(step.feeAmount);
 
 			if (cache.exactInput) {
 				amountRequired -= (step.input + step.feeAmount).toInt256(); // decrease remaining input amount
@@ -901,39 +897,39 @@ contract AlgebraPool is PoolState, PoolImmutables, IAlgebraPool {
 				amountRequired += step.output.toInt256(); // increase remaining output amount (since its negative)
 				cache.amountCalculated = cache.amountCalculated.add((step.input + step.feeAmount).toInt256()); // increase calculated input amount
 			}
-			console.log("amountRequired");
-			console.logInt(amountRequired);
-			console.log("step.input");
-			console.log(step.input);
-			console.log("step.output");
-			console.log(step.output);
-			console.log("step.feeAmount");
-			console.log(step.feeAmount);
+			//console.log("amountRequired");
+			//console.logInt(amountRequired);
+			//console.log("step.input");
+			//console.log(step.input);
+			//console.log("step.output");
+			//console.log(step.output);
+			//console.log("step.feeAmount");
+			//console.log(step.feeAmount);
 			if (cache.communityFee > 0) {
 				uint256 delta = (step.feeAmount.mul(cache.communityFee)) / Constants.COMMUNITY_FEE_DENOMINATOR;
 				step.feeAmount -= delta;
 				communityFeeAmount += delta;
 			}
-			console.log("step.feeAmount");
-			console.log(step.feeAmount);
-			console.log("result.communityFeeAmount");
-			console.log(communityFeeAmount);
+			//console.log("step.feeAmount");
+			//console.log(step.feeAmount);
+			//console.log("result.communityFeeAmount");
+			//console.log(communityFeeAmount);
 			if (currentLiquidity > 0)
 				cache.totalFeeGrowth += FullMath.mulDiv(step.feeAmount, Constants.Q128, currentLiquidity);
-			console.log("result.currentLiquidity");
-			console.log(currentLiquidity);
-			console.log("currentPrice");
-			console.log(currentPrice);
-			console.log("step.nextTickPrice");
-			console.log(step.nextTickPrice);
+			//console.log("result.currentLiquidity");
+			//console.log(currentLiquidity);
+			//console.log("currentPrice");
+			//console.log(currentPrice);
+			//console.log("step.nextTickPrice");
+			//console.log(step.nextTickPrice);
 			if (currentPrice == step.nextTickPrice) {
-				console.log("inside if currentPrice == step.nextTickPrice");
+				//console.log("inside if currentPrice == step.nextTickPrice");
 				// if the reached tick is initialized then we need to cross it
 				if (step.initialized) {
-					console.log("inside step.initialized");
+					//console.log("inside step.initialized");
 					// once at a swap we have to get the last timepoint of the observation
 					if (!cache.computedLatestTimepoint) {
-						console.log("inside !cache.computedLatestTimepoint");
+						//console.log("inside !cache.computedLatestTimepoint");
 						(cache.tickCumulative, cache.secondsPerLiquidityCumulative, , ) = _getSingleTimepoint(
 							blockTimestamp,
 							0,

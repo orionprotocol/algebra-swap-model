@@ -1,35 +1,21 @@
 import {BigNumberish} from 'ethers';
-import {AlgebraPool} from '../../typechain';
-import {ethers} from 'hardhat';
 import {Constants} from './constants';
 import {MAX_TICK, MIN_TICK} from './tickMath';
 
 export class TickTable {
-	tickSpacing: bigint;
-	minTick: bigint;
-	maxTick: bigint;
-	tickTable: Partial<{[n: number]: bigint}>;
-	poolAddress: string;
+	static tickSpacing: bigint = Constants.TICK_SPACING;
+	static minTick: bigint = MIN_TICK;
+	static maxTick: bigint = MAX_TICK;
 
-	constructor(poolAddress: string) {
-		this.tickSpacing = Constants.TICK_SPACING;
-		this.minTick = MIN_TICK;
-		this.maxTick = MAX_TICK;
-		this.tickTable = {};
-		this.poolAddress = poolAddress;
-	}
-
-	async getTick(index: BigNumberish) {
-		const pool = <AlgebraPool>await ethers.getContractAt('AlgebraPool', this.poolAddress);
-		// console.log("TickTable::getTick ", index)
-		const tick = await pool.tickTable(index);
+	static getTick(tickTable: Partial<{[n: number]: bigint}>, index: BigNumberish) {
+		const tick = tickTable[Number(index)]
 		if (tick == undefined) {
 			return 0n;
 		}
 		return tick;
 	}
 
-	toggleTick(tick: bigint) {
+	static toggleTick(tickTable: Partial<{[n: number]: bigint}>, tick: bigint) {
 		if (tick % Constants.TICK_SPACING == 0n) {
 			// ensure that the tick is spaced
 			throw 'tick is not spaced';
@@ -38,7 +24,7 @@ export class TickTable {
 		let rowNumber = tick & 0xffn;
 		let bitNumber = tick >> 8n;
 
-		this.tickTable[Number(rowNumber)] ^= 1n << bitNumber;
+		tickTable[Number(rowNumber)] ^= 1n << bitNumber;
 	}
 
 	private static getMostSignificantBit(word: bigint) {
@@ -76,7 +62,7 @@ export class TickTable {
 		return singleBitPos;
 	}
 
-	private uncompressAndBoundTick(tick: bigint) {
+	private static uncompressAndBoundTick(tick: bigint) {
 		const boundedTick = tick * this.tickSpacing;
 		if (boundedTick < this.minTick) {
 			return this.minTick;
@@ -86,9 +72,9 @@ export class TickTable {
 		return boundedTick;
 	}
 
-	async nextTickInTheSameRow(tick: bigint, lte: boolean) {
+	static nextTickInTheSameRow(tickTable: Partial<{[n: number]: bigint}>, tick: bigint, lte: boolean) {
 		// compress and round towards negative infinity if negative
-		tick = tick / this.tickSpacing;
+		tick = tick / TickTable.tickSpacing;
 		if (tick < 0 && tick % this.tickSpacing !== 0n) {
 			tick -= 1n;
 		}
@@ -96,7 +82,7 @@ export class TickTable {
 		if (lte) {
 			const bitNumber = tick & 0xffn;
 			const rowNumber = tick >> 8n;
-			const _row = (await this.getTick(rowNumber)) << (255n - bitNumber);
+			const _row = (TickTable.getTick(tickTable, rowNumber)) << (255n - bitNumber);
 
 			if (_row != 0n) {
 				tick -= 255n - TickTable.getMostSignificantBit(_row);
@@ -110,7 +96,7 @@ export class TickTable {
 			tick += 1n;
 			const bitNumber = tick & 0xffn;
 			const rowNumber = tick >> 8n;
-			const _row = (await this.getTick(rowNumber)) >> bitNumber;
+			const _row = (TickTable.getTick(tickTable, rowNumber)) >> bitNumber;
 
 			if (_row != 0n) {
 				tick += TickTable.getSingleSignificantBit(-_row & _row); // least significant bit

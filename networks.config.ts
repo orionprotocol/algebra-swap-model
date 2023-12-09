@@ -8,7 +8,7 @@ export const defaultNetworks = {
 		tags: ['local'],
 	},
 	localhost: {
-		url: node_url('localhost'),
+		url: "http://127.0.0.1:8545/",
 		tags: ['local'],
 	},
 	bsc_testing: {

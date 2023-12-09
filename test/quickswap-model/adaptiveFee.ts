@@ -1,14 +1,5 @@
-export interface Configuration {
-  alpha1: bigint; // max value of the first sigmoid
-  alpha2: bigint; // max value of the second sigmoid
-  beta1: bigint; // shift along the x-axis for the first sigmoid
-  beta2: bigint; // shift along the x-axis for the second sigmoid
-  gamma1: bigint; // horizontal stretch factor for the first sigmoid
-  gamma2: bigint; // horizontal stretch factor for the second sigmoid
-  volumeBeta: bigint; // shift along the x-axis for the outer volume-sigmoid
-  volumeGamma: bigint; // horizontal stretch factor the outer volume-sigmoid
-  baseFee: bigint; // minimum possible fee
-}
+import { Configuration } from "./types";
+
 
 const UINT16_MAX = 2n**16n - 1n
 

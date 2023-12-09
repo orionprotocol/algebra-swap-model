@@ -35,21 +35,21 @@ library TokenDeltaMath {
 		token0Delta = roundUp
 			? FullMath.divRoundingUp(FullMath.mulDivRoundingUp(priceDelta, liquidityShifted, priceUpper), priceLower)
 			: FullMath.mulDiv(priceDelta, liquidityShifted, priceUpper) / priceLower;
-		console.log("Inside getToken0DeltaRoundUp");
-		console.log("priceLower");
-		console.log(priceLower);
-		console.log("priceUpper");
-		console.log(priceUpper);
-		console.log("liquidity");
-		console.log(liquidity);
-		console.log("roundUp");
-		console.log(roundUp);
-		console.log("priceDelta");
-		console.log(priceDelta);
-		console.log("liquidityShifted");
-		console.log(liquidityShifted);
-		console.log("token0Delta");
-		console.log(token0Delta);
+		//console.log("Inside getToken0DeltaRoundUp");
+		//console.log("priceLower");
+		//console.log(priceLower);
+		//console.log("priceUpper");
+		//console.log(priceUpper);
+		//console.log("liquidity");
+		//console.log(liquidity);
+		//console.log("roundUp");
+		//console.log(roundUp);
+		//console.log("priceDelta");
+		//console.log(priceDelta);
+		//console.log("liquidityShifted");
+		//console.log(liquidityShifted);
+		//console.log("token0Delta");
+		//console.log(token0Delta);
 	}
 
 	/// @notice Gets the token1 delta between two prices
@@ -70,19 +70,19 @@ library TokenDeltaMath {
 		token1Delta = roundUp
 			? FullMath.mulDivRoundingUp(priceDelta, liquidity, Constants.Q96)
 			: FullMath.mulDiv(priceDelta, liquidity, Constants.Q96);
-		console.log("Inside getToken1DeltaRoundUp");
-		console.log("priceLower");
-		console.log(priceLower);
-		console.log("priceUpper");
-		console.log(priceUpper);
-		console.log("liquidity");
-		console.log(liquidity);
-		console.log("roundUp");
-		console.log(roundUp);
-		console.log("priceDelta");
-		console.log(priceDelta);
-		console.log("token1Delta");
-		console.log(token1Delta);
+		//console.log("Inside getToken1DeltaRoundUp");
+		//console.log("priceLower");
+		//console.log(priceLower);
+		//console.log("priceUpper");
+		//console.log(priceUpper);
+		//console.log("liquidity");
+		//console.log(liquidity);
+		//console.log("roundUp");
+		//console.log(roundUp);
+		//console.log("priceDelta");
+		//console.log(priceDelta);
+		//console.log("token1Delta");
+		//console.log(token1Delta);
 	}
 
 	/// @notice Helper that gets signed token0 delta

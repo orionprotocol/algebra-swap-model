@@ -10,6 +10,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const { owner } = await getNamedAccounts();
 
+	// await hre.ethers.provider.send("evm_setIntervalMining", [5000]);
   const poolDeployer = <AlgebraPoolDeployer>await hre.ethers.getContract("AlgebraPoolDeployer", owner)
 
   const res = await deploy('AlgebraFactory', {
@@ -20,6 +21,10 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   });
 
   await (await poolDeployer.setFactory(res.address)).wait()
+
+	console.log("factory ", res.address)
+	console.log("poolDeployer ", await poolDeployer.getAddress())
+	console.log("vault ", ZeroAddress)
 }
 export default func
 func.tags = ["AlgebraFactory"]

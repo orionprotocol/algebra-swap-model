@@ -1,84 +1,42 @@
 import assert from 'assert';
 import {BigNumberish} from 'ethers';
-import {AdaptiveFee, Configuration} from './adaptiveFee';
-import {ethers} from 'hardhat';
-import {AlgebraPool, DataStorageOperator as DataStorageOperatorContract} from '../../typechain';
+import {AdaptiveFee} from './adaptiveFee';
+import { Timepoint, Configuration, FeeConfig } from './types';
 
 const WINDOW = 60n * 60n * 24n;
 const UINT16_MODULO = 65536n;
-interface Timepoint {
-	initialized: boolean; // whether or not the timepoint is initialized
-	blockTimestamp: bigint; // the block timestamp of th: biginte
-	tickCumulative: bigint; // the tick accumulator, i.e. tick * time elapsed since the pool was first initialized
-	secondsPerLiquidityCumulative: bigint; // the seconds per liquidity since the pool was first initialized
-	volatilityCumulative: bigint; // the volatility accumulator; overflow after ~34800 years is desired :)
-	averageTick: bigint; // average tick at this blockTimestamp
-	volumePerLiquidityCumulative: bigint; // the gmean(volumes)/liquidity accumulator
-}
-
-interface FeeConfig {
-	alpha1: bigint;
-	alpha2: bigint;
-	beta1: bigint;
-	beta2: bigint;
-	gamma1: bigint;
-	gamma2: bigint;
-	volumeBeta: bigint;
-	volumeGamma: bigint;
-	baseFee: bigint;
-}
-
 export class DataStorageOperator {
 	timepoints: Timepoint[];
 	feeConfig: Configuration;
 	poolAddress: string;
 
-	constructor(poolAddress: string) {
-		this.timepoints = new Array<Timepoint>(Number(UINT16_MODULO));
-		this.feeConfig = {} as Configuration;
-		this.poolAddress = poolAddress;
-	}
-
-	/// @notice Initialize the dataStorage array by writing the first slot. Called once for the lifecycle of the timepoints array
-	/// @param self The stored dataStorage array
-	/// @param time The time of the dataStorage initialization, via block.timestamp truncated to uint32
-	/// @param tick Initial tick
-	initialize(time: bigint, tick: bigint) {
-		this.timepoints[0].initialized = true;
-		this.timepoints[0].blockTimestamp = time;
-		this.timepoints[0].averageTick = tick;
-	}
-
-	async getFeeConfig() {
-		const pool = <AlgebraPool>await ethers.getContractAt('AlgebraPool', this.poolAddress);
-		const dataStorageContract = <DataStorageOperatorContract>(
-			await ethers.getContractAt('DataStorageOperator', await pool.dataStorageOperator())
-		);
-		return ((await dataStorageContract.feeConfig()) as any).toObject() as FeeConfig;
-	}
-
-	async getTimepoint(index: BigNumberish) {
+	static getTimepoint(timepoints: Timepoint[], index: BigNumberish) {
 		index = BigInt(index) % 2n ** 16n;
-		const pool = <AlgebraPool>await ethers.getContractAt('AlgebraPool', this.poolAddress);
-		let timepoint = this.timepoints[Number(index)];
-		if (timepoint == undefined) {
-			timepoint = ((await pool.timepoints(index)) as any).toObject() as Timepoint;
+		let timepoint = timepoints[Number(index)];
+		if (timepoint === undefined) {
+			timepoint = {
+				initialized: false,
+				blockTimestamp: 0n, // the block timestamp of th: biginte
+				tickCumulative: 0n, // the tick accumulator, i.e. tick * time elapsed since the pool was first initialized
+				secondsPerLiquidityCumulative: 0n, // the seconds per liquidity since the pool was first initialized
+				volatilityCumulative: 0n, // the volatility accumulator, overflow after ~34800 years is desired :)
+				averageTick: 0n, // average tick at this blockTimestamp
+				volumePerLiquidityCumulative: 0n, // the gmean(volumes)/liquidity accumulator
+			}
 		}
-		// console.log("DataStorageOperator::getTimepoint ", index)
 		return timepoint;
 	}
 
-	async write(
+	static write(
+		timepoints: Timepoint[],
 		index: bigint,
 		blockTimestamp: bigint,
 		tick: bigint,
 		liquidity: bigint,
 		volumePerLiquidity: bigint
-	): Promise<bigint> {
-		let _last = await this.getTimepoint(index);
+	): bigint {
+		let _last = DataStorageOperator.getTimepoint(timepoints, index);
 		// early return if we've already written an timepoint this block
-		console.log('_last');
-		console.log(_last);
 		if (_last.blockTimestamp == blockTimestamp) {
 			return index;
 		}
@@ -89,11 +47,12 @@ export class DataStorageOperator {
 
 		let oldestIndex = 0n;
 		// check if we have overflow in the past
-		if ((await this.getTimepoint(indexUpdated)).initialized) {
+		if ((DataStorageOperator.getTimepoint(timepoints, indexUpdated)).initialized) {
 			oldestIndex = indexUpdated;
 		}
 
-		const avgTick = await this._getAverageTick(
+		const avgTick = DataStorageOperator._getAverageTick(
+			timepoints,
 			blockTimestamp,
 			tick,
 			index,
@@ -103,14 +62,14 @@ export class DataStorageOperator {
 		);
 		let prevTick = tick;
 		if (index != oldestIndex) {
-			const _prevLast = await this.getTimepoint(index - 1n); // considering index underflow
+			const _prevLast = DataStorageOperator.getTimepoint(timepoints, index - 1n); // considering index underflow
 			const _prevLastBlockTimestamp = _prevLast.blockTimestamp;
 			const _prevLastTickCumulative = _prevLast.tickCumulative;
 			prevTick =
 				(last.tickCumulative - _prevLastTickCumulative) / (last.blockTimestamp - _prevLastBlockTimestamp);
 		}
 
-		this.timepoints[Number(indexUpdated)] = DataStorageOperator.createNewTimepoint(
+		timepoints[Number(indexUpdated)] = DataStorageOperator.createNewTimepoint(
 			last,
 			blockTimestamp,
 			tick,
@@ -121,13 +80,13 @@ export class DataStorageOperator {
 		);
 		console.log('NewTimepointCreated');
 		console.log('{');
-		console.log(this.timepoints[Number(indexUpdated)].initialized);
-		console.log(this.timepoints[Number(indexUpdated)].blockTimestamp);
-		console.log(this.timepoints[Number(indexUpdated)].tickCumulative);
-		console.log(this.timepoints[Number(indexUpdated)].secondsPerLiquidityCumulative);
-		console.log(this.timepoints[Number(indexUpdated)].volatilityCumulative);
-		console.log(this.timepoints[Number(indexUpdated)].averageTick);
-		console.log(this.timepoints[Number(indexUpdated)].volumePerLiquidityCumulative);
+		console.log(timepoints[Number(indexUpdated)].initialized);
+		console.log(timepoints[Number(indexUpdated)].blockTimestamp);
+		console.log(timepoints[Number(indexUpdated)].tickCumulative);
+		console.log(timepoints[Number(indexUpdated)].secondsPerLiquidityCumulative);
+		console.log(timepoints[Number(indexUpdated)].volatilityCumulative);
+		console.log(timepoints[Number(indexUpdated)].averageTick);
+		console.log(timepoints[Number(indexUpdated)].volumePerLiquidityCumulative);
 		console.log('}');
 
 		return indexUpdated;
@@ -141,16 +100,17 @@ export class DataStorageOperator {
 
 	/// @dev guaranteed that the result is within the bounds of int24
 	/// returns int256 for fuzzy tests
-	private async _getAverageTick(
+	private static _getAverageTick(
+		timepoints: Timepoint[],
 		time: bigint,
 		tick: bigint,
 		index: bigint,
 		oldestIndex: bigint,
 		lastTimestamp: bigint,
 		lastTickCumulative: bigint
-	): Promise<bigint> {
-		const oldestTimestamp = (await this.getTimepoint(oldestIndex)).blockTimestamp;
-		const oldestTickCumulative = (await this.getTimepoint(oldestIndex)).tickCumulative;
+	) {
+		const oldestTimestamp = (DataStorageOperator.getTimepoint(timepoints, oldestIndex)).blockTimestamp;
+		const oldestTickCumulative = (DataStorageOperator.getTimepoint(timepoints, oldestIndex)).tickCumulative;
 		console.log('_getAverageTick');
 		console.log('time');
 		console.log(time);
@@ -168,7 +128,7 @@ export class DataStorageOperator {
 		if (DataStorageOperator.lteConsideringOverflow(oldestTimestamp, time - WINDOW, time)) {
 			if (DataStorageOperator.lteConsideringOverflow(lastTimestamp, time - WINDOW, time)) {
 				index = (index - 1n) % UINT16_MODULO; // considering underflow
-				const startTimepoint = await this.getTimepoint(index);
+				const startTimepoint = DataStorageOperator.getTimepoint(timepoints, index);
 				console.log('startTimepoint');
 				console.log(startTimepoint);
 				avgTick = startTimepoint.initialized
@@ -176,7 +136,7 @@ export class DataStorageOperator {
 					  (lastTimestamp - startTimepoint.blockTimestamp)
 					: tick;
 			} else {
-				const startOfWindow = await this.getSingleTimepoint(time, WINDOW, tick, index, 0n);
+				const startOfWindow = DataStorageOperator.getSingleTimepoint(timepoints, time, WINDOW, tick, index, 0n);
 
 				//    current-WINDOW  last   current
 				// _________*____________*_______*_
@@ -192,17 +152,18 @@ export class DataStorageOperator {
 		return avgTick;
 	}
 
-	async getSingleTimepoint(time: bigint, secondsAgo: bigint, tick: bigint, index: bigint, liquidity: bigint) {
+	static getSingleTimepoint(timepoints: Timepoint[], time: bigint, secondsAgo: bigint, tick: bigint, index: bigint, liquidity: bigint) {
 		let oldestIndex = 0n;
 		// check if we have overflow in the past
 		const nextIndex = index + 1n; // considering overflow
-		if ((await this.getTimepoint(nextIndex)).initialized) {
+		if (timepoints[Number(nextIndex)] && timepoints[Number(nextIndex)].initialized) {
 			oldestIndex = nextIndex;
 		}
-		return this._getSingleTimepoint(time, secondsAgo, tick, index, oldestIndex, liquidity);
+		return DataStorageOperator._getSingleTimepoint(timepoints, time, secondsAgo, tick, index, oldestIndex, liquidity);
 	}
 
-	async _getSingleTimepoint(
+	private static _getSingleTimepoint(
+		timepoints: Timepoint[],
 		time: bigint,
 		secondsAgo: bigint,
 		tick: bigint,
@@ -215,16 +176,17 @@ export class DataStorageOperator {
 		// if target is newer than last timepoint
 		if (
 			secondsAgo == 0n ||
-			DataStorageOperator.lteConsideringOverflow((await this.getTimepoint(index)).blockTimestamp, target, time)
+			DataStorageOperator.lteConsideringOverflow((DataStorageOperator.getTimepoint(timepoints, index)).blockTimestamp, target, time)
 		) {
-			const last = await this.getTimepoint(index);
-			console.log('last timpoint');
+			const last = DataStorageOperator.getTimepoint(timepoints, index);
+			console.log('last timepoint');
 			console.log(last);
 			if (last.blockTimestamp == target) {
 				return last;
 			} else {
 				// otherwise, we need to add new timepoint
-				const avgTick = await this._getAverageTick(
+				const avgTick = DataStorageOperator._getAverageTick(
+					timepoints,
 					time,
 					tick,
 					index,
@@ -235,7 +197,7 @@ export class DataStorageOperator {
 				let prevTick = tick;
 				{
 					if (index != oldestIndex) {
-						const _prevLast = await this.getTimepoint(index - 1n); // considering index underflow
+						const _prevLast = DataStorageOperator.getTimepoint(timepoints, index - 1n); // considering index underflow
 						prevTick =
 							(last.tickCumulative - _prevLast.tickCumulative) /
 							(last.blockTimestamp - _prevLast.blockTimestamp);
@@ -247,13 +209,13 @@ export class DataStorageOperator {
 
 		assert(
 			DataStorageOperator.lteConsideringOverflow(
-				(await this.getTimepoint(oldestIndex)).blockTimestamp,
+				(DataStorageOperator.getTimepoint(timepoints, oldestIndex)).blockTimestamp,
 				target,
 				time
 			),
 			'OLD'
 		);
-		const [beforeOrAt, atOrAfter] = await this.binarySearch(time, target, index, oldestIndex);
+		const [beforeOrAt, atOrAfter] = DataStorageOperator.binarySearch(timepoints, time, target, index, oldestIndex);
 
 		if (target == atOrAfter.blockTimestamp) {
 			return atOrAfter; // we're at the right boundary
@@ -282,12 +244,13 @@ export class DataStorageOperator {
 		return beforeOrAt;
 	}
 
-	async binarySearch(
+	static binarySearch(
+		timepoints: Timepoint[],
 		time: bigint,
 		target: bigint,
 		lastIndex: bigint,
 		oldestIndex: bigint
-	): Promise<[beforeOrAt: Timepoint, atOrAfter: Timepoint]> {
+	): [beforeOrAt: Timepoint, atOrAfter: Timepoint] {
 		let left = oldestIndex; // oldest timepoint
 		let right = lastIndex >= oldestIndex ? lastIndex : lastIndex + UINT16_MODULO; // newest timepoint considering one index overflow
 		let current = (left + right) >> 1n; // "middle" point between the boundaries
@@ -295,12 +258,12 @@ export class DataStorageOperator {
 		let beforeOrAt;
 		let atOrAfter;
 		do {
-			beforeOrAt = await this.getTimepoint(current); // checking the "middle" point between the boundaries
+			beforeOrAt = DataStorageOperator.getTimepoint(timepoints, current); // checking the "middle" point between the boundaries
 			const [initializedBefore, timestampBefore] = [beforeOrAt.initialized, beforeOrAt.blockTimestamp];
 			if (initializedBefore) {
 				if (DataStorageOperator.lteConsideringOverflow(timestampBefore, target, time)) {
 					// is current point before or at `target`?
-					atOrAfter = await this.getTimepoint(current + 1n); // checking the next point after "middle"
+					atOrAfter = DataStorageOperator.getTimepoint(timepoints, current + 1n); // checking the next point after "middle"
 					const [initializedAfter, timestampAfter] = [atOrAfter.initialized, atOrAfter.blockTimestamp];
 					if (initializedAfter) {
 						if (DataStorageOperator.lteConsideringOverflow(target, timestampAfter, time)) {
@@ -368,26 +331,27 @@ export class DataStorageOperator {
 		const volatility = (K ** 2n * sumOfSquares + 6n * B * K * sumOfSequence + 6n * dt * B ** 2n) / (6n * dt ** 2n);
 		return volatility;
 	}
-	async getAverages(
+	static getAverages(
+		timepoints: Timepoint[],
 		time: bigint,
 		tick: bigint,
 		index: bigint,
 		liquidity: bigint
-	): Promise<[volatilityAverage: bigint, volumePerLiqAverage: bigint]> {
+	): [volatilityAverage: bigint, volumePerLiqAverage: bigint] {
 		let oldestIndex = 0n;
-		let oldest = await this.getTimepoint(0n);
+		let oldest = DataStorageOperator.getTimepoint(timepoints, 0n);
 		const nextIndex = (index + 1n) % 2n ** 16n; // considering overflow
-		if ((await this.getTimepoint(nextIndex)).initialized) {
-			oldest = await this.getTimepoint(nextIndex);
+		if ((DataStorageOperator.getTimepoint(timepoints, nextIndex)).initialized) {
+			oldest = DataStorageOperator.getTimepoint(timepoints, nextIndex);
 			oldestIndex = nextIndex;
 		}
 
-		const endOfWindow = await this._getSingleTimepoint(time, 0n, tick, index, oldestIndex, liquidity);
+		const endOfWindow = DataStorageOperator._getSingleTimepoint(timepoints, time, 0n, tick, index, oldestIndex, liquidity);
 		console.log('endOfWindow');
 		console.log(endOfWindow);
 		const oldestTimestamp = oldest.blockTimestamp;
 		if (DataStorageOperator.lteConsideringOverflow(oldestTimestamp, time - WINDOW, time)) {
-			const startOfWindow = await this._getSingleTimepoint(time, WINDOW, tick, index, oldestIndex, liquidity);
+			const startOfWindow = DataStorageOperator._getSingleTimepoint(timepoints, time, WINDOW, tick, index, oldestIndex, liquidity);
 			console.log('startOfWindow');
 			console.log(startOfWindow);
 			return [
@@ -404,8 +368,9 @@ export class DataStorageOperator {
 		}
 		throw 'END OF GET AVERAGES';
 	}
+
 	/// @inheritdoc IDataStorageOperator
-	async getFee(_time: bigint, _tick: bigint, _index: bigint, _liquidity: bigint) {
+	static getFee(feeConfig: FeeConfig, timepoints: Timepoint[], _time: bigint, _tick: bigint, _index: bigint, _liquidity: bigint) {
 		console.log('_time');
 		console.log(_time);
 		console.log('_tick');
@@ -414,12 +379,11 @@ export class DataStorageOperator {
 		console.log(_index);
 		console.log('_liquidity');
 		console.log(_liquidity);
-		const [volatilityAverage, volumePerLiqAverage] = await this.getAverages(_time, _tick, _index, _liquidity);
+		const [volatilityAverage, volumePerLiqAverage] = DataStorageOperator.getAverages(timepoints, _time, _tick, _index, _liquidity);
 		console.log('volatilityAverage');
 		console.log(volatilityAverage);
 		console.log('volumePerLiqAverage');
 		console.log(volumePerLiqAverage);
-		const feeConfig = await this.getFeeConfig();
 		return AdaptiveFee.getFee(volatilityAverage / 15n, volumePerLiqAverage, feeConfig);
 	}
 }

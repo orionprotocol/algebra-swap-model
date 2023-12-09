@@ -56,7 +56,7 @@ contract AlgebraFactory is IAlgebraFactory {
 
     poolDeployer = _poolDeployer;
     vaultAddress = _vaultAddress;
-    console.logBytes32(keccak256(abi.encodePacked(type(AlgebraPool).creationCode)));
+    //console.logBytes32(keccak256(abi.encodePacked(type(AlgebraPool).creationCode)));
   }
 
   /// @inheritdoc IAlgebraFactory

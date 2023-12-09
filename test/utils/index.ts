@@ -1,4 +1,4 @@
-import { Contract, Signer } from 'ethers';
+import { BaseContract, Signer } from 'ethers';
 import { ethers } from 'hardhat';
 
 export const DAY = 86400
@@ -8,7 +8,7 @@ export interface User {
   signer: Signer
 }
 
-export async function setupUsers<T extends { [contractName: string]: Contract }>(
+export async function setupUsers<T extends { [contractName: string]: BaseContract }>(
   addresses: string[],
   contracts: T
 ): Promise<(User & T)[]> {
@@ -19,7 +19,7 @@ export async function setupUsers<T extends { [contractName: string]: Contract }>
   return users;
 }
 
-export async function setupNamedUsers<T extends { [contractName: string]: Contract }, L extends { [name: string]: string }>(
+export async function setupNamedUsers<T extends { [contractName: string]: BaseContract }, L extends { [name: string]: string }>(
   namedAddresses: L,
   contracts: T
 ): Promise<{ [name in keyof L]: User & T }> {
@@ -30,7 +30,7 @@ export async function setupNamedUsers<T extends { [contractName: string]: Contra
   return namedUsers;
 }
 
-export async function setupUser<T extends { [contractName: string]: Contract }>(
+export async function setupUser<T extends { [contractName: string]: BaseContract }>(
   address: string,
   contracts: T
 ): Promise<User & T> {

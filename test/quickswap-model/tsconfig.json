@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es2021",
+    "module": "commonjs",
+    "strict": false,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "forceConsistentCasingInFileNames": true,
+    "downlevelIteration": true,
+    "outDir": "dist"
+  },
+  "include": [
+		"./*"
+  ]
+}

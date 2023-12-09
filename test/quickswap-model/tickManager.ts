@@ -1,53 +1,9 @@
-import { BigNumberish } from "ethers";
-import { AlgebraPool } from "../../typechain";
-import { ethers } from "hardhat"
-import {BlobOptions} from 'buffer';
 import {LiquidityMath} from './liquidityMath';
 import {Constants} from './constants';
+import { Tick } from "./types";
 
-interface Tick {
-  liquidityTotal: bigint; // the total position liquidity that references this tick
-  liquidityDelta: bigint; // amount of net liquidity added (subtracted) when tick is crossed left-right (right-left),
-  // fee growth per unit of liquidity on the _other_ side of this tick (relative to the current tick)
-  // only has relative meaning, not absolute — the value depends on when the tick is initialized
-  outerFeeGrowth0Token: bigint;
-  outerFeeGrowth1Token: bigint;
-  outerTickCumulative: bigint; // the cumulative tick value on the other side of the tick
-  outerSecondsPerLiquidity: bigint; // the seconds per unit of liquidity on the _other_ side of current tick, (relative meaning)
-  outerSecondsSpent: bigint; // the seconds spent on the other side of the current tick, only has relative meaning
-  initialized: boolean; // these 8 bits are set to prevent fresh sstores when crossing newly initialized ticks
-}
 
 export class TickManager {
-	ticks: Partial<{[n: number]: Tick}>;
-	poolAddress: string;
-
-	constructor(poolAddress: string) {
-		this.ticks = {};
-		this.poolAddress = poolAddress;
-	}
-
-	async getTick(index: BigNumberish) {
-		const pool = <AlgebraPool>await ethers.getContractAt('AlgebraPool', this.poolAddress);
-		let tick = this.ticks[Number(index)];
-		if (tick === undefined) {
-			tick = await pool.ticks(index);
-		}
-		if (tick == undefined) {
-			return {
-				liquidityTotal: 0n,
-				liquidityDelta: 0n,
-				outerFeeGrowth0Token: 0n,
-				outerFeeGrowth1Token: 0n,
-				outerTickCumulative: 0n,
-				outerSecondsPerLiquidity: 0n,
-				outerSecondsSpent: 0n,
-				initialized: false,
-			};
-		}
-		return tick;
-	}
-
 	/// @notice Retrieves fee growth data
 	/// @param self The mapping containing all tick information for initialized ticks
 	/// @param bottomTick The lower tick boundary of the position
@@ -57,7 +13,8 @@ export class TickManager {
 	/// @param totalFeeGrowth1Token The all-time global fee growth, per unit of liquidity, in token1
 	/// @return innerFeeGrowth0Token The all-time fee growth in token0, per unit of liquidity, inside the position's tick boundaries
 	/// @return innerFeeGrowth1Token The all-time fee growth in token1, per unit of liquidity, inside the position's tick boundaries
-	getInnerFeeGrowth(
+	static getInnerFeeGrowth(
+		ticks: Partial<{[n: number]: Tick}>,
 		bottomTick: bigint,
 		topTick: bigint,
 		currentTick: bigint,
@@ -65,8 +22,8 @@ export class TickManager {
 		totalFeeGrowth1Token: bigint
 	): [innerFeeGrowth0Token: bigint, innerFeeGrowth1Token: bigint] {
 		let innerFeeGrowth0Token: bigint, innerFeeGrowth1Token: bigint;
-		const lower = this.ticks[Number(bottomTick)];
-		const upper = this.ticks[Number(topTick)];
+		const lower = ticks[Number(bottomTick)];
+		const upper = ticks[Number(topTick)];
 
 		if (currentTick < topTick) {
 			if (currentTick >= bottomTick) {
@@ -97,7 +54,8 @@ export class TickManager {
 	/// @param time The current block timestamp cast to a uint32
 	/// @param upper true for updating a position's upper tick, or false for updating a position's lower tick
 	/// @return flipped Whether the tick was flipped from initialized to uninitialized, or vice versa
-	update(
+	static update(
+		ticks: Partial<{[n: number]: Tick}>,
 		tick: bigint,
 		currentTick: bigint,
 		liquidityDelta: bigint,
@@ -108,7 +66,7 @@ export class TickManager {
 		time: bigint,
 		upper: boolean
 	): boolean {
-		let data = this.ticks[Number(tick)];
+		let data = ticks[Number(tick)];
 
 		const liquidityDeltaBefore = data.liquidityDelta;
 		const liquidityTotalBefore = data.liquidityTotal;
@@ -148,7 +106,8 @@ export class TickManager {
 	/// @param tickCumulative The all-time global cumulative tick
 	/// @param time The current block.timestamp
 	/// @return liquidityDelta The amount of liquidity added (subtracted) when tick is crossed from left to right (right to left)
-	async cross(
+	static async cross(
+		ticks: Partial<{[n: number]: Tick}>,
 		tick: bigint,
 		totalFeeGrowth0Token: bigint,
 		totalFeeGrowth1Token: bigint,
@@ -156,7 +115,7 @@ export class TickManager {
 		tickCumulative: bigint,
 		time: bigint
 	) {
-		const data = await this.getTick(tick);
+		const data = ticks[Number(tick)];
 
 		data.outerSecondsSpent = time - data.outerSecondsSpent;
 		data.outerSecondsPerLiquidity = secondsPerLiquidityCumulative - data.outerSecondsPerLiquidity;
