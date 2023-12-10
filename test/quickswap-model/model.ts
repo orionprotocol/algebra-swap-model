@@ -1,30 +1,70 @@
-import {TickTable} from './tickTable';
-import {TickMath} from './tickMath';
-import {PriceMovementMath} from './priceMovementMath';
-import {Constants} from './constants';
-import {FullMath} from './FullMath';
-import {TickManager} from './tickManager';
-import {LiquidityMath} from './liquidityMath';
-import {DataStorageOperator} from './dataStorageOperator';
-import {BigNumberish} from 'ethers';
-import {SwapCalculationCache, PriceMovementCache, Storage, Timepoint, Configuration, InitializeEvent, MintEvent, BurnEvent} from './types';
+import { TickTable } from "./tickTable";
+import { MAX_SQRT_RATIO, MIN_SQRT_RATIO, TickMath } from "./tickMath";
+import { PriceMovementMath } from "./priceMovementMath";
+import { Constants } from "./constants";
+import { FullMath } from "./FullMath";
+import { TickManager } from "./tickManager";
+import { LiquidityMath } from "./liquidityMath";
+import { DataStorageOperator } from "./dataStorageOperator";
+import { BigNumberish } from "ethers";
+import {
+	SwapCalculationCache,
+	PriceMovementCache,
+	Storage,
+	Timepoint,
+	InitializeEvent,
+	MintEvent,
+	BurnEvent,
+	FeeConfig,
+	SwapEvent,
+} from "./types";
 
-export class Pool {
+export class AlgebraV1Pool {
 	poolAddress: string;
-	storage: Storage;
+	storage: Storage = {
+		token0: "0x",
+		token1: "0x",
+		globalState: {
+			price: 0n,
+			tick: 0n,
+			fee: Constants.BASE_FEE,
+			timepointIndex: 0n,
+			communityFeeToken0: 0n,
+			communityFeeToken1: 0n,
+			unlocked: false,
+		},
+		liquidity: 0n,
+		totalFeeGrowth0Token: 0n,
+		totalFeeGrowth1Token: 0n,
+		volumePerLiquidityInBlock: 0n,
+		liquidityCooldown: 0n,
+		activeIncentive: "",
+		tickSpacing: Number(Constants.TICK_SPACING),
+		ticks: {},
+		tickTable: {},
+		timepoints: new Array<Timepoint>(Number(Constants.UINT16_MODULO)),
+		feeConfig: {
+			alpha1: 2900n,
+			alpha2: 12000n,
+			beta1: 360n,
+			beta2: 60000n,
+			gamma1: 59n,
+			gamma2: 8500n,
+			volumeBeta: 0n,
+			volumeGamma: 10n,
+			baseFee: 100n,
+		},
+	};
 	timestamp: number;
 	blockNumber: number;
 
-	constructor(poolAddress: string, storage: Storage) {
-		if (storage != undefined) {
-			this.storage = storage;
-		} else {
-			this.storage.tickTable = {};
-			this.storage.ticks = {};
-			this.storage.timepoints = new Array<Timepoint>(Number(Constants.UINT16_MODULO));
-			this.storage.feeConfig = {} as Configuration;
+	constructor(storage: Storage) {
+		for (const key in this.storage) {
+			if (storage[key] !== undefined && storage[key] !== null) {
+				this.storage[key] = storage[key]
+			}
 		}
-		this.poolAddress = poolAddress;
+		this.poolAddress = "0x"; //poolAddress;
 	}
 
 	getTick(index: BigNumberish) {
@@ -50,6 +90,23 @@ export class Pool {
 			return 0n;
 		}
 		return tick;
+	}
+
+	getTimepoint(index: BigNumberish) {
+		index = BigInt(index) % 2n ** 16n;
+		let timepoint = this.storage.timepoints[Number(index)];
+		if (timepoint === undefined || timepoint == null) {
+			timepoint = {
+				initialized: false,
+				blockTimestamp: 0n, // the block timestamp of th: biginte
+				tickCumulative: 0n, // the tick accumulator, i.e. tick * time elapsed since the pool was first initialized
+				secondsPerLiquidityCumulative: 0n, // the seconds per liquidity since the pool was first initialized
+				volatilityCumulative: 0n, // the volatility accumulator, overflow after ~34800 years is desired :)
+				averageTick: 0n, // average tick at this blockTimestamp
+				volumePerLiquidityCumulative: 0n, // the gmean(volumes)/liquidity accumulator
+			}
+		}
+		return timepoint;
 	}
 
 	calculateSwap(zeroToOne: boolean, amountRequired: bigint, limitSqrtPrice: bigint) {
@@ -82,7 +139,7 @@ export class Pool {
 
 		cache.fee = globalState.fee;
 		cache.timepointIndex = globalState.timepointIndex;
-		cache.volumePerLiquidityInBlock = this.storage.volumePerLiquidityInBlock
+		cache.volumePerLiquidityInBlock = this.storage.volumePerLiquidityInBlock;
 		cache.amountRequiredInitial = amountRequired;
 		cache.exactInput = amountRequired > 0n;
 
@@ -112,17 +169,6 @@ export class Pool {
 		//   }
 		// }
 
-		console.log('dataStorageOperator.write params');
-		console.log('cache.timepointIndex');
-		console.log(cache.timepointIndex);
-		console.log('BigInt(blockTimestamp)');
-		console.log(BigInt(blockTimestamp));
-		console.log('cache.startTick');
-		console.log(cache.startTick);
-		console.log('result.currentLiquidity');
-		console.log(result.currentLiquidity);
-		console.log('cache.volumePerLiquidityInBlock');
-		console.log(cache.volumePerLiquidityInBlock);
 
 		const newTimepointIndex = DataStorageOperator.write(
 			this.storage.timepoints,
@@ -132,8 +178,6 @@ export class Pool {
 			result.currentLiquidity,
 			cache.volumePerLiquidityInBlock
 		);
-		console.log('newTimepointIndex');
-		console.log(newTimepointIndex);
 		// new timepoint appears only for first swap in block
 		if (newTimepointIndex != cache.timepointIndex) {
 			cache.timepointIndex = newTimepointIndex;
@@ -147,41 +191,26 @@ export class Pool {
 				result.currentLiquidity
 			);
 			// cache.fee = 100n
-			console.log('cache.fee');
-			console.log(cache.fee);
 		}
 		let step = {} as PriceMovementCache;
 		while (true) {
-			console.log('WHILE ITERATION');
-			step.stepSqrtPrice = globalState.price;
+			// //console.log("WHILE ITERATION");
+			step.stepSqrtPrice = result.currentPrice;
 			[step.nextTick, step.initialized] = TickTable.nextTickInTheSameRow(
 				this.storage.tickTable,
 				result.currentTick,
 				zeroToOne
 			);
 			step.nextTickPrice = TickMath.getSqrtRatioAtTick(step.nextTick);
-			console.log('step.nextTick');
-			console.log(step.nextTick);
-			console.log('step.nextTickPrice');
-			console.log(step.nextTickPrice);
+			//console.log("===============================================");
+			//console.log("step.nextTick");
+			//console.log(step.nextTick);
+			//console.log("step.initialized");
+			//console.log(step.initialized);
+			//console.log("step.nextTickPrice")
+			//console.log(step.nextTickPrice)
+			//console.log("===============================================");
 
-			console.log('movePriceTowardsTarget params');
-			console.log('zeroToOne');
-			console.log(zeroToOne);
-			console.log('currentPrice');
-			console.log(result.currentPrice);
-			console.log('nextTickPrice');
-			console.log(
-				zeroToOne == step.nextTickPrice < limitSqrtPrice // move the price to the target or to the limit
-					? limitSqrtPrice
-					: step.nextTickPrice
-			);
-			console.log('currentLiquidity');
-			console.log(result.currentLiquidity);
-			console.log('amountRequired');
-			console.log(amountRequired);
-			console.log('cache.fee');
-			console.log(cache.fee);
 			({
 				resultPrice: result.currentPrice,
 				input: step.input,
@@ -189,7 +218,7 @@ export class Pool {
 				feeAmount: step.feeAmount,
 			} = PriceMovementMath.movePriceTowardsTarget(
 				zeroToOne,
-				globalState.price,
+				result.currentPrice,
 				zeroToOne == step.nextTickPrice < limitSqrtPrice // move the price to the target or to the limit
 					? limitSqrtPrice
 					: step.nextTickPrice,
@@ -197,16 +226,18 @@ export class Pool {
 				amountRequired,
 				cache.fee
 			));
-			console.log('movePriceTowardsTarget result');
-			console.log('result.currentPrice');
-			console.log(result.currentPrice);
-			console.log('step.input');
-			console.log(step.input);
-			console.log('step.output');
-			console.log(step.output);
-			console.log('step.feeAmount');
-			console.log(step.feeAmount);
-			// console.log(result.currentPrice, step.input, step.output, step.feeAmount)
+			//console.log("===============================================");
+			//console.log("result movePriceTowardsTarget");
+			//console.log("result.currentPrice")
+			//console.log(result.currentPrice)
+			//console.log("step.input");
+			//console.log(step.input);
+			//console.log("step.output");
+			//console.log(step.output);
+			//console.log("step.feeAmount");
+			//console.log(step.feeAmount);
+			//console.log("===============================================");
+
 			if (cache.exactInput) {
 				amountRequired -= step.input + step.feeAmount; // decrease remaining input amount
 				cache.amountCalculated -= step.output; // decrease calculated output amount
@@ -214,42 +245,31 @@ export class Pool {
 				amountRequired += step.output; // increase remaining output amount (since its negative)
 				cache.amountCalculated += step.input + step.feeAmount; // increase calculated input amount
 			}
-			console.log('amountRequired');
-			console.log(amountRequired);
-			console.log('step.input');
-			console.log(step.input);
-			console.log('step.output');
-			console.log(step.output);
-			console.log('step.feeAmount');
-			console.log(step.feeAmount);
+			//console.log("amountRequired");
+			//console.log(amountRequired);
+			//console.log("deduct from amountRequired");
+			//console.log(step.input + step.feeAmount);
 			if (cache.communityFee > 0) {
 				const delta = (step.feeAmount * cache.communityFee) / Constants.COMMUNITY_FEE_DENOMINATOR;
 				step.feeAmount -= delta;
 				result.communityFeeAmount += delta;
 			}
-			console.log('step.feeAmount');
-			console.log(step.feeAmount);
-			console.log('result.communityFeeAmount');
-			console.log(result.communityFeeAmount);
 
 			if (result.currentLiquidity > 0)
 				cache.totalFeeGrowth += FullMath.mulDiv(step.feeAmount, Constants.Q128, result.currentLiquidity);
 
-			console.log('result.currentLiquidity');
-			console.log(result.currentLiquidity);
-			console.log('result.currentPrice');
-			console.log(result.currentPrice);
-			console.log('step.nextTickPrice');
-			console.log(step.nextTickPrice);
-
+			//console.log("========================================================");
+			//console.log("Model currentPrice");
+			//console.log(result.currentPrice);
+			//console.log("Model nextTickPrice");
+			//console.log(step.nextTickPrice);
+			//console.log(this.timestamp);
+			//console.log("========================================================");
 			if (result.currentPrice == step.nextTickPrice) {
-				console.log('inside if result.currentPrice == step.nextTickPrice');
 				// if the reached tick is initialized then we need to cross it
 				if (step.initialized) {
-					console.log('inside step.initialized');
 					// once at a swap we have to get the last timepoint of the observation
 					if (!cache.computedLatestTimepoint) {
-						console.log('inside !cache.computedLatestTimepoint');
 						({
 							tickCumulative: cache.tickCumulative,
 							secondsPerLiquidityCumulative: cache.secondsPerLiquidityCumulative,
@@ -262,16 +282,14 @@ export class Pool {
 							result.currentLiquidity // currentLiquidity can be changed only after computedLatestTimepoint
 						));
 						cache.computedLatestTimepoint = true;
-						cache.totalFeeGrowthB = zeroToOne
-							? this.storage.totalFeeGrowth1Token
-							: this.storage.totalFeeGrowth0Token;
+						cache.totalFeeGrowthB = zeroToOne ? this.storage.totalFeeGrowth1Token : this.storage.totalFeeGrowth0Token;
 					}
 					// every tick cross is needed to be duplicated in a virtual pool
 					// if (cache.incentiveStatus != 0) {
 					//   IAlgebraVirtualPool(activeIncentive).cross(step.nextTick, zeroToOne);
 					// }
 
-					let liquidityDelta;
+					let liquidityDelta: bigint;
 					if (zeroToOne) {
 						liquidityDelta = -TickManager.cross(
 							this.storage.ticks,
@@ -294,6 +312,10 @@ export class Pool {
 						);
 					}
 
+					//console.log("========================================================");
+					//console.log("Contract liquidityDelta");
+					//console.log(liquidityDelta);
+					//console.log("========================================================");
 					result.currentLiquidity = LiquidityMath.addDelta(result.currentLiquidity, liquidityDelta);
 				}
 
@@ -303,7 +325,14 @@ export class Pool {
 				result.currentTick = TickMath.getTickAtSqrtRatio(result.currentPrice);
 				break; // since the price hasn't reached the target, amountRequired should be 0
 			}
-
+			//console.log("========================================================");
+			//console.log("amountRequired");
+			//console.log(amountRequired);
+			//console.log("result.currentPrice");
+			//console.log(result.currentPrice);
+			//console.log("limitSqrtPrice");
+			//console.log(limitSqrtPrice);
+			//console.log("========================================================");
 			// check stop condition
 			if (amountRequired == 0n || result.currentPrice == limitSqrtPrice) {
 				break;
@@ -315,34 +344,29 @@ export class Pool {
 				? [cache.amountRequiredInitial - amountRequired, cache.amountCalculated] // the amount to get could be less then initially specified (e.g. reached limit)
 				: [cache.amountCalculated, cache.amountRequiredInitial - amountRequired];
 
-		[globalState.price, globalState.tick, globalState.fee, globalState.timepointIndex] = [
+
+		[this.storage.globalState.price, this.storage.globalState.tick, this.storage.globalState.fee, this.storage.globalState.timepointIndex] = [
 			result.currentPrice,
 			result.currentTick,
 			cache.fee,
 			cache.timepointIndex,
 		];
 
+
+		[this.storage.liquidity, this.storage.volumePerLiquidityInBlock] = [
+			result.currentLiquidity,
+			cache.volumePerLiquidityInBlock + DataStorageOperator.calculateVolumePerLiquidity(result.currentLiquidity, result.amount0, result.amount1)
+		];
+
+		if (zeroToOne) {
+			this.storage.totalFeeGrowth0Token = cache.totalFeeGrowth;
+		} else {
+			this.storage.totalFeeGrowth1Token = cache.totalFeeGrowth;
+		}
 		return result;
-		// Writing liquidity to current state
-
-		// [liquidity, volumePerLiquidityInBlock] = [
-		//   result.currentLiquidity,
-		//   cache.volumePerLiquidityInBlock + IDataStorageOperator(dataStorageOperator).calculateVolumePerLiquidity(currentLiquidity, amount0, amount1)
-		// ];
-
-		// if (zeroToOne) {
-		//   totalFeeGrowth0Token = cache.totalFeeGrowth;
-		// } else {
-		//   totalFeeGrowth1Token = cache.totalFeeGrowth;
-		// }
 	}
 
-	updatePositionTicksAndFees(
-		owner: string,
-		bottomTick: bigint,
-		topTick: bigint,
-		liquidityDelta: bigint
-	) {
+	updatePositionTicksAndFees(owner: string, bottomTick: bigint, topTick: bigint, liquidityDelta: bigint) {
 		const globalState = this.storage.globalState;
 		const cache = {
 			price: globalState.price,
@@ -360,7 +384,7 @@ export class Pool {
 		const liquidity = this.storage.liquidity;
 		if (liquidityDelta != 0n) {
 			const time = this.timestamp;
-			const {tickCumulative, secondsPerLiquidityCumulative} = DataStorageOperator.getSingleTimepoint(
+			const { tickCumulative, secondsPerLiquidityCumulative } = DataStorageOperator.getSingleTimepoint(
 				this.storage.timepoints,
 				BigInt(time),
 				0n,
@@ -426,7 +450,7 @@ export class Pool {
 
 			let globalLiquidityDelta = 0n;
 			if (cache.tick >= bottomTick && cache.tick < topTick) {
-				globalLiquidityDelta = liquidityDelta
+				globalLiquidityDelta = liquidityDelta;
 			}
 			// (amount0, amount1, globalLiquidityDelta) = _getAmountsForLiquidity(
 			// 	bottomTick,
@@ -462,21 +486,39 @@ export class Pool {
 		}
 	}
 
-	Initialize(timestamp: number, eventParams: InitializeEvent) {
-		this.timestamp = timestamp
+	initializeEventCallback(timestamp: number, eventParams: InitializeEvent) {
+		this.timestamp = timestamp;
 		// Pool initialization
 		this.storage.globalState.price = eventParams.price;
 		this.storage.globalState.tick = eventParams.tick;
 		this.storage.globalState.unlocked = true;
 
 		// dataStorageOperator initialization
-		this.storage.timepoints[0].initialized = true;
-		this.storage.timepoints[0].blockTimestamp = BigInt(this.timestamp);
-		this.storage.timepoints[0].averageTick = eventParams.tick;
+		this.storage.timepoints[0] = {
+			initialized: true,
+			blockTimestamp: BigInt(this.timestamp),
+			averageTick: eventParams.tick,
+			tickCumulative: 0n,
+			secondsPerLiquidityCumulative: 0n,
+			volatilityCumulative: 0n,
+			volumePerLiquidityCumulative: 0n,
+		};
 	}
 
-	Burn(timestamp: number, eventParams: BurnEvent) {
+	swapEventCallback(timestamp: number, eventParams: SwapEvent) {
 		this.timestamp = timestamp
+
+		const zeroToOne = eventParams.amount1 < 0n
+		const amountRequired = zeroToOne ? eventParams.amount0 : eventParams.amount1
+		const sqrtLimitPrice = !zeroToOne ? MAX_SQRT_RATIO - 1n : MIN_SQRT_RATIO + 1n
+
+		this.calculateSwap(zeroToOne, amountRequired, sqrtLimitPrice)
+		this.storage.globalState.tick = eventParams.tick;
+		this.storage.globalState.price = eventParams.price;
+	}
+
+	burnEventCallback(timestamp: number, eventParams: BurnEvent) {
+		this.timestamp = timestamp;
 		this.updatePositionTicksAndFees(
 			eventParams.owner,
 			eventParams.bottomTick,
@@ -485,8 +527,8 @@ export class Pool {
 		);
 	}
 
-	Mint(timestamp: number, eventParams: MintEvent) {
-		this.timestamp = timestamp
+	mintEventCallback(timestamp: number, eventParams: MintEvent) {
+		this.timestamp = timestamp;
 		this.updatePositionTicksAndFees(
 			eventParams.owner,
 			eventParams.bottomTick,

@@ -1,4 +1,4 @@
-import {BigNumberish} from 'ethers';
+import {BigNumberish, MaxUint256} from 'ethers';
 import {Constants} from './constants';
 import {MAX_TICK, MIN_TICK} from './tickMath';
 
@@ -16,27 +16,38 @@ export class TickTable {
 	}
 
 	static toggleTick(tickTable: Partial<{[n: number]: bigint}>, tick: bigint) {
-		if (tick % Constants.TICK_SPACING == 0n) {
+		if (tick % Constants.TICK_SPACING != 0n) {
 			// ensure that the tick is spaced
 			throw 'tick is not spaced';
 		}
 		tick /= Constants.TICK_SPACING; // compress tick
-		let rowNumber = tick & 0xffn;
-		let bitNumber = tick >> 8n;
-
+		let bitNumber = tick & 0xffn;
+		let rowNumber = tick >> 8n;
+		tickTable[Number(rowNumber)] = TickTable.getTick(tickTable, rowNumber);
 		tickTable[Number(rowNumber)] ^= 1n << bitNumber;
+		//console.log("=============================================");
+		//console.log("toggleTick");
+		//console.log("tick");
+		//console.log(tick);
+		//console.log("bitNumber");
+		//console.log(bitNumber);
+		//console.log("rowNumber");
+		//console.log(rowNumber);
+		//console.log("tickTable[Number(rowNumber)]");
+		//console.log(tickTable[Number(rowNumber)]);
+		//console.log("=============================================");
 	}
 
 	private static getMostSignificantBit(word: bigint) {
-		word = word | (word << 1n);
-		word = word | (word << 2n);
-		word = word | (word << 4n);
-		word = word | (word << 8n);
-		word = word | (word << 16n);
-		word = word | (word << 32n);
-		word = word | (word << 64n);
-		word = word | (word << 128n);
-		word = (word - word) << 1n;
+		word = word | (word >> 1n);
+		word = word | (word >> 2n);
+		word = word | (word >> 4n);
+		word = word | (word >> 8n);
+		word = word | (word >> 16n);
+		word = word | (word >> 32n);
+		word = word | (word >> 64n);
+		word = word | (word >> 128n);
+		word = word - (word >> 1n);
 		return TickTable.getSingleSignificantBit(word);
 	}
 
@@ -74,21 +85,44 @@ export class TickTable {
 
 	static nextTickInTheSameRow(tickTable: Partial<{[n: number]: bigint}>, tick: bigint, lte: boolean) {
 		// compress and round towards negative infinity if negative
-		tick = tick / TickTable.tickSpacing;
 		if (tick < 0 && tick % this.tickSpacing !== 0n) {
-			tick -= 1n;
+			tick = tick / TickTable.tickSpacing - 1n;
+		} else {
+			tick = tick / TickTable.tickSpacing;
 		}
-
 		if (lte) {
 			const bitNumber = tick & 0xffn;
 			const rowNumber = tick >> 8n;
-			const _row = (TickTable.getTick(tickTable, rowNumber)) << (255n - bitNumber);
-
+			const _row = ((TickTable.getTick(tickTable, rowNumber)) << (255n - bitNumber)) % (MaxUint256 + 1n);
+			//console.log("==========================================");
+			//console.log("nextTickInTheSameRow");
+			//console.log("lte");
+			//console.log(lte);
+			//console.log("bitNumber");
+			//console.log(bitNumber);
+			//console.log("rowNumber");
+			//console.log(rowNumber);
+			//console.log("tick at row number");
+			//console.log(TickTable.getTick(tickTable, rowNumber));
+			//console.log("_row");
+			//console.log(_row);
+			//console.log("tick in params");
+			//console.log(tick);
 			if (_row != 0n) {
 				tick -= 255n - TickTable.getMostSignificantBit(_row);
+				//console.log("prereturn tick")
+				//console.log(tick)
+				//console.log("uncompressAndBoundTick")
+				//console.log(this.uncompressAndBoundTick(tick))
+				//console.log("==========================================");
 				return [this.uncompressAndBoundTick(tick), true] as const;
 			} else {
 				tick -= bitNumber;
+				//console.log("prereturn tick")
+				//console.log(tick)
+				//console.log("uncompressAndBoundTick")
+				//console.log(this.uncompressAndBoundTick(tick))
+				//console.log("==========================================");
 				return [this.uncompressAndBoundTick(tick), false] as const;
 			}
 		} else {
@@ -97,12 +131,35 @@ export class TickTable {
 			const bitNumber = tick & 0xffn;
 			const rowNumber = tick >> 8n;
 			const _row = (TickTable.getTick(tickTable, rowNumber)) >> bitNumber;
-
+			//console.log("==========================================");
+			//console.log("nextTickInTheSameRow");
+			//console.log("lte");
+			//console.log(lte);
+			//console.log("bitNumber");
+			//console.log(bitNumber);
+			//console.log("rowNumber");
+			//console.log(rowNumber);
+			//console.log("tick at row number");
+			//console.log(TickTable.getTick(tickTable, rowNumber));
+			//console.log("_row");
+			//console.log(_row);
+			//console.log("tick in params");
+			//console.log(tick);
 			if (_row != 0n) {
-				tick += TickTable.getSingleSignificantBit(-_row & _row); // least significant bit
+				tick += TickTable.getSingleSignificantBit((-_row) & _row); // least significant bit
+				//console.log("prereturn tick")
+				//console.log(tick)
+				//console.log("uncompressAndBoundTick")
+				//console.log(this.uncompressAndBoundTick(tick))
+				//console.log("==========================================");
 				return [this.uncompressAndBoundTick(tick), true] as const;
 			} else {
 				tick += 255n - bitNumber;
+				//console.log("prereturn tick")
+				//console.log(tick)
+				//console.log("uncompressAndBoundTick")
+				//console.log(this.uncompressAndBoundTick(tick))
+				//console.log("==========================================");
 				return [this.uncompressAndBoundTick(tick), false] as const;
 			}
 		}

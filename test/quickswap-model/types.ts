@@ -76,18 +76,6 @@ export interface FeeConfig {
 	baseFee: bigint;
 }
 
-export interface Configuration {
-  alpha1: bigint; // max value of the first sigmoid
-  alpha2: bigint; // max value of the second sigmoid
-  beta1: bigint; // shift along the x-axis for the first sigmoid
-  beta2: bigint; // shift along the x-axis for the second sigmoid
-  gamma1: bigint; // horizontal stretch factor for the first sigmoid
-  gamma2: bigint; // horizontal stretch factor for the second sigmoid
-  volumeBeta: bigint; // shift along the x-axis for the outer volume-sigmoid
-  volumeGamma: bigint; // horizontal stretch factor the outer volume-sigmoid
-  baseFee: bigint; // minimum possible fee
-}
-
 export interface Storage {
   token0: string;
   token1: string;
@@ -95,7 +83,8 @@ export interface Storage {
   liquidity: bigint;
   totalFeeGrowth0Token: bigint
   totalFeeGrowth1Token: bigint
-  volumePerLiquidityInBlock: bigint
+	volumePerLiquidityInBlock: bigint
+	liquidityCooldown: bigint,
   activeIncentive: string;
   tickSpacing: number;
   ticks: Partial<{[n: number]: Tick}>;
@@ -106,6 +95,16 @@ export interface Storage {
 
 export interface InitializeEvent {
 	price: bigint;
+	tick: bigint;
+}
+
+export interface SwapEvent {
+	sender: string;
+	recipient: string;
+	amount0: bigint;
+	amount1: bigint;
+	price: bigint;
+	liquidity: bigint;
 	tick: bigint;
 }
 

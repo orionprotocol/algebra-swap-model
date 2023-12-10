@@ -1,9 +1,9 @@
-import { BaseContract, Signer } from 'ethers';
+import { Addressable, BaseContract, Signer } from 'ethers';
 import { ethers } from 'hardhat';
 
 export const DAY = 86400
 
-export interface User {
+export interface User extends Addressable  {
   address: string,
   signer: Signer
 }
@@ -39,11 +39,12 @@ export async function setupUser<T extends { [contractName: string]: BaseContract
     try {
       let signer = await ethers.getSigner(address);
       user.signer = signer
+			user.getAddress = async () => user.address
     } catch (e) {
       console.error(e);
     }
 
     user[key] = contracts[key].connect(await ethers.getSigner(address));
   }
-  return user as { address: string, signer: Signer } & T;
+  return user as User & T;
 }

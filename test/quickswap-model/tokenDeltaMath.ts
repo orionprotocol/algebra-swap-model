@@ -21,21 +21,24 @@ export class TokenDeltaMath {
 		const token0Delta = roundUp
 			? FullMath.divRoundingUp(FullMath.mulDivRoundingUp(priceDelta, liquidityShifted, priceUpper), priceLower)
 			: FullMath.mulDiv(priceDelta, liquidityShifted, priceUpper) / priceLower;
-		console.log('Inside getToken0DeltaRoundUp');
-		console.log('priceLower');
-		console.log(priceLower);
-		console.log('priceUpper');
-		console.log(priceUpper);
-		console.log('liquidity');
-		console.log(liquidity);
-		console.log('roundUp');
-		console.log(roundUp);
-		console.log('priceDelta');
-		console.log(priceDelta);
-		console.log('liquidityShifted');
-		console.log(liquidityShifted);
-		console.log('token0Delta');
-		console.log(token0Delta);
+
+		//console.log("=================================================================")
+		//console.log('getToken0DeltaRoundUp');
+		//console.log('priceLower');
+		//console.log(priceLower);
+		//console.log('priceUpper');
+		//console.log(priceUpper);
+		//console.log('liquidity');
+		//console.log(liquidity);
+		//console.log('roundUp');
+		//console.log(roundUp);
+		//console.log('priceDelta');
+		//console.log(priceDelta);
+		//console.log('liquidityShifted');
+		//console.log(liquidityShifted);
+		//console.log('token0Delta');
+		//console.log(token0Delta);
+		//console.log("=================================================================")
 		return token0Delta;
 	}
 
@@ -52,19 +55,19 @@ export class TokenDeltaMath {
 		const token1Delta = roundUp
 			? FullMath.mulDivRoundingUp(priceDelta, liquidity, Constants.Q96)
 			: FullMath.mulDiv(priceDelta, liquidity, Constants.Q96);
-		console.log('Inside getToken1DeltaRoundUp');
-		console.log('priceLower');
-		console.log(priceLower);
-		console.log('priceUpper');
-		console.log(priceUpper);
-		console.log('liquidity');
-		console.log(liquidity);
-		console.log('roundUp');
-		console.log(roundUp);
-		console.log('priceDelta');
-		console.log(priceDelta);
-		console.log('token1Delta');
-		console.log(token1Delta);
+		//console.log('Inside getToken1DeltaRoundUp');
+		//console.log('priceLower');
+		//console.log(priceLower);
+		//console.log('priceUpper');
+		//console.log(priceUpper);
+		//console.log('liquidity');
+		//console.log(liquidity);
+		//console.log('roundUp');
+		//console.log(roundUp);
+		//console.log('priceDelta');
+		//console.log(priceDelta);
+		//console.log('token1Delta');
+		//console.log(token1Delta);
 		return token1Delta;
 	}
 

@@ -239,6 +239,7 @@ contract AlgebraPool is PoolState, PoolImmutables, IAlgebraPool {
 			}
 
 			// change position liquidity
+
 			uint128 liquidityNext = LiquidityMath.addDelta(currentLiquidity, liquidityDelta);
 			(_position.liquidity, _position.lastLiquidityAddTimestamp) = (
 				liquidityNext,
@@ -811,17 +812,6 @@ contract AlgebraPool is PoolState, PoolImmutables, IAlgebraPool {
 					cache.incentiveStatus = IAlgebraVirtualPool.Status.NOT_STARTED;
 				}
 			}
-			//console.log("dataStorageOperator.write params");
-			//console.log("cache.timepointIndex");
-			//console.log(cache.timepointIndex);
-			//console.log("BigInt(blockTimestamp)");
-			//console.log(block.timestamp);
-			//console.log("cache.startTick");
-			//console.logInt(cache.startTick);
-			//console.log("result.currentLiquidity");
-			//console.log(currentLiquidity);
-			//console.log("cache.volumePerLiquidityInBlock");
-			//console.log(cache.volumePerLiquidityInBlock);
 			uint16 newTimepointIndex = _writeTimepoint(
 				cache.timepointIndex,
 				blockTimestamp,
@@ -829,46 +819,31 @@ contract AlgebraPool is PoolState, PoolImmutables, IAlgebraPool {
 				currentLiquidity,
 				cache.volumePerLiquidityInBlock
 			);
-			//console.log("newTimepointIndex");
-			//console.log(newTimepointIndex);
 
 			// new timepoint appears only for first swap in block
 			if (newTimepointIndex != cache.timepointIndex) {
 				cache.timepointIndex = newTimepointIndex;
 				cache.volumePerLiquidityInBlock = 0;
 				cache.fee = _getNewFee(blockTimestamp, currentTick, newTimepointIndex, currentLiquidity);
-				//console.log("cache.fee");
-				//console.log(cache.fee);
 			}
 		}
 
 		PriceMovementCache memory step;
 		// swap until there is remaining input or output tokens or we reach the price limit
 		while (true) {
-			//console.log("WHILE ITERATION");
 			step.stepSqrtPrice = currentPrice;
 
 			(step.nextTick, step.initialized) = tickTable.nextTickInTheSameRow(currentTick, zeroToOne);
+			step.nextTickPrice = TickMath.getSqrtRatioAtTick(step.nextTick);
+			//console.log("===============================================");
 			//console.log("step.nextTick");
 			//console.logInt(step.nextTick);
+			//console.log("step.initialized");
+			//console.log(step.initialized);
+			//console.log("step.nextTickPrice");
+			//console.log(step.nextTickPrice);
+			//console.log("===============================================");
 
-			step.nextTickPrice = TickMath.getSqrtRatioAtTick(step.nextTick);
-			//console.log("step.nextTickPice");
-			//console.logInt(step.nextTickPrice);
-
-			//console.log("movePriceTowardsTarget params");
-			//console.log("zeroToOne");
-			//console.log(zeroToOne);
-			//console.log("currentPrice");
-			//console.log(currentPrice);
-			//console.log("nextTickPrice");
-			// //console.log((zeroToOne == (step.nextTickPrice < limitSqrtPrice)) ? limitSqrtPrice : step.nextTickPrice);
-			//console.log("currentLiquidity");
-			//console.log(currentLiquidity);
-			//console.log("amountRequired");
-			// //console.logInt(amountRequired);
-			//console.log("cache.fee");
-			//console.log(cache.fee);
 			// calculate the amounts needed to move the price to the next target if it is possible or as much as possible
 			(currentPrice, step.input, step.output, step.feeAmount) = PriceMovementMath.movePriceTowardsTarget(
 				zeroToOne,
@@ -880,8 +855,9 @@ contract AlgebraPool is PoolState, PoolImmutables, IAlgebraPool {
 				amountRequired,
 				cache.fee
 			);
-			//console.log("movePriceTowardsTarget result");
-			//console.log("currentPrice");
+			//console.log("===============================================");
+			//console.log("result movePriceTowardsTarget");
+			//console.log("result.currentPrice");
 			//console.log(currentPrice);
 			//console.log("step.input");
 			//console.log(step.input);
@@ -889,7 +865,7 @@ contract AlgebraPool is PoolState, PoolImmutables, IAlgebraPool {
 			//console.log(step.output);
 			//console.log("step.feeAmount");
 			//console.log(step.feeAmount);
-
+			//console.log("===============================================");
 			if (cache.exactInput) {
 				amountRequired -= (step.input + step.feeAmount).toInt256(); // decrease remaining input amount
 				cache.amountCalculated = cache.amountCalculated.sub(step.output.toInt256()); // decrease calculated output amount
@@ -899,37 +875,27 @@ contract AlgebraPool is PoolState, PoolImmutables, IAlgebraPool {
 			}
 			//console.log("amountRequired");
 			//console.logInt(amountRequired);
-			//console.log("step.input");
-			//console.log(step.input);
-			//console.log("step.output");
-			//console.log(step.output);
-			//console.log("step.feeAmount");
-			//console.log(step.feeAmount);
+			//console.log("deduct from amountRequired");
+			//console.log(step.input + step.feeAmount);
 			if (cache.communityFee > 0) {
 				uint256 delta = (step.feeAmount.mul(cache.communityFee)) / Constants.COMMUNITY_FEE_DENOMINATOR;
 				step.feeAmount -= delta;
 				communityFeeAmount += delta;
 			}
-			//console.log("step.feeAmount");
-			//console.log(step.feeAmount);
-			//console.log("result.communityFeeAmount");
-			//console.log(communityFeeAmount);
 			if (currentLiquidity > 0)
 				cache.totalFeeGrowth += FullMath.mulDiv(step.feeAmount, Constants.Q128, currentLiquidity);
-			//console.log("result.currentLiquidity");
-			//console.log(currentLiquidity);
-			//console.log("currentPrice");
-			//console.log(currentPrice);
-			//console.log("step.nextTickPrice");
+			//console.log("========================================================");
+			//console.log("Contract currentPrice");
+			//console.logInt(currentPrice);
+			//console.log("Contract nextTickPrice");
 			//console.log(step.nextTickPrice);
+			//console.log(block.timestamp);
+			//console.log("========================================================");
 			if (currentPrice == step.nextTickPrice) {
-				//console.log("inside if currentPrice == step.nextTickPrice");
 				// if the reached tick is initialized then we need to cross it
 				if (step.initialized) {
-					//console.log("inside step.initialized");
 					// once at a swap we have to get the last timepoint of the observation
 					if (!cache.computedLatestTimepoint) {
-						//console.log("inside !cache.computedLatestTimepoint");
 						(cache.tickCumulative, cache.secondsPerLiquidityCumulative, , ) = _getSingleTimepoint(
 							blockTimestamp,
 							0,
@@ -964,7 +930,10 @@ contract AlgebraPool is PoolState, PoolImmutables, IAlgebraPool {
 							blockTimestamp
 						);
 					}
-
+					//console.log("========================================================");
+					//console.log("Contract liquidityDelta");
+					//console.logInt(liquidityDelta);
+					//console.log("========================================================");
 					currentLiquidity = LiquidityMath.addDelta(currentLiquidity, liquidityDelta);
 				}
 
@@ -974,14 +943,22 @@ contract AlgebraPool is PoolState, PoolImmutables, IAlgebraPool {
 				currentTick = TickMath.getTickAtSqrtRatio(currentPrice);
 				break; // since the price hasn't reached the target, amountRequired should be 0
 			}
-
+			//console.log("========================================================");
+			//console.log("amountRequired");
+			//console.logInt(amountRequired);
+			//console.log("result.currentPrice");
+			//console.log(currentPrice);
+			//console.log("limitSqrtPrice");
+			//console.log(limitSqrtPrice);
+			//console.log("========================================================");
 			// check stop condition
 			if (amountRequired == 0 || currentPrice == limitSqrtPrice) {
 				break;
 			}
-			break;
 		}
-
+		//console.logInt(cache.amountRequiredInitial);
+		//console.logInt(amountRequired);
+		//console.logInt(cache.amountCalculated);
 		(amount0, amount1) = zeroToOne == cache.exactInput // the amount to provide could be less then initially specified (e.g. reached limit)
 			? (cache.amountRequiredInitial - amountRequired, cache.amountCalculated) // the amount to get could be less then initially specified (e.g. reached limit)
 			: (cache.amountCalculated, cache.amountRequiredInitial - amountRequired);
@@ -1008,6 +985,8 @@ contract AlgebraPool is PoolState, PoolImmutables, IAlgebraPool {
 		} else {
 			totalFeeGrowth1Token = cache.totalFeeGrowth;
 		}
+		// //console.logInt(amount0);
+		// //console.logInt(amount1);
 	}
 
 	/// @inheritdoc IAlgebraPoolActions

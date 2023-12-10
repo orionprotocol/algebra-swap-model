@@ -21,10 +21,6 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   });
 
   await (await poolDeployer.setFactory(res.address)).wait()
-
-	console.log("factory ", res.address)
-	console.log("poolDeployer ", await poolDeployer.getAddress())
-	console.log("vault ", ZeroAddress)
 }
 export default func
 func.tags = ["AlgebraFactory"]

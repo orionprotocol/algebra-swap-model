@@ -91,13 +91,13 @@ export class FullMath {
 	/// @param denominator The divisor
 	/// @return result The 256-bit result
 	static mulDivRoundingUp(a: bigint, b: bigint, denominator: bigint) {
-		console.log('inside mulDivRoundingUp');
-		console.log('a');
-		console.log(a);
-		console.log('b');
-		console.log(b);
-		console.log('denominator');
-		console.log(denominator);
+		//console.log('inside mulDivRoundingUp');
+		//console.log('a');
+		//console.log(a);
+		//console.log('b');
+		//console.log(b);
+		//console.log('denominator');
+		//console.log(denominator);
 		if (a === 0n) return 0n;
 		let result = a * b;
 		if (a === 0n || result / a === b) {
@@ -105,14 +105,14 @@ export class FullMath {
 				throw 'denominator <= 0';
 			}
 			result = FullMath.divRoundingUp(result, denominator);
-			console.log('inside mulDivRoundingUp if');
-			console.log('result');
-			console.log(result);
+			//console.log('inside mulDivRoundingUp if');
+			//console.log('result');
+			//console.log(result);
 		} else {
 			result = FullMath.mulDiv(a, b, denominator);
-			console.log('inside mulDivRoundingUp else');
-			console.log('result');
-			console.log(result);
+			//console.log('inside mulDivRoundingUp else');
+			//console.log('result');
+			//console.log(result);
 			if ((a * b) % denominator > 0n) {
 				if (result == MaxUint256) {
 					throw 'result == MaxUint256';

@@ -35,6 +35,7 @@ library TokenDeltaMath {
 		token0Delta = roundUp
 			? FullMath.divRoundingUp(FullMath.mulDivRoundingUp(priceDelta, liquidityShifted, priceUpper), priceLower)
 			: FullMath.mulDiv(priceDelta, liquidityShifted, priceUpper) / priceLower;
+		//console.log("=================================================================");
 		//console.log("Inside getToken0DeltaRoundUp");
 		//console.log("priceLower");
 		//console.log(priceLower);
@@ -50,6 +51,7 @@ library TokenDeltaMath {
 		//console.log(liquidityShifted);
 		//console.log("token0Delta");
 		//console.log(token0Delta);
+		//console.log("=================================================================");
 	}
 
 	/// @notice Gets the token1 delta between two prices

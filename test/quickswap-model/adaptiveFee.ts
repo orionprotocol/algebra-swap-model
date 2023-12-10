@@ -1,4 +1,4 @@
-import { Configuration } from "./types";
+import { FeeConfig } from "./types";
 
 
 const UINT16_MAX = 2n**16n - 1n
@@ -12,7 +12,7 @@ export class AdaptiveFee {
   static getFee(
     volatility: bigint,
     volumePerLiquidity: bigint,
-    config: Configuration
+    config: FeeConfig
   ) {
     let sumOfSigmoids = AdaptiveFee.sigmoid(volatility, config.gamma1, config.alpha1, config.beta1) +
       AdaptiveFee.sigmoid(volatility, config.gamma2, config.alpha2, config.beta2);

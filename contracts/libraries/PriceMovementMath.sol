@@ -132,7 +132,23 @@ library PriceMovementMath {
 		int256 amountAvailable,
 		uint16 fee
 	) internal pure returns (uint160 resultPrice, uint256 input, uint256 output, uint256 feeAmount) {
-		//console.log('Inside movePriceTowardsTarget');
+		//console.log("============================================");
+		//console.log("movePriceTowardsTarget");
+		//console.log("params");
+		//console.log("zeroToOne");
+		//console.log(zeroToOne);
+		//console.log("currentPrice");
+		//console.log(currentPrice);
+		//console.log("targetPrice");
+		//console.log(targetPrice);
+		//console.log("liquidity");
+		//console.log(liquidity);
+		//console.log("amountAvailable");
+		//console.logInt(amountAvailable);
+		//console.log("fee");
+		//console.log(fee);
+		//console.log("============================================");
+
 		function(uint160, uint160, uint128) pure returns (uint256) getAmountA = zeroToOne
 			? getTokenADelta01
 			: getTokenADelta10;
@@ -141,11 +157,18 @@ library PriceMovementMath {
 			// exactIn or not
 			uint256 amountAvailableAfterFee = FullMath.mulDiv(uint256(amountAvailable), 1e6 - fee, 1e6);
 			input = getAmountA(targetPrice, currentPrice, liquidity);
-			//console.log("input");
+			//console.log("amountAvailableAfterFee");
+			//console.log(amountAvailableAfterFee);
+			//console.log("result.input");
 			//console.log(input);
 			if (amountAvailableAfterFee >= input) {
 				resultPrice = targetPrice;
 				feeAmount = FullMath.mulDivRoundingUp(input, fee, 1e6 - fee);
+				//console.log("amountAvailableAfterFee >= result.input");
+				//console.log("result.resultPrice");
+				//console.log(resultPrice);
+				//console.log("result.feeAmount");
+				//console.log(feeAmount);
 			} else {
 				resultPrice = getNewPriceAfterInput(currentPrice, liquidity, amountAvailableAfterFee, zeroToOne);
 				if (targetPrice != resultPrice) {
@@ -156,9 +179,18 @@ library PriceMovementMath {
 				} else {
 					feeAmount = FullMath.mulDivRoundingUp(input, fee, 1e6 - fee);
 				}
+				//console.log("amountAvailableAfterFee >= result.input");
+				//console.log("result.resultPrice");
+				//console.log(resultPrice);
+				//console.log("result.input");
+				//console.log(input);
+				//console.log("result.feeAmount");
+				//console.log(feeAmount);
 			}
 
 			output = (zeroToOne ? getTokenBDelta01 : getTokenBDelta10)(resultPrice, currentPrice, liquidity);
+			//console.log("result.output");
+			//console.log(output);
 		} else {
 			function(uint160, uint160, uint128) pure returns (uint256) getAmountB = zeroToOne
 				? getTokenBDelta01
@@ -183,5 +215,6 @@ library PriceMovementMath {
 			input = getAmountA(resultPrice, currentPrice, liquidity);
 			feeAmount = FullMath.mulDivRoundingUp(input, fee, 1e6 - fee);
 		}
+		//console.log("============================================");
 	}
 }

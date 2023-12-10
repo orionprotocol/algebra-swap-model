@@ -1,9 +1,28 @@
 import {LiquidityMath} from './liquidityMath';
 import {Constants} from './constants';
 import { Tick } from "./types";
+import { BigNumberish } from 'ethers';
 
 
 export class TickManager {
+
+	static getTick(ticks: Partial<{[n: number]: Tick}>, index: BigNumberish) {
+		let tick = ticks[Number(index)];
+		if (tick == undefined) {
+			tick = {
+				liquidityTotal: 0n,
+				liquidityDelta: 0n,
+				outerFeeGrowth0Token: 0n,
+				outerFeeGrowth1Token: 0n,
+				outerTickCumulative: 0n,
+				outerSecondsPerLiquidity: 0n,
+				outerSecondsSpent: 0n,
+				initialized: false,
+			};
+		}
+		return tick;
+	}
+
 	/// @notice Retrieves fee growth data
 	/// @param self The mapping containing all tick information for initialized ticks
 	/// @param bottomTick The lower tick boundary of the position
@@ -22,8 +41,8 @@ export class TickManager {
 		totalFeeGrowth1Token: bigint
 	): [innerFeeGrowth0Token: bigint, innerFeeGrowth1Token: bigint] {
 		let innerFeeGrowth0Token: bigint, innerFeeGrowth1Token: bigint;
-		const lower = ticks[Number(bottomTick)];
-		const upper = ticks[Number(topTick)];
+		const lower = this.getTick(ticks, bottomTick);
+		const upper = this.getTick(ticks, topTick);
 
 		if (currentTick < topTick) {
 			if (currentTick >= bottomTick) {
@@ -66,13 +85,13 @@ export class TickManager {
 		time: bigint,
 		upper: boolean
 	): boolean {
-		let data = ticks[Number(tick)];
+		let data = TickManager.getTick(ticks, tick);
 
 		const liquidityDeltaBefore = data.liquidityDelta;
 		const liquidityTotalBefore = data.liquidityTotal;
 
 		const liquidityTotalAfter = LiquidityMath.addDelta(liquidityTotalBefore, liquidityDelta);
-		if (liquidityTotalAfter < Constants.MAX_LIQUIDITY_PER_TICK + 1n) {
+		if (liquidityTotalAfter >= Constants.MAX_LIQUIDITY_PER_TICK + 1n) {
 			throw 'LO';
 		}
 
@@ -94,6 +113,7 @@ export class TickManager {
 			}
 			data.initialized = true;
 		}
+		ticks[Number(tick)] = data;
 		return flipped
 	}
 
@@ -106,7 +126,7 @@ export class TickManager {
 	/// @param tickCumulative The all-time global cumulative tick
 	/// @param time The current block.timestamp
 	/// @return liquidityDelta The amount of liquidity added (subtracted) when tick is crossed from left to right (right to left)
-	static async cross(
+	static cross(
 		ticks: Partial<{[n: number]: Tick}>,
 		tick: bigint,
 		totalFeeGrowth0Token: bigint,
@@ -115,7 +135,22 @@ export class TickManager {
 		tickCumulative: bigint,
 		time: bigint
 	) {
-		const data = ticks[Number(tick)];
+		//console.log("==============================================");
+		//console.log("cross")
+		//console.log("Params")
+		//console.log("tick");
+		//console.log(tick);
+		//console.log("totalFeeGrowth0Token");
+		//console.log(totalFeeGrowth0Token);
+		//console.log("totalFeeGrowth1Token");
+		//console.log(totalFeeGrowth1Token);
+		//console.log("secondsPerLiquidityCumulative");
+		//console.log(secondsPerLiquidityCumulative);
+		//console.log("tickCumulative");
+		//console.log(tickCumulative);
+		//console.log("time");
+		//console.log(time);
+		const data = TickManager.getTick(ticks, tick);
 
 		data.outerSecondsSpent = time - data.outerSecondsSpent;
 		data.outerSecondsPerLiquidity = secondsPerLiquidityCumulative - data.outerSecondsPerLiquidity;
@@ -123,7 +158,25 @@ export class TickManager {
 
 		data.outerFeeGrowth1Token = totalFeeGrowth1Token - data.outerFeeGrowth1Token;
 		data.outerFeeGrowth0Token = totalFeeGrowth0Token - data.outerFeeGrowth0Token;
-
+		//console.log("data");
+		//console.log("data.initialized");
+		//console.log(data.initialized);
+		//console.log("data.liquidityDelta");
+		//console.log(data.liquidityDelta);
+		//console.log("data.liquidityTotal");
+		//console.log(data.liquidityTotal);
+		//console.log("data.outerFeeGrowth0Token");
+		//console.log(data.outerFeeGrowth0Token);
+		//console.log("data.outerFeeGrowth1Token");
+		//console.log(data.outerFeeGrowth1Token);
+		//console.log("data.outerSecondsPerLiquidity");
+		//console.log(data.outerSecondsPerLiquidity);
+		//console.log("data.outerSecondsSpent");
+		//console.log(data.outerSecondsSpent);
+		//console.log("data.outerTickCumulative");
+		//console.log(data.outerTickCumulative);
+		//console.log("==============================================");
+		ticks[Number(tick)] = data;
 		return data.liquidityDelta;
 	}
 }

@@ -1,19 +1,19 @@
 import assert from 'assert';
-import {BigNumberish} from 'ethers';
+import {BigNumberish, MaxUint256} from 'ethers';
 import {AdaptiveFee} from './adaptiveFee';
-import { Timepoint, Configuration, FeeConfig } from './types';
+import { Timepoint, FeeConfig } from './types';
+import { ethers } from 'hardhat';
+import { Sqrt } from './sqrt';
 
 const WINDOW = 60n * 60n * 24n;
 const UINT16_MODULO = 65536n;
+const MAX_VOLUME_PER_LIQUIDITY = 100000n << 64n; // maximum meaningful ratio of volume to liquidity
 export class DataStorageOperator {
-	timepoints: Timepoint[];
-	feeConfig: Configuration;
-	poolAddress: string;
 
 	static getTimepoint(timepoints: Timepoint[], index: BigNumberish) {
 		index = BigInt(index) % 2n ** 16n;
 		let timepoint = timepoints[Number(index)];
-		if (timepoint === undefined) {
+		if (timepoint === undefined || timepoint == null) {
 			timepoint = {
 				initialized: false,
 				blockTimestamp: 0n, // the block timestamp of th: biginte
@@ -78,16 +78,16 @@ export class DataStorageOperator {
 			avgTick,
 			volumePerLiquidity
 		);
-		console.log('NewTimepointCreated');
-		console.log('{');
-		console.log(timepoints[Number(indexUpdated)].initialized);
-		console.log(timepoints[Number(indexUpdated)].blockTimestamp);
-		console.log(timepoints[Number(indexUpdated)].tickCumulative);
-		console.log(timepoints[Number(indexUpdated)].secondsPerLiquidityCumulative);
-		console.log(timepoints[Number(indexUpdated)].volatilityCumulative);
-		console.log(timepoints[Number(indexUpdated)].averageTick);
-		console.log(timepoints[Number(indexUpdated)].volumePerLiquidityCumulative);
-		console.log('}');
+		//console.log('NewTimepointCreated');
+		//console.log('{');
+		//console.log(timepoints[Number(indexUpdated)].initialized);
+		//console.log(timepoints[Number(indexUpdated)].blockTimestamp);
+		//console.log(timepoints[Number(indexUpdated)].tickCumulative);
+		//console.log(timepoints[Number(indexUpdated)].secondsPerLiquidityCumulative);
+		//console.log(timepoints[Number(indexUpdated)].volatilityCumulative);
+		//console.log(timepoints[Number(indexUpdated)].averageTick);
+		//console.log(timepoints[Number(indexUpdated)].volumePerLiquidityCumulative);
+		//console.log('}');
 
 		return indexUpdated;
 	}
@@ -111,26 +111,26 @@ export class DataStorageOperator {
 	) {
 		const oldestTimestamp = (DataStorageOperator.getTimepoint(timepoints, oldestIndex)).blockTimestamp;
 		const oldestTickCumulative = (DataStorageOperator.getTimepoint(timepoints, oldestIndex)).tickCumulative;
-		console.log('_getAverageTick');
-		console.log('time');
-		console.log(time);
-		console.log('tick');
-		console.log(tick);
-		console.log('index');
-		console.log(index);
-		console.log('oldestIndex');
-		console.log(oldestIndex);
-		console.log('lastTimestamp');
-		console.log(lastTimestamp);
-		console.log('lastTickCumulative');
-		console.log(lastTickCumulative);
+		//console.log('_getAverageTick');
+		//console.log('time');
+		//console.log(time);
+		//console.log('tick');
+		//console.log(tick);
+		//console.log('index');
+		//console.log(index);
+		//console.log('oldestIndex');
+		//console.log(oldestIndex);
+		//console.log('lastTimestamp');
+		//console.log(lastTimestamp);
+		//console.log('lastTickCumulative');
+		//console.log(lastTickCumulative);
 		let avgTick;
 		if (DataStorageOperator.lteConsideringOverflow(oldestTimestamp, time - WINDOW, time)) {
 			if (DataStorageOperator.lteConsideringOverflow(lastTimestamp, time - WINDOW, time)) {
 				index = (index - 1n) % UINT16_MODULO; // considering underflow
 				const startTimepoint = DataStorageOperator.getTimepoint(timepoints, index);
-				console.log('startTimepoint');
-				console.log(startTimepoint);
+				//console.log('startTimepoint');
+				//console.log(startTimepoint);
 				avgTick = startTimepoint.initialized
 					? (lastTickCumulative - startTimepoint.tickCumulative) /
 					  (lastTimestamp - startTimepoint.blockTimestamp)
@@ -179,8 +179,8 @@ export class DataStorageOperator {
 			DataStorageOperator.lteConsideringOverflow((DataStorageOperator.getTimepoint(timepoints, index)).blockTimestamp, target, time)
 		) {
 			const last = DataStorageOperator.getTimepoint(timepoints, index);
-			console.log('last timepoint');
-			console.log(last);
+			//console.log('last timepoint');
+			//console.log(last);
 			if (last.blockTimestamp == target) {
 				return last;
 			} else {
@@ -347,18 +347,20 @@ export class DataStorageOperator {
 		}
 
 		const endOfWindow = DataStorageOperator._getSingleTimepoint(timepoints, time, 0n, tick, index, oldestIndex, liquidity);
-		console.log('endOfWindow');
-		console.log(endOfWindow);
+		//console.log('endOfWindow');
+		//console.log(endOfWindow);
 		const oldestTimestamp = oldest.blockTimestamp;
 		if (DataStorageOperator.lteConsideringOverflow(oldestTimestamp, time - WINDOW, time)) {
+			//console.log("here")
 			const startOfWindow = DataStorageOperator._getSingleTimepoint(timepoints, time, WINDOW, tick, index, oldestIndex, liquidity);
-			console.log('startOfWindow');
-			console.log(startOfWindow);
+			//console.log('startOfWindow');
+			//console.log(startOfWindow);
 			return [
 				(endOfWindow.volatilityCumulative - startOfWindow.volatilityCumulative) / WINDOW,
 				(endOfWindow.volumePerLiquidityCumulative - startOfWindow.volumePerLiquidityCumulative) >> 57n,
 			];
 		} else if (time != oldestTimestamp) {
+			//console.log("here")
 			const _oldestVolatilityCumulative = oldest.volatilityCumulative;
 			const _oldestVolumePerLiquidityCumulative = oldest.volumePerLiquidityCumulative;
 			return [
@@ -371,19 +373,34 @@ export class DataStorageOperator {
 
 	/// @inheritdoc IDataStorageOperator
 	static getFee(feeConfig: FeeConfig, timepoints: Timepoint[], _time: bigint, _tick: bigint, _index: bigint, _liquidity: bigint) {
-		console.log('_time');
-		console.log(_time);
-		console.log('_tick');
-		console.log(_tick);
-		console.log('_index');
-		console.log(_index);
-		console.log('_liquidity');
-		console.log(_liquidity);
+		//console.log('_time');
+		//console.log(_time);
+		//console.log('_tick');
+		//console.log(_tick);
+		//console.log('_index');
+		//console.log(_index);
+		//console.log('_liquidity');
+		//console.log(_liquidity);
 		const [volatilityAverage, volumePerLiqAverage] = DataStorageOperator.getAverages(timepoints, _time, _tick, _index, _liquidity);
-		console.log('volatilityAverage');
-		console.log(volatilityAverage);
-		console.log('volumePerLiqAverage');
-		console.log(volumePerLiqAverage);
+		//console.log('volatilityAverage');
+		//console.log(volatilityAverage);
+		//console.log('volumePerLiqAverage');
+		//console.log(volumePerLiqAverage);
 		return AdaptiveFee.getFee(volatilityAverage / 15n, volumePerLiqAverage, feeConfig);
+	}
+
+
+	/// @inheritdoc IDataStorageOperator
+	static calculateVolumePerLiquidity(
+		liquidity: bigint,
+		amount0: bigint,
+		amount1: bigint
+	) {
+		const volume = Sqrt.sqrtAbs(amount0) * Sqrt.sqrtAbs(amount1);
+		let volumeShifted;
+		if (volume >= 2 ** 192) volumeShifted = (MaxUint256) / (liquidity > 0 ? liquidity : 1n);
+		else volumeShifted = (volume << 64n) / (liquidity > 0n ? liquidity : 1n);
+		if (volumeShifted >= MAX_VOLUME_PER_LIQUIDITY) return MAX_VOLUME_PER_LIQUIDITY;
+		else return volumeShifted;
 	}
 }

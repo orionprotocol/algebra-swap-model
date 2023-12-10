@@ -19,7 +19,7 @@
     "chai": "^4.3.7",
     "cross-env": "^7.0.2",
     "dotenv": "^16.3.1",
-    "ethers": "^6.8.0",
+    "ethers": "^6.9.0",
     "fs-extra": "^11.1.1",
     "hardhat": "^2.16.0",
     "hardhat-contract-sizer": "^2.10.0",
@@ -63,6 +63,9 @@
     "tenderly:push": "node ./_scripts.js tenderly:push"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.202",
+    "chalk": "4.1.2",
+    "lodash": "^4.17.21",
     "source-map-support": "^0.5.21"
   }
 }

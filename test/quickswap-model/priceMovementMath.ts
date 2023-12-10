@@ -95,7 +95,22 @@ export class PriceMovementMath {
 		amountAvailable: bigint,
 		fee: bigint
 	) {
-		console.log('Inside movePriceTowardsTarget');
+		//console.log("============================================");
+		//console.log("movePriceTowardsTarget");
+		//console.log("params")
+		//console.log("zeroToOne");
+		//console.log(zeroToOne);
+		//console.log("currentPrice");
+		//console.log(currentPrice);
+		//console.log("targetPrice");
+		//console.log(targetPrice);
+		//console.log("liquidity");
+		//console.log(liquidity);
+		//console.log("amountAvailable");
+		//console.log(amountAvailable);
+		//console.log("fee");
+		//console.log(fee);
+		//console.log("============================================");
 		const getAmountA = zeroToOne ? this.getTokenADelta01 : this.getTokenADelta10;
 		let result = {
 			resultPrice: 0n,
@@ -107,11 +122,20 @@ export class PriceMovementMath {
 			// exactIn or not
 			const amountAvailableAfterFee = FullMath.mulDiv(amountAvailable, BigInt(1e6) - fee, BigInt(1e6));
 			result.input = getAmountA(targetPrice, currentPrice, liquidity);
-			console.log('input');
-			console.log(result.input);
+			//console.log("amountAvailableAfterFee");
+			//console.log(amountAvailableAfterFee);
+			//console.log("result.input");
+			//console.log(result.input);
+			//console.log('input');
+			//console.log(result.input);
 			if (amountAvailableAfterFee >= result.input) {
 				result.resultPrice = targetPrice;
 				result.feeAmount = FullMath.mulDivRoundingUp(result.input, fee, BigInt(1e6) - fee);
+				//console.log("amountAvailableAfterFee >= result.input");
+				//console.log("result.resultPrice");
+				//console.log(result.resultPrice);
+				//console.log("result.feeAmount");
+				//console.log(result.feeAmount);
 			} else {
 				result.resultPrice = this.getNewPriceAfterInput(
 					currentPrice,
@@ -127,6 +151,13 @@ export class PriceMovementMath {
 				} else {
 					result.feeAmount = FullMath.mulDivRoundingUp(result.input, fee, BigInt(1e6) - fee);
 				}
+				//console.log("amountAvailableAfterFee >= result.input");
+				//console.log("result.resultPrice");
+				//console.log(result.resultPrice);
+				//console.log("result.input");
+				//console.log(result.input);
+				//console.log("result.feeAmount");
+				//console.log(result.feeAmount);
 			}
 
 			result.output = (zeroToOne ? this.getTokenBDelta01 : this.getTokenBDelta10)(
@@ -134,6 +165,8 @@ export class PriceMovementMath {
 				currentPrice,
 				liquidity
 			);
+			//console.log("result.output");
+			//console.log(result.output);
 		} else {
 			const getAmountB = zeroToOne ? this.getTokenBDelta01 : this.getTokenBDelta10;
 
@@ -156,6 +189,7 @@ export class PriceMovementMath {
 			result.input = getAmountA(result.resultPrice, currentPrice, liquidity);
 			result.feeAmount = FullMath.mulDivRoundingUp(result.input, fee, BigInt(1e6) - fee);
 		}
+		//console.log("============================================");
 		return result;
 	}
 }

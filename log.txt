@@ -1,0 +1,33 @@
+
+
+  AlgebraPool
+Mint
+Burn
+Mint
+Mint
+Swap
+Swap
+    1) Check model state
+
+
+  0 passing (7s)
+  1 failing
+
+  1) AlgebraPool
+       Check model state:
+     Error: VM Exception while processing transaction: reverted with reason string 'SPL'
+    at AlgebraPool._calculateSwapAndLock (contracts/AlgebraPool.sol:792)
+    at AlgebraPool.swap (contracts/AlgebraPool.sol:630)
+    at SwapRouter.exactInputInternal (contracts/periphery/contracts/SwapRouter.sol:100)
+    at SwapRouter.exactInputSingle (contracts/periphery/contracts/SwapRouter.sol:121)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async HardhatNode._mineBlockWithPendingTxs (node_modules/hardhat/src/internal/hardhat-network/provider/node.ts:1866:23)
+    at async HardhatNode.mineBlock (node_modules/hardhat/src/internal/hardhat-network/provider/node.ts:524:16)
+    at async EthModule._sendTransactionAndReturnHash (node_modules/hardhat/src/internal/hardhat-network/provider/modules/eth.ts:1482:18)
+    at async HardhatNetworkProvider.request (node_modules/hardhat/src/internal/hardhat-network/provider/provider.ts:124:18)
+    at async TracerWrapper.request (node_modules/hardhat-tracer/src/wrapper.ts:30:16)
+    at async HardhatEthersSigner.sendTransaction (node_modules/@nomicfoundation/hardhat-ethers/src/signers.ts:125:18)
+  
+
+
+
